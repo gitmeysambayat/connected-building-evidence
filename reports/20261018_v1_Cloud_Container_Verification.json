@@ -1,0 +1,96 @@
+{
+  "generated_at_utc": "2026-10-18T10:27:09.554020+00:00",
+  "source_revision": "5fff2ccfc8b84cfd7b29defe61809a5032d462d2",
+  "scope": "Executed Linux Docker checks. This is not a Render deployment or browser rendering check.",
+  "execution_environment": "GitHub Actions",
+  "limits": {
+    "memory_bytes": 536870912,
+    "cpus": 0.1,
+    "one_uvicorn_worker": true,
+    "mqtt_disabled": false
+  },
+  "checks": [
+    {
+      "name": "fresh_prepared_boot_and_source_counts",
+      "passed": true,
+      "ready_seconds": 37.52
+    },
+    {
+      "name": "live_oxigraph_sparql_ifc_and_frozen_forecast",
+      "passed": true
+    },
+    {
+      "name": "rest_graphql_same_source_rows",
+      "passed": true
+    },
+    {
+      "name": "real_authenticated_mqtt_20_receipts_20_duplicates_and_subscriber_reconnection",
+      "passed": true,
+      "visitor_cookie_required": true,
+      "other_visitor_control_rejected": true
+    },
+    {
+      "name": "same_container_restart_preserves_writable_state",
+      "passed": true,
+      "ready_seconds": 36.199
+    },
+    {
+      "name": "replacement_container_rebuilds_baseline_and_resets_ephemeral_receipts",
+      "passed": true,
+      "ready_seconds": 35.636
+    }
+  ],
+  "containers": [
+    {
+      "phase": "after_cold_start_and_mqtt",
+      "memory_peak_bytes": 241557504,
+      "oom_killed": false,
+      "oom_events": 0,
+      "oom_kill_events": 0,
+      "configured_memory_bytes": 536870912,
+      "configured_nano_cpus": 100000000,
+      "running": true
+    },
+    {
+      "phase": "after_same_container_restart",
+      "memory_peak_bytes": 199847936,
+      "oom_killed": false,
+      "oom_events": 0,
+      "oom_kill_events": 0,
+      "configured_memory_bytes": 536870912,
+      "configured_nano_cpus": 100000000,
+      "running": true
+    },
+    {
+      "phase": "after_replacement_cold_start",
+      "memory_peak_bytes": 242978816,
+      "oom_killed": false,
+      "oom_events": 0,
+      "oom_kill_events": 0,
+      "configured_memory_bytes": 536870912,
+      "configured_nano_cpus": 100000000,
+      "running": true
+    }
+  ],
+  "success": true,
+  "image_bytes": 726479762,
+  "final_container_states": [
+    {
+      "container_number": 1,
+      "running": false,
+      "oom_killed": false,
+      "exit_code": 0,
+      "configured_memory_bytes": 536870912,
+      "configured_nano_cpus": 100000000
+    },
+    {
+      "container_number": 2,
+      "running": true,
+      "oom_killed": false,
+      "exit_code": 0,
+      "configured_memory_bytes": 536870912,
+      "configured_nano_cpus": 100000000
+    }
+  ],
+  "finished_at_utc": "2026-10-18T10:29:34.552770+00:00"
+}

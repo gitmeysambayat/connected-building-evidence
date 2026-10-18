@@ -19,7 +19,22 @@ regressions. See the [current workflow runs](https://github.com/gitmeysambayat/c
 for later deployments and checks. The [initial verification receipt](reports/20261018_v1_GitHub_Verification.json)
 preserves the earlier attempts and their exact execution scope.
 
-## Two ways to use the project
+## Full application hosting
+
+The complete application is prepared for Render's Free plan. Its
+[Linux container verification](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39119255027)
+passed under 512 MiB RAM and 0.1 CPU, with a 231.72 MiB peak. Real database
+queries, MQTT replay, duplicate handling, reconnection and restart checks
+passed. The [current backend suite](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39119255021)
+passed 134 tests.
+
+**Public backend hosting awaits the owner's Render account connection.**
+[Review the free deployment on Render](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2Fgitmeysambayat%2Fconnected-building-evidence)
+or read the [cloud deployment guide](docs/20261018_v1_Public_Cloud_Deployment.md).
+This deployment link creates a service; it is not a live application URL.
+Free hosting sleeps when idle and resets temporary replay receipts on restart.
+
+## Available application profiles
 
 | Profile | What actually runs |
 |---|---|

@@ -8,9 +8,21 @@ and published 2017 records as the browser viewer.
 
 ## Deployment status
 
-The deployment files are being verified. This document alone is not evidence
-that a public service has been created. A deployment receipt must identify
-the actual host, source revision, container checks and public HTTP checks.
+The [Linux container run](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39119255027)
+passed for source revision `5fff2ccfc8b84cfd7b29defe61809a5032d462d2`.
+Its [executed capacity report](../reports/20261018_v1_Cloud_Container_Verification.json)
+records six successful integration checks under 512 MiB RAM and 0.1 CPU.
+Peak memory was 231.72 MiB, with no out-of-memory events. Three starts took
+35.64 to 37.52 seconds. The [backend run](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39119255021)
+also passed all 134 tests.
+
+**A public Render service has not yet been created.** The host account must be
+connected before that step. The verified container is ready for the supplied
+free-plan configuration; it is not a receipt for operation on Render itself.
+
+The owner can [review and deploy this exact repository on Render](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2Fgitmeysambayat%2Fconnected-building-evidence).
+This opens Render's account and deployment flow, rather than an already running
+application. Check that the proposed service uses the Free plan.
 
 GitHub Pages continues to serve the separate read-only viewer. GitHub stores
 the application source and provides the launch link; a container host runs the
@@ -67,11 +79,16 @@ chronological forecast experiment. Runtime serves those computed artefacts
 and executes database queries and MQTT transport. It does not replace them
 with HTTP snapshots.
 
-The cloud-container workflow is intended to build and run the image on Linux
-under a 512 MB memory limit and fractional CPU allowance, inspect real HTTP
-responses, exercise MQTT delivery and check a fresh container restart. Its
-executed report, including any failures, supplies the evidence for this scope.
-A Dockerfile or workflow definition by itself does not establish success.
+The cloud-container workflow builds and runs the image on Linux under a
+512 MiB memory limit and 0.1 CPU allowance. Its successful run inspected real
+HTTP responses, executed GraphQL and SPARQL, accepted 20 MQTT source events,
+identified 20 repeat deliveries, tested subscriber reconnection and rejected
+another visitor's attempt to stop the owner's replay. It also checked that
+a same-container restart preserved receipts and a replacement container reset
+them. The report records the tested source revision and execution scope.
+
+These are bounded integration checks. Concurrent use on the actual host and
+public browser operation require separate observations after deployment.
 
 ## Interpretation
 
