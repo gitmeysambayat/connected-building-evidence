@@ -12,6 +12,7 @@ from contextlib import contextmanager
 import hashlib
 import heapq
 import json
+import logging
 import math
 import os
 from pathlib import Path
@@ -21,13 +22,35 @@ import threading
 import time
 from datetime import datetime, timezone
 
-from amqtt.broker import Broker
+from amqtt.broker import Broker as AMQTTBroker
 from paho.mqtt import client as mqtt
 from pwdlib import PasswordHash
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNTIME = Path(os.environ.get("TWIN_RUNTIME_DIR", ROOT / "data" / "runtime"))
 TOPIC = "osh/flat/historical/+"
+LOGGER = logging.getLogger("uvicorn.error")
+
+
+class Broker(AMQTTBroker):
+    """Own TCP connections even before a peer sends its MQTT CONNECT packet."""
+
+    def __init__(self, *args, **kwargs):
+        self.connection_writers = set()
+        self.connection_tasks = set()
+        self.cleanup_complete = False
+        super().__init__(*args, **kwargs)
+
+    async def stream_connected(self, reader, writer, listener_name):
+        task = asyncio.current_task()
+        self.connection_writers.add(writer)
+        self.connection_tasks.add(task)
+        try:
+            await super().stream_connected(reader, writer, listener_name)
+        finally:
+            writer.close()
+            self.connection_writers.discard(writer)
+            self.connection_tasks.discard(task)
 
 
 def utc_now() -> str:
@@ -35,6 +58,12 @@ def utc_now() -> str:
 
 
 class HistoricalTransport:
+    restart_timeout = 30.0
+    broker_shutdown_timeout = 6.0
+    broker_start_timeout = 8.0
+    cleanup_timeout = 2.0
+    client_stop_timeout = 4.0
+
     def __init__(self, port: int | None = None, runtime: Path | None = None, *, delivery_retention: int | None = None, public_mode: bool = False):
         self.port = port or int(os.environ.get("TWIN_MQTT_PORT", "18883"))
         if delivery_retention is not None and (type(delivery_retention) is not int or delivery_retention < 1):
@@ -60,6 +89,131 @@ class HistoricalTransport:
         self.model_sha = ""
         self.password = secrets.token_urlsafe(32)
         self.config = None
+        self._operation_deadline = None
+        self._phase_tasks = set()
+
+    @staticmethod
+    def _broker_resources(broker):
+        """Capture owned resources before amqtt can pop a stalled session.
+
+        The pinned amqtt 0.12.1 shutdown removes a session before awaiting its
+        handler. Pre-CONNECT TCP clients are not in that session dictionary.
+        Their broker-owned connection tasks still retain the stream writers.
+        """
+        handlers = [entry[1] for entry in broker.sessions.values() if entry[1]]
+        servers = [server.instance for server in broker._servers.values() if server.instance]
+        tasks = set(broker.connection_tasks)
+        writers = set(broker.connection_writers)
+        for handler in handlers:
+            adapter = getattr(handler, "writer", None)
+            writer = getattr(adapter, "_writer", None)
+            if writer is not None:
+                writers.add(writer)
+        for task in (broker._broadcast_task, broker._session_monitor_task,
+                     *broker.plugins_manager._fired_events):
+            if task is not None:
+                tasks.add(task)
+        return {"handlers": handlers, "servers": servers, "tasks": tasks, "writers": writers}
+
+    def _phase_timeout(self, timeout):
+        if self._operation_deadline is None:
+            return timeout
+        return max(.01, min(timeout, self._operation_deadline - time.monotonic()))
+
+    async def _bounded(self, awaitable, timeout, phase):
+        """Bound the wait itself, including cancellation-resistant library code."""
+        timeout = self._phase_timeout(timeout)
+        task = asyncio.ensure_future(awaitable)
+        self._phase_tasks.add(task)
+        def finished(future):
+            self._phase_tasks.discard(future)
+            if not future.cancelled():
+                future.exception()
+        task.add_done_callback(finished)
+        try:
+            done, _ = await asyncio.wait({task}, timeout=timeout)
+            if done:
+                return task.result()
+            raise TimeoutError(f"MQTT {phase} exceeded {timeout:g} seconds.")
+        finally:
+            if not task.done():
+                task.cancel()
+                await asyncio.wait({task}, timeout=self._phase_timeout(self.cleanup_timeout))
+            if task.done() and not task.cancelled():
+                task.exception()  # Consume a late exception after a timeout.
+
+    async def _stop_subscriber(self):
+        client = self.subscriber
+        if client is None:
+            return
+        # loop_stop() joins without a timeout in Paho 2.1.0. Use its termination
+        # flag with a bounded join, rather than leaving an unbounded pool job.
+        client._thread_terminate = True
+        client.disconnect()
+        thread = client._thread
+        if thread is not None:
+            await asyncio.to_thread(thread.join, self._phase_timeout(self.client_stop_timeout))
+            if thread.is_alive():
+                client._sock_close()
+                await asyncio.to_thread(thread.join, self._phase_timeout(self.cleanup_timeout))
+            if thread.is_alive():
+                raise TimeoutError("MQTT subscriber network thread did not stop.")
+        self.subscriber = None
+        self.connected.clear()
+        self.subscribed.clear()
+        self.state["subscriber"] = "disconnected"
+
+    async def _shutdown_broker(self, broker, resources):
+        if broker.cleanup_complete:
+            return False
+        # Close listeners before teardown so local port probes and reconnects
+        # cannot create a new untracked connection while sessions are removed.
+        for server in resources["servers"]:
+            server.close()
+        resources["writers"].update(broker.connection_writers)
+        resources["tasks"].update(broker.connection_tasks)
+        for writer in resources["writers"]:
+            writer.close()
+            writer.transport.abort()
+        forced = False
+        shutdown = asyncio.create_task(broker.shutdown())
+        resources["tasks"].add(shutdown)
+        try:
+            await self._bounded(shutdown, self.broker_shutdown_timeout, "broker shutdown")
+        except TimeoutError:
+            forced = True
+            LOGGER.warning("MQTT broker shutdown timed out; closing captured broker resources")
+        finally:
+            # A session may already have been popped by amqtt. The snapshot
+            # retains its reader and socket so cancellation cannot orphan it.
+            resources["tasks"].update(broker.connection_tasks)
+            resources["tasks"].update(self._phase_tasks)
+            resources["writers"].update(broker.connection_writers)
+            for writer in resources["writers"]:
+                writer.close()
+                writer.transport.abort()
+            for handler in resources["handlers"]:
+                keepalive = getattr(handler, "_keepalive_task", None)
+                if keepalive is not None:
+                    keepalive.cancel()
+                reader = getattr(handler, "_reader_task", None)
+                if reader is not None:
+                    resources["tasks"].add(reader)
+            resources["tasks"].update(broker.plugins_manager._fired_events)
+            for task in resources["tasks"]:
+                if not task.done():
+                    task.cancel()
+            if resources["tasks"]:
+                done, pending = await asyncio.wait(resources["tasks"], timeout=self._phase_timeout(self.cleanup_timeout))
+                for task in done:
+                    if not task.cancelled():
+                        task.exception()
+                if pending:
+                    raise RuntimeError("MQTT broker cleanup left unfinished owned tasks; replacement was not started.")
+            for server in resources["servers"]:
+                await self._bounded(server.wait_closed(), self.cleanup_timeout, "listener close")
+            broker.cleanup_complete = True
+        return forced
 
     @contextmanager
     def db(self):
@@ -182,48 +336,55 @@ class HistoricalTransport:
                 self.state["rejected"] += 1
             return {"status": "rejected", "reason": reason, "received_at": received}
 
+    async def _start_subscriber(self, timeout):
+        self.connected.clear()
+        self.subscribed.clear()
+        self.subscriber = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id="osh-verified-subscriber")
+        self.subscriber.username_pw_set("twin", self.password)
+        self.subscriber.reconnect_delay_set(1, 8)
+
+        def on_connect(client, userdata, flags, reason_code, properties):
+            if client is self.subscriber and reason_code == 0:
+                self.connected.set()
+                self.state["subscriber"] = "connected"
+                client.subscribe(TOPIC, qos=1)
+
+        def on_subscribe(client, userdata, mid, reasons, properties):
+            if client is self.subscriber and all(not r.is_failure for r in reasons):
+                self.subscribed.set()
+
+        def on_disconnect(client, userdata, flags, reason_code, properties):
+            if client is not self.subscriber:
+                return
+            self.connected.clear()
+            self.subscribed.clear()
+            self.state["subscriber"] = "disconnected"
+
+        self.subscriber.on_connect = on_connect
+        self.subscriber.on_subscribe = on_subscribe
+        self.subscriber.on_disconnect = on_disconnect
+        self.subscriber.on_message = lambda client, userdata, msg: self.ingest(msg.topic, msg.payload)
+        self.subscriber.connect_async("127.0.0.1", self.port, 30)
+        self.subscriber.loop_start()
+        if not await asyncio.to_thread(self.subscribed.wait, self._phase_timeout(timeout)):
+            raise RuntimeError("MQTT subscription did not become ready")
+
     async def start(self):
         self.initialise()
         password_file = self.runtime / ".mqtt_passwords"
         password_file.write_text("twin:" + PasswordHash.recommended().hash(self.password) + "\n", encoding="utf-8")
-        config = {"listeners": {"default": {"type": "tcp", "bind": f"127.0.0.1:{self.port}", "max_connections": 8}},
-                  "plugins": {"amqtt.plugins.authentication.FileAuthPlugin": {"password_file": str(password_file)}}}
-        self.config = config
-        self.broker = Broker(config)
+        self.config = {"listeners": {"default": {"type": "tcp", "bind": f"127.0.0.1:{self.port}", "max_connections": 8}},
+                       "plugins": {"amqtt.plugins.authentication.FileAuthPlugin": {"password_file": str(password_file)}}}
+        self.broker = Broker(self.config)
+        self.state["broker"] = "starting"
         try:
-            await self.broker.start()
+            await self._bounded(self.broker.start(), self.broker_start_timeout, "broker start")
+            await self._start_subscriber(30 if self.public_mode else 8)
             self.state["broker"] = "running"
-            self.subscriber = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id="osh-verified-subscriber")
-            self.subscriber.username_pw_set("twin", self.password)
-            self.subscriber.reconnect_delay_set(1, 8)
-
-            def on_connect(client, userdata, flags, reason_code, properties):
-                if reason_code == 0:
-                    self.connected.set()
-                    self.state["subscriber"] = "connected"
-                    client.subscribe(TOPIC, qos=1)
-
-            def on_subscribe(client, userdata, mid, reasons, properties):
-                if all(not r.is_failure for r in reasons):
-                    self.subscribed.set()
-
-            def on_disconnect(client, userdata, flags, reason_code, properties):
-                self.connected.clear()
-                self.subscribed.clear()
-                self.state["subscriber"] = "disconnected"
-
-            self.subscriber.on_connect = on_connect
-            self.subscriber.on_subscribe = on_subscribe
-            self.subscriber.on_disconnect = on_disconnect
-            self.subscriber.on_message = lambda client, userdata, msg: self.ingest(msg.topic, msg.payload)
-            self.subscriber.connect_async("127.0.0.1", self.port, 30)
-            self.subscriber.loop_start()
-            if not await asyncio.to_thread(self.subscribed.wait, 30 if self.public_mode else 8):
-                raise RuntimeError("MQTT subscription did not become ready")
-        except Exception as exc:
+        except BaseException as exc:
             self.state["last_error"] = str(exc)
-            self.state["broker"] = "failed"
             await self.close()
+            self.state["broker"] = "failed"
             raise
 
     def begin_replay(self, speed: float = 20, limit: int = 300, channel_id: str | None = None, *, max_duration_seconds: float | None = None) -> dict:
@@ -305,23 +466,60 @@ class HistoricalTransport:
         return self.status()
 
     async def restart_broker(self) -> dict:
-        """Demonstrate reconnection while idle, without claiming durable sessions."""
+        """Replace the real broker and confirm a fresh authenticated SUBACK.
+
+        Stop the client loop and close every owned TCP stream, including raw
+        port probes, before amqtt waits for server closure on Python 3.12.
+        """
         if self.worker and self.worker.is_alive():
             raise ValueError("Stop the replay before restarting the broker.")
         if self.broker is None or self.config is None:
             raise ValueError("Broker has not been started.")
-        self.state["broker"] = "restarting"
-        await self.broker.shutdown()
-        self.connected.clear()
-        self.subscribed.clear()
-        self.broker = Broker(self.config)
-        await self.broker.start()
-        self.state["broker"] = "running"
-        if not await asyncio.to_thread(self.subscribed.wait, 30 if self.public_mode else 15):
-            self.state["last_error"] = "Subscriber did not reconnect after broker restart"
-            raise RuntimeError(self.state["last_error"])
-        self.state["broker_restarts"] = self.state.get("broker_restarts", 0) + 1
-        return self.status()
+        if self.state["broker"] == "restarting":
+            raise ValueError("A broker restart is already running.")
+        self._operation_deadline = time.monotonic() + self.restart_timeout
+        resources = self._broker_resources(self.broker)
+        self.state.update(broker="restarting", restart_phase="stop_subscriber", last_error=None)
+        # Do not accept another health/port probe while the subscriber stops.
+        for server in resources["servers"]:
+            server.close()
+        try:
+            LOGGER.info("MQTT restart phase=stop_subscriber")
+            await self._stop_subscriber()
+            self.state["restart_phase"] = "shutdown_broker"
+            LOGGER.info("MQTT restart phase=shutdown_broker")
+            forced = await self._shutdown_broker(self.broker, resources)
+            self.broker = Broker(self.config)
+            self.state["restart_phase"] = "start_broker"
+            LOGGER.info("MQTT restart phase=start_broker")
+            await self._bounded(self.broker.start(), self.broker_start_timeout, "broker start")
+            self.state["restart_phase"] = "subscribe"
+            LOGGER.info("MQTT restart phase=subscribe")
+            await self._start_subscriber(15 if self.public_mode else 8)
+            self.state.update(broker="running", restart_phase="completed", broker_shutdown_forced=forced,
+                              broker_restarts=self.state.get("broker_restarts", 0) + 1)
+            LOGGER.info("MQTT restart completed; fresh subscriber acknowledged; forced_cleanup=%s", forced)
+            return self.status()
+        except BaseException as exc:
+            failed_phase = self.state.get("restart_phase")
+            self.state.update(broker="failed", restart_phase="failed",
+                              last_error=f"Broker restart failed during {failed_phase}: {exc}")
+            LOGGER.exception("MQTT restart failed during %s", failed_phase)
+            # Reserve a small bounded cleanup window even after the run budget.
+            self._operation_deadline = time.monotonic() + 5
+            try:
+                latest = self._broker_resources(self.broker)
+                for key in ("tasks", "writers"):
+                    resources[key].update(latest[key])
+                for key in ("handlers", "servers"):
+                    resources[key].extend(latest[key])
+                await self._stop_subscriber()
+                await self._shutdown_broker(self.broker, resources)
+            except BaseException as cleanup_error:
+                LOGGER.error("MQTT failure cleanup: %s", cleanup_error)
+            raise
+        finally:
+            self._operation_deadline = None
 
     def status(self) -> dict:
         with self.db() as con:
@@ -354,10 +552,11 @@ class HistoricalTransport:
         self.stop_event.set()
         if self.worker and self.worker.is_alive():
             await asyncio.to_thread(self.worker.join, 7)
-        if self.subscriber:
-            self.subscriber.disconnect()
-            await asyncio.to_thread(self.subscriber.loop_stop)
-        if self.broker:
-            await self.broker.shutdown()
-        self.state["broker"] = "stopped"
-        self.state["subscriber"] = "disconnected"
+        resources = self._broker_resources(self.broker) if self.broker else None
+        try:
+            await self._stop_subscriber()
+        finally:
+            if self.broker:
+                await self._shutdown_broker(self.broker, resources)
+            self.state["broker"] = "stopped"
+            self.state["subscriber"] = "disconnected"

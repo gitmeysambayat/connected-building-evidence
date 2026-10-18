@@ -1,0 +1,115 @@
+{
+  "title": "Connected Building: actual Render deployment verification",
+  "recorded_at_utc": "2026-10-18T11:13:52.674543+00:00",
+  "url": "https://connected-building-evidence.onrender.com",
+  "repository": "https://github.com/gitmeysambayat/connected-building-evidence",
+  "initial_source_revision": "596f10d7a9476e459259faaf5d04ad9c475b0c2f",
+  "provider_plan_observation": {
+    "plan": "Free",
+    "basis": "The project owner session inspected the signed-in Render service dashboard. HTTP content does not independently prove the billed plan."
+  },
+  "scope": "Real external HTTPS and application execution. Historical 2017 source data are replayed through a real internal MQTT broker. There is no current physical sensor or BMS connection.",
+  "initial_external_verification": {
+    "started_at_utc": "2026-10-18T11:09:02.728135+00:00",
+    "finished_at_utc": "2026-10-18T11:09:52.554852+00:00",
+    "overall_success": false,
+    "passed_checks": [
+      {
+        "name": "actual_https_health_sql_and_configured_public_profile",
+        "passed": true,
+        "observations": 285954,
+        "channels": 37,
+        "spaces": 9
+      },
+      {
+        "name": "exact_deployed_git_blob",
+        "passed": true,
+        "file": "static/index.html",
+        "bytes": 13943,
+        "sha256": "bca8767128825000e4a17f2b25afa91460aef72425170e14be44ac34157f71d7"
+      },
+      {
+        "name": "exact_deployed_git_blob",
+        "passed": true,
+        "file": "static/app.js",
+        "bytes": 62332,
+        "sha256": "a31dce049be2ea41dd73acc504e57744ff599b175b02bb7547a7a4f8db1b04d3"
+      },
+      {
+        "name": "actual_ifc_bytes_geometry_and_live_oxigraph_sparql",
+        "passed": true,
+        "ifc_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+        "query_counts": {
+          "room_alignment": 9,
+          "verified_channels": 36,
+          "unverified_channels": 1
+        }
+      },
+      {
+        "name": "real_rest_graphql_and_original_csv_rows_agree",
+        "passed": true,
+        "channel": "Kitchen_Temperature",
+        "source_sha256": "c1f13491b0c62e2e8e6975354ec5cf708060ae0582044ce3a3aac9d1dc835383"
+      },
+      {
+        "name": "https_session_cookie_origin_and_independent_visitor_lease",
+        "passed": true,
+        "secure": true,
+        "httponly": true,
+        "samesite": "Lax",
+        "other_visitor_controls_rejected": true
+      }
+    ],
+    "source_ifc_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+    "source_manifest_content_matches_pinned_source": true,
+    "source_manifest_sha256": "aea0458e67a96dbf042cb498ec0b22104a04b22e9c9e1e6fff26c9b66e0eab6c",
+    "first_mqtt_run": {
+      "channel": "Kitchen_Temperature",
+      "published": 20,
+      "accepted": 20,
+      "duplicates": 0,
+      "rejected": 0,
+      "replay_result": "completed",
+      "finished_at_utc": "2026-10-18T11:09:06.711109Z",
+      "last_received_at_utc": "2026-10-18T11:09:06.700169Z"
+    },
+    "broker_reconnection": {
+      "result": "FAILED",
+      "failure": "The restart request exceeded the 45-second HTTPS read timeout. Later read-only responses still showed broker=restarting and subscriber=disconnected while other APIs remained responsive.",
+      "observed_at_utc": "2026-10-18T11:11:46.091477+00:00",
+      "broker": "restarting",
+      "subscriber": "disconnected",
+      "repeat_duplicate_run_completed": false
+    }
+  },
+  "provider_restart_recovery": {
+    "action": "Owner-triggered Restart service in the Render dashboard",
+    "provider_event_observation": "Root agent observed Render Events confirming Service restarted by you on 18 October 2026 at 12:11 BST.",
+    "before_observed_at_utc": "2026-10-18T11:11:46.091477+00:00",
+    "before_unique_events": 20,
+    "before_delivery_rows": 20,
+    "after_observed_at_utc": "2026-10-18T11:12:57.847950+00:00",
+    "after_health_http_status": 200,
+    "after_broker": "running",
+    "after_subscriber": "connected",
+    "after_unique_events": 0,
+    "after_delivery_rows": 0,
+    "after_total_deliveries": 0,
+    "ephemeral_receipt_reset_observed": true,
+    "scope": "This confirms recovery by a provider-level restart and observed receipt reset. It does not establish that the original in-application broker-reconnection operation succeeded."
+  },
+  "repaired_revision_verification": {
+    "status": "PENDING",
+    "source_revision": null,
+    "deployment_observed": false,
+    "external_https_verification_passed": false,
+    "mqtt_duplicate_and_reconnection_cycle_passed": false,
+    "evidence": null
+  },
+  "limits": [
+    "Initial broker-reconnection failure is retained in this record and must not be overwritten by a later successful attempt.",
+    "The complete repaired application is pending verification.",
+    "Free-host availability and storage are subject to provider limits; receipt persistence across free-host restarts is not claimed.",
+    "Session cookies, request headers, account credentials, private paths and application documents are excluded."
+  ]
+}

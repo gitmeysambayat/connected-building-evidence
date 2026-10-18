@@ -11,6 +11,7 @@ import atexit
 import gc
 import hashlib
 import json
+import os
 import threading
 
 from pyoxigraph import Store, Quad, NamedNode, Literal, RdfFormat
@@ -189,9 +190,22 @@ def room_evidence(guid: str) -> dict:
 def summary() -> dict:
     graph = store()
     named_graphs = [name.value for name in graph.named_graphs()]
-    return {'engine': 'Oxigraph', 'library': 'pyoxigraph', 'storage': 'Persistent RocksDB key-value database',
-            'database_type': 'RDF graph / NoSQL', 'query_language': 'SPARQL 1.1',
-            'quad_count': len(graph), 'named_graphs': sorted(named_graphs),
-            'persistent': True, 'local_operation': True, 'cloud_deployment_verified': False,
-            'assertion_policy': 'Original publisher RDF lives in source named graphs. Extracted IFC GUIDs and explicit namespace normalisation live in a separate derived graph. No owl:sameAs assertion is fabricated.',
-            'source_commit': settings.SOURCE_COMMIT}
+    result = {'engine': 'Oxigraph', 'library': 'pyoxigraph', 'storage': 'Persistent RocksDB key-value database',
+              'database_type': 'RDF graph / NoSQL', 'query_language': 'SPARQL 1.1',
+              'quad_count': len(graph), 'named_graphs': sorted(named_graphs),
+              'assertion_policy': 'Original publisher RDF lives in source named graphs. Extracted IFC GUIDs and explicit namespace normalisation live in a separate derived graph. No owl:sameAs assertion is fabricated.',
+              'source_commit': settings.SOURCE_COMMIT}
+    if os.environ.get('TWIN_PUBLIC_DEMO') == '1':
+        persistence = os.environ.get('TWIN_STATE_PERSISTENCE', 'unspecified')
+        result.update({'storage': 'Disk-backed RocksDB key-value database', 'disk_backed': True,
+                       'profile': 'public_demo',
+                       'environment': os.environ.get('TWIN_DEPLOYMENT_ENVIRONMENT', 'unspecified'),
+                       'state_persistence': persistence,
+                       'persistence_scope': (
+                           'Graph files use the temporary runtime filesystem. They are rebuilt from pinned sources after a reset; retention across service restart, sleep or redeployment is not promised.'
+                           if persistence == 'ephemeral' else
+                           'Graph files use the configured runtime filesystem. Retention across service restart or redeployment depends on the hosting storage lifecycle.'),
+                       'verification_scope': 'These fields describe configured runtime storage. Deployment availability and storage lifetime require separate external evidence.'})
+    else:
+        result.update({'persistent': True, 'local_operation': True, 'cloud_deployment_verified': False})
+    return result

@@ -322,3 +322,29 @@ def test_startup_rejects_geometry_from_a_different_ifc(isolated_services, monkey
     with pytest.raises(ValueError, match="different IFC source hashes"):
         with TestClient(main.app):
             pass
+
+
+
+def test_public_graph_and_project_apis_report_ephemeral_runtime_without_self_certification(client, monkeypatch):
+    from twin.public_demo import PublicDemo
+    monkeypatch.setenv('TWIN_PUBLIC_DEMO', '1')
+    monkeypatch.setenv('TWIN_DEPLOYMENT_ENVIRONMENT', 'render')
+    monkeypatch.setenv('TWIN_STATE_PERSISTENCE', 'ephemeral')
+    monkeypatch.setattr(main, 'public_demo', PublicDemo(enabled=True, origin='https://building.example',
+                                                      environment='render', persistence='ephemeral'))
+    graph_response = client.get('/api/graph')
+    assert graph_response.status_code == 200
+    graph = graph_response.json()['summary']
+    project_response = client.get('/api/summary')
+    assert project_response.status_code == 200
+    project = project_response.json()
+    for summary in (graph, project['semantic']):
+        assert summary['environment'] == project['deployment']['environment'] == 'render'
+        assert summary['profile'] == project['deployment']['profile'] == 'public_demo'
+        assert summary['state_persistence'] == project['deployment']['state_persistence'] == 'ephemeral'
+        assert summary['disk_backed'] is True
+        assert 'temporary runtime filesystem' in summary['persistence_scope']
+        assert 'external evidence' in summary['verification_scope']
+        assert not {'persistent', 'local_operation', 'cloud_deployment_verified'} & summary.keys()
+    assert 'cloud_deployment_verified' not in project['deployment']
+    assert len(client.get('/api/graph/query', params={'template': 'room_alignment'}).json()['rows']) == 9

@@ -1,5 +1,7 @@
 # Public cloud application
 
+**[Open Connected Building](https://connected-building-evidence.onrender.com/)**
+
 This profile runs the complete Python application in one container: REST and
 GraphQL query SQLite, fixed SPARQL templates execute against Oxigraph/RocksDB,
 and real publisher/subscriber clients send historical records through an
@@ -8,7 +10,7 @@ and published 2017 records as the browser viewer.
 
 ## Deployment status
 
-The [Linux container run](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39119255027)
+An earlier [Linux container run](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39119255027)
 passed for source revision `5fff2ccfc8b84cfd7b29defe61809a5032d462d2`.
 Its [executed capacity report](../reports/20261018_v1_Cloud_Container_Verification.json)
 records six successful integration checks under 512 MiB RAM and 0.1 CPU.
@@ -16,31 +18,60 @@ Peak memory was 231.72 MiB, with no out-of-memory events. Three starts took
 35.64 to 37.52 seconds. The [backend run](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39119255021)
 also passed all 134 tests.
 
-**A public Render service has not yet been created.** The host account must be
-connected before that step. The verified container is ready for the supplied
-free-plan configuration; it is not a receipt for operation on Render itself.
+The public service has now been created from this public GitHub repository
+using Render's Blueprint deployment flow. Its Compute settings were inspected
+as Free, $0 per month, 0.1 CPU and 512 MB RAM. No paid disk or database was
+created. The [Render deployment receipt](../reports/20261018_v1_Render_Deployment_Receipt.json)
+records the initial deployed source revision and external checks. Status was
+recorded on 18 October 2026.
 
-The owner can [review and deploy this exact repository on Render](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2Fgitmeysambayat%2Fconnected-building-evidence).
-This opens Render's account and deployment flow, rather than an already running
-application. Check that the proposed service uses the Free plan.
+| Phase | Observed outcome |
+|---|---|
+| Initial public revision `596f10d` | HTTPS health and actual source counts passed. IFC bytes, 9/36/1 live semantic-query results, REST/GraphQL source-row agreement, the secure browser cookie and visitor-lease separation were verified. A real Kitchen temperature replay published and accepted 20 events, with no duplicates or rejected events. |
+| Initial broker-reconnection attempt | Failed. The HTTPS request exceeded 45 seconds. Later responses still showed a restarting broker and disconnected subscriber while other read APIs remained responsive. This attempt did not complete a repeat-delivery or reconnection cycle. |
+| Provider-level service restart | Restored the running broker and connected subscriber. Retained unique events and delivery rows changed from 20 to zero. This demonstrates temporary-state loss and service recovery; it does not establish that the in-application broker restart succeeded. |
+| Repaired revision | Pending deployment and external verification. No successful repaired MQTT duplicate/reconnection cycle is claimed yet. |
+
+<!-- render-recovery-status:start -->
+The broker-shutdown/recovery repair and graph storage-metadata correction are
+being checked. Their presence in source or a passing local test does not
+establish successful operation on Render. The final receipt must identify the
+actual deployed commit and its external verification outcome.
+<!-- render-recovery-status:end -->
+
+The initial receipt records source revision
+`596f10d7a9476e459259faaf5d04ad9c475b0c2f`. Its first replay completed at
+11:09:06 UTC. The failed broker state was checked again at 11:11:46 UTC; the
+provider-restarted service was checked at 11:12:57 UTC. These are dated
+observations rather than an uptime or production-reliability guarantee.
 
 GitHub Pages continues to serve the separate read-only viewer. GitHub stores
 the application source and provides the launch link; a container host runs the
 Python process. [GitHub Pages is a static hosting service](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages).
+The repository's About website link points directly to the Render application;
+the read-only Pages viewer remains available through its separate link.
 
-## Proposed zero-cost host
+## Free-host configuration
 
-The supplied `render.yaml` selects **Render Free**, with no paid database or
+The supplied [render.yaml](../render.yaml) selects **Render Free**, with no paid database or
 persistent disk. The service has one application worker and exposes HTTP only.
 The MQTT listener stays on container loopback. The host's assigned public URL
 supplies the accepted browser origin.
+
+The Blueprint reads the public repository. No additional GitHub App access
+grant was used to create this service. The configuration requests deployment
+after checks pass, but automatic deployment of a future push has not yet been
+observed. A deployment may instead be started through Render's service controls;
+the actual deployed revision must always be checked.
 
 Render documents 512 MB RAM and 0.1 CPU for this plan. Its free service sleeps
 after 15 minutes without inbound traffic and wakes on a later request. Free
 runtime files disappear on sleep, restart and deployment. The image therefore
 contains prepared source-derived stores, while startup creates a separate,
 writable runtime copy. Source records remain intact; replay receipts and
-visitor control leases reset with the runtime.
+visitor control leases reset with the runtime. The provider-level restart
+above confirmed receipt reset for this particular service. Disk-backed SQLite
+and RocksDB files do not establish durable hosting storage.
 
 Free instance hours, bandwidth and build minutes have monthly limits. With no
 payment method, exceeding the documented allowances suspends free services or
@@ -87,8 +118,12 @@ another visitor's attempt to stop the owner's replay. It also checked that
 a same-container restart preserved receipts and a replacement container reset
 them. The report records the tested source revision and execution scope.
 
-These are bounded integration checks. Concurrent use on the actual host and
-public browser operation require separate observations after deployment.
+These are bounded integration checks. The recorded Linux container and actual
+Render service are separate execution environments. The successful container
+reconnection does not override the failed initial Render attempt or prove that
+the pending repair works on the host. See the current
+[workflow runs](https://github.com/gitmeysambayat/connected-building-evidence/actions)
+and the external deployment receipt for revision-specific outcomes.
 
 ## Interpretation
 

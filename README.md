@@ -1,11 +1,18 @@
 # Connected Building
 
 A reproducible BIM-linked monitoring demonstrator connecting an actual IFC
-model to historical measurements from the same published flat. The repository
-contains the complete Python application and a read-only GitHub Pages viewer.
-Neither requires the previous ChatGPT-hosted site.
+model to historical measurements from the same published flat. GitHub holds
+the source, tests and deployment configuration. The complete Python application
+runs on Render; GitHub Pages provides a separate read-only data explorer.
 
-**[Open the live browser demonstration](https://gitmeysambayat.github.io/connected-building-evidence/)**
+**[Open the full application](https://connected-building-evidence.onrender.com/)**
+
+[Open the read-only GitHub Pages explorer](https://gitmeysambayat.github.io/connected-building-evidence/)
+
+Free hosting sleeps after inactivity. Allow about a minute for a cold start.
+Replay receipts and visitor leases use temporary runtime storage and reset on
+sleep, restart or redeployment. The pinned source building and measurements
+are rebuilt from the repository. See [Render's free-service limits](https://render.com/docs/free).
 
 The viewer is hosted on GitHub Pages. The [first successful deployment](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39110024607/attempts/2)
 was checked in a browser, and all 62 data and evidence assets matched their
@@ -21,30 +28,42 @@ preserves the earlier attempts and their exact execution scope.
 
 ## Full application hosting
 
-The complete application is prepared for Render's Free plan. Its
-[Linux container verification](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39119255027)
-passed under 512 MiB RAM and 0.1 CPU, with a 231.72 MiB peak. Real database
-queries, MQTT replay, duplicate handling, reconnection and restart checks
-passed. The [current backend suite](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39119255021)
-passed 134 tests.
+The service is deployed on **Render Free**. External HTTPS checks of the
+initial deployed revision `596f10d` verified the source IFC, SQL-backed REST
+and GraphQL responses, live Oxigraph/SPARQL queries, browser-session controls
+and a real internal MQTT run with 20 accepted historical source events.
+The [Render verification receipt](reports/20261018_v1_Render_Deployment_Receipt.json)
+records the exact source revision, checks and subsequent failure.
 
-**Public backend hosting awaits the owner's Render account connection.**
-[Review the free deployment on Render](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2Fgitmeysambayat%2Fconnected-building-evidence)
-or read the [cloud deployment guide](docs/20261018_v1_Public_Cloud_Deployment.md).
-This deployment link creates a service; it is not a live application URL.
-Free hosting sleeps when idle and resets temporary replay receipts on restart.
+<!-- render-recovery-status:start -->
+**Broker-reconnection repair is pending hosted verification.** The initial
+reconnection request stalled even though the other APIs remained responsive.
+A provider-level restart restored the broker and subscriber; its temporary
+receipt count reset from 20 to zero. A successful repaired reconnection and
+repeat-delivery cycle must be confirmed separately before they are claimed.
+<!-- render-recovery-status:end -->
+
+An earlier [Linux container verification](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39119255027)
+passed under 512 MiB RAM and 0.1 CPU, with a 231.72 MiB peak. Its database,
+MQTT, duplicate, reconnection and container-restart checks apply to the recorded
+container run, rather than proving the initial Render reconnection succeeded.
+An [earlier backend run](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39119255021)
+passed 134 tests. See the [current workflow runs](https://github.com/gitmeysambayat/connected-building-evidence/actions)
+and [cloud deployment guide](docs/20261018_v1_Public_Cloud_Deployment.md)
+for revision-specific evidence and operating limits.
 
 ## Available application profiles
 
 | Profile | What actually runs |
 |---|---|
+| **Full hosted application** | The Python service queries SQLite, executes fixed SPARQL against Oxigraph/RocksDB, serves the actual IFC model and original records, and runs bounded historical replay through an authenticated internal MQTT broker and publisher/subscriber clients. Source-derived stores and analyses are prepared during the image build. Replay controls share one short visitor lease; runtime receipts are temporary. |
 | **GitHub Pages** | The browser renders exported IFC geometry, reads the original measurement files, checks source hashes and displays preserved quality, semantic and analysis evidence. It supports room selection, date ranges and complete selected-row CSV downloads. It is read-only. |
 | **Full local application** | Python imports the original records into SQLite, extracts IFC geometry, maintains an Oxigraph/RocksDB graph, executes bounded SPARQL, serves REST and GraphQL, and runs historical replay through a real local MQTT broker and publisher/subscriber clients. |
 
-GitHub Pages does not run the Python service, a database, MQTT, live SPARQL,
-authenticated ingestion or model fitting. Archived semantic-query and model
-results in the viewer are labelled as such. The full implementation remains
-in this repository and can be run locally without an external account.
+GitHub Pages serves static files. Its archived semantic-query and model results
+are labelled as snapshots. The hosted application executes the database and
+transport services; current physical sensors and building control are absent
+from all three profiles. The same implementation can also run locally.
 
 Use the [GitHub demonstration guide](docs/20261018_v1_GitHub_Demonstration.md)
 for a short walkthrough, and the [full backend guide](docs/20261018_v1_Local_Backend.md)
@@ -99,9 +118,9 @@ To rebuild and test after installation, stop the service first:
 ```
 
 The [archived local test report](reports/20261018_v1_Test_Results.json) records
-its own source snapshot and execution scope. Current GitHub Actions results are
-separate evidence. Prepared Docker files do not establish that a container has
-been executed or deployed.
+its own source snapshot and execution scope. GitHub Actions, Linux-container
+and Render receipts provide separate, revision-specific evidence for their
+respective execution environments.
 
 ## What the analysis supports
 
@@ -123,7 +142,9 @@ The project was assembled with AI assistance. Its working capabilities do not
 establish the owner's independent proficiency, qualifications or prior
 experience. The [learning exercises](docs/20261018_v1_Demonstration_and_Learning.md)
 and [role-evidence matrix](docs/20261018_v1_Role_Evidence_Matrix.json) distinguish
-artefact evidence from personal competence.
+artefact evidence from personal competence. The matrix describes the earlier
+local profile; its cloud-status entries predate the Render deployment. Use the
+[deployment guide](docs/20261018_v1_Public_Cloud_Deployment.md) for current hosting evidence.
 
 ## Repository and licences
 

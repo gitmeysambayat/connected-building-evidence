@@ -11,3 +11,5 @@
 .icon-button{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}[aria-disabled="true"]{opacity:.45;cursor:not-allowed}
 
 .published-banner{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;background:var(--card);padding:15px 20px;margin-bottom:24px}.published-banner strong{font-size:11px;letter-spacing:.09em;color:var(--accent)}.published-banner p{font-size:12px;line-height:1.7;color:var(--muted);margin:7px 0 0}.published-banner a{color:var(--accent)}a.nav-item{text-decoration:none;font-size:12px;line-height:1.5}#source-integrity-status{margin-top:16px}
+
+.published-banner a.launch-application{color:#f5f6ec;margin-top:12px}.published-banner p.hosting-note{font-size:10px;margin-top:12px}

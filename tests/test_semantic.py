@@ -59,3 +59,30 @@ def test_source_room_relation_is_not_promoted_to_same_as():
     assert bool(result) is False
     with pytest.raises(ValueError,match='fixed read-only'):
         semantic.query('DELETE WHERE { ?s ?p ?o }')
+
+
+
+def test_public_graph_summary_scopes_disk_backing_to_configured_temporary_runtime(monkeypatch):
+    monkeypatch.setenv('TWIN_PUBLIC_DEMO', '1')
+    monkeypatch.setenv('TWIN_DEPLOYMENT_ENVIRONMENT', 'render')
+    monkeypatch.setenv('TWIN_STATE_PERSISTENCE', 'ephemeral')
+    summary = semantic.summary()
+    assert summary['engine'] == 'Oxigraph'
+    assert summary['disk_backed'] is True
+    assert summary['environment'] == 'render'
+    assert summary['profile'] == 'public_demo'
+    assert summary['state_persistence'] == 'ephemeral'
+    assert 'temporary runtime filesystem' in summary['persistence_scope']
+    assert 'external evidence' in summary['verification_scope']
+    assert not {'persistent', 'local_operation', 'cloud_deployment_verified'} & summary.keys()
+    # Storage presentation changes do not replace the actual graph with a snapshot.
+    assert len(semantic.query('room_alignment')['rows']) == 9
+    assert summary['quad_count'] > 1000
+
+
+def test_default_local_graph_summary_preserves_local_compatibility(monkeypatch):
+    monkeypatch.delenv('TWIN_PUBLIC_DEMO', raising=False)
+    summary = semantic.summary()
+    assert summary['persistent'] is True
+    assert summary['local_operation'] is True
+    assert summary['cloud_deployment_verified'] is False
