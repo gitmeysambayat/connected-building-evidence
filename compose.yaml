@@ -6,6 +6,9 @@ services:
     volumes:
       - connected-building-state:/state
     restart: unless-stopped
+    environment:
+      TWIN_STATE_PERSISTENCE: local_named_volume
+      TWIN_DEPLOYMENT_ENVIRONMENT: local-docker
     # One worker owns the persistent RDF store and local broker.
     # This is a prepared local container definition, not a cloud-deployment receipt.
 volumes:

@@ -14,17 +14,20 @@ from urllib.parse import urlparse
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 import strawberry
 from strawberry.fastapi import GraphQLRouter
 from strawberry.scalars import JSON
 from strawberry.extensions import QueryDepthLimiter, MaxAliasesLimiter, SchemaExtension
-from graphql import parse as parse_graphql
+from graphql import GraphQLError, parse as parse_graphql
+from graphql.language import OperationDefinitionNode, FragmentDefinitionNode, FragmentSpreadNode
 
 from twin import analytics, data, geometry, operations, semantic, settings
 from twin.transport import HistoricalTransport
+from twin.public_demo import PublicDemo, PublicRequestLimits
 
-transport = HistoricalTransport()
+public_demo = PublicDemo.from_environment()
+transport = HistoricalTransport(delivery_retention=public_demo.delivery_retention if public_demo.enabled else None, public_mode=public_demo.enabled)
 
 
 @asynccontextmanager
@@ -53,6 +56,7 @@ async def lifespan(app):
 app = FastAPI(title="Connected Building", version=settings.BUILD_VERSION,
               description="Published Open Smart Home observations linked to their pinned IFC spaces. Historical data, local MQTT replay, SQL and RDF graph.",
               lifespan=lifespan, docs_url="/api/docs", redoc_url=None)
+app.add_middleware(PublicRequestLimits, policy=lambda: public_demo)
 
 
 @app.middleware("http")
@@ -91,7 +95,7 @@ def health():
 def summary():
     return {**data.summary(), "geometry": geometry.summary(), "semantic": semantic.summary(),
             "analytics_status": analytics.report()["status"], "transport": transport.status(),
-            "deployment": {"environment": "local", "cloud_deployment_verified": False}}
+            "deployment": public_demo.deployment()}
 
 
 @app.get("/api/rooms")
@@ -191,16 +195,29 @@ def provenance():
             "scope": "The application verifies source consistency and mapping; it cannot independently establish as-built accuracy or sensor calibration."}
 
 
+@app.get("/api/session")
+def browser_session(request: Request, response: Response):
+    return public_demo.session(request, response, transport)
+
+
 class ReplayRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     speed: float = Field(20, ge=1, le=100)
     limit: int = Field(300, ge=1, le=2000)
     channel_id: str | None = Field(None, max_length=120)
 
+    @field_validator("speed", "limit", mode="before")
+    @classmethod
+    def public_numeric_types(cls, value, info):
+        if public_demo.enabled and (type(value) not in (int, float) or isinstance(value, bool) or
+                                    (info.field_name == "limit" and type(value) is not int)):
+            raise ValueError("Public replay requires a numeric speed and integer event count.")
+        return value
+
 
 @app.get("/api/replay/status")
-def replay_status():
-    return transport.status()
+def replay_status(request: Request):
+    return public_demo.status(request, transport)
 
 
 @app.get("/api/replay/events")
@@ -209,17 +226,25 @@ def replay_events(limit: int = Query(50, ge=1, le=500)):
 
 
 @app.post("/api/replay/start")
-def replay_start(body: ReplayRequest):
+def replay_start(body: ReplayRequest, request: Request):
+    if public_demo.enabled:
+        return public_demo.start(request, transport, body.speed, body.limit, body.channel_id)
     return transport.begin_replay(body.speed, body.limit, body.channel_id)
 
 
 @app.post("/api/replay/stop")
-def replay_stop():
+def replay_stop(request: Request):
+    if public_demo.enabled:
+        return public_demo.stop(request, transport)
     return transport.stop()
 
 
 @app.post("/api/replay/restart-broker")
-async def restart_broker():
+async def restart_broker(request: Request):
+    if public_demo.enabled:
+        with public_demo.restart(request, transport) as sid:
+            result = await transport.restart_broker()
+        return {**result, "public_demo": public_demo.metadata(sid, transport)}
     return await transport.restart_broker()
 
 
@@ -310,7 +335,29 @@ class BoundedParse(SchemaExtension):
     Installing its MaxTokensLimiter alone therefore does not enforce this bound.
     """
     def on_parse(self):
-        self.execution_context.graphql_document = parse_graphql(self.execution_context.query, max_tokens=3000)
+        document = parse_graphql(self.execution_context.query, max_tokens=3000)
+        if public_demo.enabled:
+            # Bound expanded fragment work before depth/schema validators visit it.
+            fragments = {definition.name.value: definition for definition in document.definitions
+                         if isinstance(definition, FragmentDefinitionNode)}
+            stack = [(definition.selection_set, frozenset()) for definition in document.definitions
+                     if isinstance(definition, OperationDefinitionNode)]
+            expanded = 0
+            while stack:
+                selection_set, ancestors = stack.pop()
+                for selection in selection_set.selections:
+                    expanded += 1
+                    if expanded > 2000:
+                        raise GraphQLError("Public GraphQL query exceeds the 2,000 expanded-selection budget.")
+                    if isinstance(selection, FragmentSpreadNode):
+                        name = selection.name.value
+                        if name in ancestors:
+                            raise GraphQLError("Cyclic GraphQL fragments are not permitted.")
+                        if name in fragments:
+                            stack.append((fragments[name].selection_set, ancestors | {name}))
+                    elif getattr(selection, "selection_set", None) is not None:
+                        stack.append((selection.selection_set, ancestors))
+        self.execution_context.graphql_document = document
         yield
 
 

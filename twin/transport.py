@@ -10,6 +10,7 @@ import asyncio
 import csv
 from contextlib import contextmanager
 import hashlib
+import heapq
 import json
 import math
 import os
@@ -34,8 +35,12 @@ def utc_now() -> str:
 
 
 class HistoricalTransport:
-    def __init__(self, port: int | None = None, runtime: Path | None = None):
+    def __init__(self, port: int | None = None, runtime: Path | None = None, *, delivery_retention: int | None = None, public_mode: bool = False):
         self.port = port or int(os.environ.get("TWIN_MQTT_PORT", "18883"))
+        if delivery_retention is not None and (type(delivery_retention) is not int or delivery_retention < 1):
+            raise ValueError("Delivery retention must be a positive integer.")
+        self.delivery_retention = delivery_retention
+        self.public_mode = public_mode
         self.runtime = runtime or RUNTIME
         self.broker = None
         self.subscriber = None
@@ -89,6 +94,9 @@ class HistoricalTransport:
                 con.execute("INSERT INTO transport_metadata VALUES('schema_version','2')")
             elif version[0] != '2':
                 raise ValueError("Unsupported transport schema version.")
+            con.execute("INSERT OR IGNORE INTO transport_metadata(key,value) SELECT 'total_deliveries',CAST(COUNT(*) AS TEXT) FROM deliveries")
+            if self.delivery_retention is not None:
+                con.execute("DELETE FROM deliveries WHERE id <= (SELECT MAX(id) FROM deliveries) - ?", (self.delivery_retention,))
         self.model_sha = hashlib.sha256((ROOT / "data/source/04_Flat.ifc").read_bytes()).hexdigest()
         # This catalogue uses the same verified mapping decision as REST.
         from twin import data
@@ -117,6 +125,11 @@ class HistoricalTransport:
         return {"event_id": event_id, "channel_id": channel_id, "observed_at": stamp, "value": value,
                 "source_line": line, "source_sha256": source["sha256"], "model_sha256": self.model_sha,
                 "room_guid": source["room_guid"], "unit": source["unit"], "origin": "published_historical_replay"}
+
+    def _delivery_recorded(self, con):
+        con.execute("UPDATE transport_metadata SET value=CAST(value AS INTEGER)+1 WHERE key='total_deliveries'")
+        if self.delivery_retention is not None:
+            con.execute("DELETE FROM deliveries WHERE id <= (SELECT MAX(id) FROM deliveries) - ?", (self.delivery_retention,))
 
     def ingest(self, topic: str, raw: bytes) -> dict:
         received = utc_now()
@@ -152,6 +165,7 @@ class HistoricalTransport:
                 status = "accepted" if cursor.rowcount else "duplicate"
                 con.execute("INSERT INTO deliveries(received_at,channel_id,status,reason,event_id) VALUES(?,?,?,?,?)",
                             (received, channel, status, "pinned CSV row verified", event["event_id"]))
+                self._delivery_recorded(con)
             with self.lock:
                 self.state["accepted" if status == "accepted" else "duplicates"] += 1
                 self.state["last_received_at"] = received
@@ -163,6 +177,7 @@ class HistoricalTransport:
             with self.db() as con:
                 con.execute("INSERT INTO deliveries(received_at,channel_id,status,reason) VALUES(?,?,?,?)",
                             (received, str(channel)[:100] if channel else None, "rejected", reason))
+                self._delivery_recorded(con)
             with self.lock:
                 self.state["rejected"] += 1
             return {"status": "rejected", "reason": reason, "received_at": received}
@@ -203,7 +218,7 @@ class HistoricalTransport:
             self.subscriber.on_message = lambda client, userdata, msg: self.ingest(msg.topic, msg.payload)
             self.subscriber.connect_async("127.0.0.1", self.port, 30)
             self.subscriber.loop_start()
-            if not await asyncio.to_thread(self.subscribed.wait, 8):
+            if not await asyncio.to_thread(self.subscribed.wait, 30 if self.public_mode else 8):
                 raise RuntimeError("MQTT subscription did not become ready")
         except Exception as exc:
             self.state["last_error"] = str(exc)
@@ -211,11 +226,11 @@ class HistoricalTransport:
             await self.close()
             raise
 
-    def begin_replay(self, speed: float = 20, limit: int = 300, channel_id: str | None = None) -> dict:
+    def begin_replay(self, speed: float = 20, limit: int = 300, channel_id: str | None = None, *, max_duration_seconds: float | None = None) -> dict:
         with self.start_lock:
-            return self._begin_replay(speed, limit, channel_id)
+            return self._begin_replay(speed, limit, channel_id, max_duration_seconds=max_duration_seconds)
 
-    def _begin_replay(self, speed: float, limit: int, channel_id: str | None) -> dict:
+    def _begin_replay(self, speed: float, limit: int, channel_id: str | None, *, max_duration_seconds: float | None = None) -> dict:
         if self.state["broker"] != "running" or not self.subscribed.is_set():
             raise ValueError("MQTT broker/subscriber is not ready")
         if self.worker and self.worker.is_alive() and self.state["replay"] in {"completed", "stopped", "failed"}:
@@ -226,10 +241,13 @@ class HistoricalTransport:
             raise ValueError("speed must be 1-100 events/s and limit 1-2000")
         if channel_id and channel_id not in self.source:
             raise ValueError("unknown or unverified channel")
-        records = [(row[0], channel, row) for channel, source in self.source.items()
-                   if channel_id is None or channel == channel_id for row in source["rows"]]
-        records.sort(key=lambda item: (item[0], item[1], item[2][2]))
-        selected = records[:limit]
+        if max_duration_seconds is not None and (not math.isfinite(max_duration_seconds) or max_duration_seconds <= 0):
+            raise ValueError("Maximum replay duration must be positive and finite.")
+        # Keep a bounded heap, rather than materialising every source tuple for
+        # a small public replay. Ordering is identical to the complete sort.
+        records = ((row[0], channel, row) for channel, source in self.source.items()
+                   if channel_id is None or channel == channel_id for row in source["rows"])
+        selected = heapq.nsmallest(limit, records, key=lambda item: (item[0], item[1], item[2][2]))
         self.stop_event.clear()
         self.publish_connected.clear()
         self.run_baseline = {key: self.state[key] for key in ("accepted", "duplicates", "rejected")}
@@ -242,20 +260,31 @@ class HistoricalTransport:
             client.username_pw_set("twin", self.password)
             client.on_connect = lambda c, u, f, reason, p: self.publish_connected.set() if reason == 0 else None
             finish_state = "completed"
+            deadline = time.monotonic() + max_duration_seconds if max_duration_seconds is not None else None
+            def remaining(default):
+                if deadline is None:
+                    return default
+                left = deadline - time.monotonic()
+                if left <= 0:
+                    raise TimeoutError("Replay reached its configured execution budget.")
+                return min(default, left)
             try:
+                if self.public_mode:
+                    client.connect_timeout = remaining(5)
                 client.connect("127.0.0.1", self.port, 30)
                 client.loop_start()
-                if not self.publish_connected.wait(8):
+                if not self.publish_connected.wait(remaining(30 if self.public_mode else 8)):
                     raise RuntimeError("publisher failed to connect")
                 for _, channel, row in selected:
                     if self.stop_event.is_set():
                         break
+                    remaining(5)
                     info = client.publish(f"osh/flat/historical/{channel}", json.dumps(self.payload(channel, row)), qos=1, retain=False)
-                    info.wait_for_publish(timeout=5)
+                    info.wait_for_publish(timeout=remaining(5))
                     if not info.is_published():
                         raise RuntimeError("MQTT PUBACK timeout")
                     self.state["published"] += 1
-                    if self.stop_event.wait(1 / speed):
+                    if self.stop_event.wait(remaining(1 / speed)):
                         break
                 finish_state = "stopped" if self.stop_event.is_set() else "completed"
             except Exception as exc:
@@ -288,7 +317,7 @@ class HistoricalTransport:
         self.broker = Broker(self.config)
         await self.broker.start()
         self.state["broker"] = "running"
-        if not await asyncio.to_thread(self.subscribed.wait, 15):
+        if not await asyncio.to_thread(self.subscribed.wait, 30 if self.public_mode else 15):
             self.state["last_error"] = "Subscriber did not reconnect after broker restart"
             raise RuntimeError(self.state["last_error"])
         self.state["broker_restarts"] = self.state.get("broker_restarts", 0) + 1
@@ -298,10 +327,16 @@ class HistoricalTransport:
         with self.db() as con:
             total = con.execute("SELECT COUNT(*) FROM accepted").fetchone()[0]
             delivery_count = con.execute("SELECT COUNT(*) FROM deliveries").fetchone()[0]
+            total_row = con.execute("SELECT value FROM transport_metadata WHERE key='total_deliveries'").fetchone()
+            total_deliveries = int(total_row[0]) if total_row is not None else delivery_count
         return {**self.state, "schema_version": 2, "host": "127.0.0.1", "port": self.port, "protocol": "MQTT 3.1.1", "qos": 1,
                 "authentication": "per-process random password, Argon2 stored hash", "tls": False,
                 "scope": "loopback demonstration", "persistent_unique_events": total, "persistent_delivery_count": delivery_count,
-                "counter_scope": {"published": "current replay run", "accepted": "current process", "duplicates": "current process", "rejected": "current process", "persistent_unique_events": "all runs retained in this runtime database"},
+                "total_delivery_count": total_deliveries,
+                "delivery_history": {"retention_enabled": self.delivery_retention is not None, "max_rows": self.delivery_retention,
+                                     "retained_rows": delivery_count, "pruned_rows": max(0, total_deliveries-delivery_count),
+                                     "scope": "Newest retained delivery rows; accepted-event identities remain deduplicated until runtime reset." if self.delivery_retention else "All delivery rows retained in this runtime database."},
+                "counter_scope": {"published": "current replay run", "accepted": "current process", "duplicates": "current process", "rejected": "current process", "persistent_unique_events": "all runs retained in this runtime database", "persistent_delivery_count": "currently retained delivery rows", "total_delivery_count": "all deliveries counted since this runtime store was initialised"},
                 "current_run": {"published": self.state["published"], **{key: self.state[key] - self.run_baseline[key] for key in self.run_baseline}},
                 "model_sha256": self.model_sha, "source_channels": len(self.source),
                 "source_time_basis": "UTC from verified Unix timestamps", "replay_clock": "bounded event rate; source timestamps preserved"}

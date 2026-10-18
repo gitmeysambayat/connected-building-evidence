@@ -14,11 +14,11 @@ const unitName = (unit) => ({C:'°C',degC:'°C',celsius:'°C','ug/m3':'µg/m³',
 const roomGuid = (r) => r.guid || r.room_guid || r.global_id;
 const roomName = (r) => r.room_id || r.long_name || r.name || roomGuid(r);
 const channelId = (c) => c.id || c.channel_id;
-const state = {summary:{},rooms:[],channels:[],selectedRoom:null,selectedChannel:null,series:null,points:[],cursor:0,view:'twin',roomMeshes:new Map(),physicalMeshes:[],geometry:null,shellVisible:true,loadedViews:new Set(),seriesRequest:0,replayTimer:null};
+const state = {summary:{},rooms:[],channels:[],selectedRoom:null,selectedChannel:null,series:null,points:[],cursor:0,view:'twin',roomMeshes:new Map(),physicalMeshes:[],geometry:null,shellVisible:true,loadedViews:new Set(),seriesRequest:0,replayTimer:null,session:null,sessionError:null,replayStatus:null,replayPending:false,replayRequest:0};
 
 async function api(path, options = {}) {
-  const response = await fetch(path, {cache:'no-store', ...options, headers:{Accept:'application/json',...(options.body ? {'Content-Type':'application/json'} : {}),...options.headers}});
-  if (!response.ok) {const details = await response.text(); throw new Error(`The service returned ${response.status}. ${details.slice(0,180)}`);}
+  const response = await fetch(path, {cache:'no-store', credentials:'same-origin', ...options, headers:{Accept:'application/json',...(options.body ? {'Content-Type':'application/json'} : {}),...options.headers}});
+  if (!response.ok) {const details = await response.text(); const error=new Error(`The service returned ${response.status}. ${details.slice(0,180)}`);error.status=response.status;throw error;}
   return response.json();
 }
 function notice(message, isError = false) {const box = $('global-notice'); box.textContent = message; box.classList.toggle('error',isError); box.classList.toggle('hidden',!message);}
@@ -56,7 +56,9 @@ function renderRooms() {
 async function selectRoom(guid, {scroll = false} = {}) {
   const room = state.rooms.find(r => roomGuid(r)===guid);
   if(!room) return;
+  ++state.seriesRequest;
   state.selectedRoom=room;
+  notice('');
   renderRooms(); highlightRooms();
   setText('selected-room-title',roomName(room));
   setText('selected-room-subtitle',`${room.long_name || room.name || 'IFC space'} · ${guid}`);
@@ -67,13 +69,25 @@ async function selectRoom(guid, {scroll = false} = {}) {
   $('channel-select').innerHTML = options.length ? groups.map(([label,kind]) => {const items=options.filter(c=>(c.source_kind || 'measured_sensor')===kind);return items.length?`<optgroup label="${label}">${items.map(c=>`<option value="${esc(channelId(c))}">${esc(metricName(c.metric))} (${esc(unitName(c.unit))})</option>`).join('')}</optgroup>`:'';}).join('') : '<option>No verified measured channels</option>';
   $('channel-select').disabled = !options.length;
   $('apply-range').disabled = !options.length;
+  $('series-start').disabled = !options.length;
+  $('series-end').disabled = !options.length;
   $('download-series').disabled = !options.length;
   const info = $('unmonitored-message');
   info.classList.toggle('hidden', measured.length>0);
   info.textContent = options.length ? 'This room has controller data. Controller setpoints are not measured environmental observations.' : 'This IFC room has no verified measured sensor series in the published dataset. The room remains visible without invented readings or assumed sensor locations.';
   if(options.length) await selectChannel(channelId(measured.find(c=>String(c.metric).toLowerCase()==='temperature') || measured[0] || options[0]));
-  else {state.selectedChannel=null;setExportURL();state.series=null;state.points=[];renderChart();setText('chart-channel','No verified monitored channel');setText('series-provenance','Room geometry comes from the source IFC. No sensor-to-room connection is claimed.');}
-  if(scroll) $('selected-room-title').scrollIntoView({behavior:'smooth',block:'center'});
+  else {
+    state.selectedChannel=null;state.series=null;state.points=[];state.cursor=0;state.chartScale=null;
+    $('series-start').value='';$('series-end').value='';
+    setExportURL();renderChart();
+    setText('chart-channel','No verified monitored channel');
+    setText('chart-resolution','No verified observations');$('chart-resolution').title='';
+    setText('reading-label','No observation selected');
+    setText('reading-timezone','Not applicable');$('reading-timezone').title='No verified channel is associated with this room.';
+    setText('plot-method','No verified measured series is associated with this IFC space. No observations are plotted.');
+    setText('series-provenance','Room geometry comes from the source IFC. No sensor-to-room connection is claimed.');
+  }
+  if(scroll && state.selectedRoom===room) $('selected-room-title').scrollIntoView({behavior:'smooth',block:'center'});
 }
 async function selectChannel(id) {
   state.selectedChannel=state.channels.find(c => channelId(c)===id);
@@ -151,7 +165,7 @@ function updateCursor(index) {
 }
 function chartPointer(event) {if(!state.chartScale || !state.points.length)return;const rect=$('timeseries-chart').getBoundingClientRect(),s=state.chartScale,tx=s.t0+(event.clientX-rect.left-s.margin.left)/(s.w-s.margin.left-s.margin.right)*(s.t1-s.t0);let lo=0,hi=state.points.length-1;while(lo<hi){const mid=Math.floor((lo+hi)/2);if(+new Date(state.points[mid].timestamp)<tx)lo=mid+1;else hi=mid;}if(lo>0 && Math.abs(+new Date(state.points[lo-1].timestamp)-tx)<Math.abs(+new Date(state.points[lo].timestamp)-tx))lo--;updateCursor(lo);}
 function setExportURL(){const link=$('download-series');link.setAttribute('aria-disabled',String(!state.selectedChannel));if(!state.selectedChannel){link.href='#';return;}const c=state.selectedChannel,params=new URLSearchParams();if($('series-start').value)params.set('start',new Date(`${$('series-start').value}:00Z`).toISOString());if($('series-end').value)params.set('end',new Date(`${$('series-end').value}:59Z`).toISOString());link.href=`/api/series/${encodeURIComponent(channelId(c))}/export.csv?${params}`;}
-function downloadSeries(event){if(!state.selectedChannel){event.preventDefault();return;}setExportURL();}
+function downloadSeries(event){if(!state.selectedChannel || $('download-series').getAttribute('aria-disabled')==='true'){event.preventDefault();return;}setExportURL();}
 
 let renderer,scene,camera,controls,modelGroup,grid,modelAnimation,resizeObserver;
 const pickRay=new THREE.Raycaster(),pickPoint=new THREE.Vector2();
@@ -235,19 +249,100 @@ function operationsHTML(report){
   return `<section class="card source-card"><p class="eyebrow">DESCRIPTIVE OPERATIONAL ANALYSIS</p><h3>Heating setpoint tracking</h3><p>How does measured air temperature compare with the most recent recorded heating command? The comparison is observation-weighted and uses only records with an eligible command history.</p><p><strong>Method:</strong> ${esc(report.method || 'As-of recorded command, with a maximum age of 24 hours; no interpolation.')}</p>${simpleTable(rooms.map(r=>({Room:r.room,'Eligible observations':r.eligible_observations,'Coverage (%)':r.observation_coverage_percent,'Mean air minus command (°C)':r.mean_air_minus_setpoint_c,'Mean absolute difference (°C)':r.mean_absolute_difference_c,[`Below command by >${threshold} °C (%)`]:r.fraction_more_than_1c_below==null?null:r.fraction_more_than_1c_below*100,[`Above command by >${threshold} °C (%)`]:r.fraction_more_than_1c_above==null?null:r.fraction_more_than_1c_above*100})))}<p class="subtle-note">Temperature differences are in °C. Positive mean differences indicate air temperature above the recorded command. The fractions describe eligible observations, not duration-weighted exposure.</p>${asArray(report.limitations).map(l=>`<p>${esc(l)}</p>`).join('')}<div class="source-links"><a class="chip-link" href="/api/operations" target="_blank">Inspect operational calculations ↗</a></div>${jsonDetails(report,'Inspect the complete setpoint-tracking calculation')}</section>`;
 }
 
+function publicReplayContext(status = state.replayStatus) {
+  if(status?.public_demo && typeof status.public_demo === 'object') return status.public_demo;
+  if(state.session?.public_demo === true) return state.session;
+  return null;
+}
+function replayActive(status = state.replayStatus) {
+  return Boolean(status?.running ?? status?.active ?? (status?.replay === 'running' || status?.status === 'running'));
+}
+function replayParameters(context = publicReplayContext()) {
+  const speed=Number($('replay-speed').value),limit=Number($('replay-limit').value),caps=context?.capabilities;
+  if(!Number.isFinite(speed) || speed<=0 || !Number.isInteger(limit) || limit<1) return {valid:false,message:'Choose a positive replay speed and a whole number of events.'};
+  if(caps && (limit>caps.max_events || speed>caps.max_events_per_second || limit/speed>caps.max_duration_seconds)) return {valid:false,message:`Choose at most ${number(Math.min(caps.max_events,Math.floor(speed*caps.max_duration_seconds)))} events at this speed. Shared replay runs are limited to ${number(caps.max_duration_seconds)} seconds.`};
+  return {valid:true,speed,limit,message:''};
+}
+function updateReplayControls() {
+  const status=state.replayStatus,context=publicReplayContext(),active=replayActive(status),ready=Boolean(status || state.session);
+  const controls=context?.controls;
+  const allowed=context ? {
+    start:context.session_ready === true && controls?.can_start === true,
+    stop:context.session_ready === true && controls?.can_stop === true,
+    reconnect:context.session_ready === true && controls?.can_restart_broker === true,
+  } : {start:ready && !active,stop:ready && active,reconnect:ready && !active && status?.broker === 'running'};
+  const params=replayParameters(context);
+  for(const action of ['start','stop','reconnect']) $('replay-'+action).disabled=state.replayPending || Boolean(state.sessionError) || !allowed[action] || (action==='start' && !params.valid);
+  $('replay-speed').disabled=state.replayPending || active;
+  $('replay-limit').disabled=state.replayPending || active;
+  if(context?.capabilities) $('replay-limit').max=String(Math.min(context.capabilities.max_events,Math.floor(Number($('replay-speed').value)*context.capabilities.max_duration_seconds)));
+  else $('replay-limit').max='2000';
+  setText('replay-validation',params.message);
+  $('replay-validation').classList.toggle('hidden',!params.message);
+}
+function renderRuntimeProfile(context = publicReplayContext()) {
+  const publicMode=Boolean(context),banner=$('runtime-profile');
+  banner.classList.toggle('hidden',!publicMode);
+  if(!publicMode) return;
+  setText('runtime-profile-title','Full application · shared public demonstration');
+  setText('runtime-profile-description','The Python services run on the server. Measurements remain historical. Free hosting can sleep when idle; the first request may take longer. Replay history can reset when the runtime restarts. The published source records are preserved.');
+  setText('replay-description','Send original historical records through the server’s authenticated MQTT broker at QoS 1. One visitor controls replay at a time. The source observations remain from 2017.');
+  setText('pipeline-retention-title','Recorded receipts');
+  setText('pipeline-retention-description','Queryable events with limited runtime retention');
+  const caps=context.capabilities || {};
+  setText('replay-limits',`Shared replay: up to ${number(caps.max_events)} events, ${number(caps.max_duration_seconds)} seconds and ${number(caps.max_events_per_second)} events/s. Repeat a batch to inspect duplicate delivery handling.`);
+  $('replay-limits').classList.remove('hidden');
+}
+async function initialiseSession() {
+  try {
+    state.session=await api('/api/session');state.sessionError=null;
+  } catch(error) {
+    if(error.status===404) {state.session={public_demo:false,session_ready:true};state.sessionError=null;}
+    else {state.sessionError=error.message;setText('replay-status','Replay controls are unavailable because the browser session could not be established. Reload to try again.');}
+  }
+  renderRuntimeProfile();updateReplayControls();
+}
 async function refreshReplay(){
+  const request=++state.replayRequest;
   try{
     const [status,payload]=await Promise.all([api('/api/replay/status'),api('/api/replay/events')]);
-    const active=status.running ?? status.active ?? (status.replay==='running' || status.status==='running');
-    $('replay-start').disabled=Boolean(active);$('replay-stop').disabled=!active;if($('replay-reconnect'))$('replay-reconnect').disabled=Boolean(active) || status.broker!=='running';
-    $('replay-status').innerHTML=`<div class="status-line"><span class="small-dot" style="background:${active?'#7a9e6a':'#aaa'}"></span><strong>${active?'Historical replay running':esc(readable(status.replay || status.status || 'Ready'))}</strong></div>${kvHTML({broker:status.broker,subscriber:status.subscriber,run_published:status.current_run?.published ?? status.published,run_newly_accepted:status.current_run?.accepted ?? status.accepted,run_duplicate_deliveries:status.current_run?.duplicates ?? status.duplicates,run_rejected:status.current_run?.rejected ?? status.rejected,all_runs_unique_events:status.persistent_unique_events,all_runs_delivery_count:status.persistent_delivery_count,broker_restarts:status.broker_restarts || 0,last_error:status.last_error})}<p class="subtle-note" style="margin-top:12px">${esc(status.protocol || 'MQTT')} · QoS ${esc(status.qos ?? 1)} · ${esc(status.scope || 'Local demonstration')}<br>Authentication is enabled. Run counters describe the current replay; persisted totals span retained runs. This is a loopback transport demonstration.</p>`;
+    if(request!==state.replayRequest) return;
+    state.replayStatus=status;
+    const active=replayActive(status),context=publicReplayContext(status),lease=context?.lease;
+    renderRuntimeProfile(context);updateReplayControls();
+    const otherVisitor=Boolean(lease?.active && !lease.owned_by_you);
+    const heading=otherVisitor?'Replay reserved by another visitor':active?'Historical replay running':readable(status.replay || status.status || 'Ready');
+    let leaseMessage=context ? otherVisitor?`Another visitor holds the shared replay controls. Try again when the lease expires in approximately ${number(lease.expires_in_seconds)} seconds.`:lease?.owned_by_you?`You hold the replay controls for approximately ${number(lease.expires_in_seconds)} more seconds.`:'No visitor currently holds the replay controls. Starting a run acquires the available lease.' : '';
+    if(context && !otherVisitor) {if(context.session_ready!==true) leaseMessage='The browser session is not ready. Reload this page to initialise replay controls.';else {if(context.cooldowns?.start>0) leaseMessage+=` The next replay can start in approximately ${number(context.cooldowns.start)} seconds.`;if(lease?.owned_by_you && context.cooldowns?.restart>0) leaseMessage+=` Broker restart is available in approximately ${number(context.cooldowns.restart)} seconds.`;}}
+    const scope=context ? 'The broker and both clients run inside this server. Controls and recent receipts are shared between visitors. Run counters describe the shared current run.' : 'The broker and both clients run inside this application host. Run counters describe the current replay.';
+    const retention=context ? context.retention?.description || 'Replay history is limited and can reset when this runtime restarts.' : 'Persisted totals span retained runs.';
+    $('replay-status').innerHTML=`<div class="status-line"><span class="small-dot" style="background:${active?'#7a9e6a':'#aaa'}"></span><strong>${esc(heading)}</strong></div>${context?`<p class="lease-message">${esc(leaseMessage)}</p>`:''}${kvHTML({broker:status.broker,subscriber:status.subscriber,run_published:status.current_run?.published ?? status.published,run_newly_accepted:status.current_run?.accepted ?? status.accepted,run_duplicate_deliveries:status.current_run?.duplicates ?? status.duplicates,run_rejected:status.current_run?.rejected ?? status.rejected,retained_unique_events:status.persistent_unique_events,retained_delivery_count:status.persistent_delivery_count,cumulative_deliveries_this_runtime:status.total_delivery_count,broker_restarts:status.broker_restarts || 0,last_error:status.last_error})}<p class="subtle-note" style="margin-top:12px">${esc(status.protocol || 'MQTT')} · QoS ${esc(status.qos ?? 1)}<br>Broker authentication is enabled. ${esc(scope)} ${esc(retention)}</p>`;
+    if(state.sessionError) $('replay-status').innerHTML+=`<p class="error-hint">${esc(state.sessionError)} Reload to establish a browser session before using replay controls.</p>`;
     const events=asArray(payload,['events','items','data']);setText('event-count',`${number(events.length)} recent events`);
     const display=events.slice(0,60).map(e=>({channel:e.channel_id,observed_historical_utc:typeof e.observed_at==='number'?new Date(e.observed_at*1000).toISOString():e.observed_at,received_utc:e.received_at,value:e.value,unit:unitName(e.unit),ifc_space_guid:e.room_guid,event_id:e.event_id?`${e.event_id.slice(0,12)}…`:e.id}));
-    $('replay-events').innerHTML=display.length?simpleTable(display):'<p class="empty-state">No transport events are recorded. Start a bounded historical replay to inspect the pipeline.</p>';
-  }catch(err){$('replay-status').innerHTML=`<span class="error-hint">Transport status unavailable. ${esc(err.message)}</span>`;}
+    $('replay-events').innerHTML=display.length?simpleTable(display):'<p class="empty-state">No retained transport events are recorded. Start a bounded historical replay to inspect the pipeline.</p>';
+  }catch(err){
+    if(request!==state.replayRequest) return;
+    for(const action of ['start','stop','reconnect']) $('replay-'+action).disabled=true;
+    $('replay-status').innerHTML=`<span class="error-hint">Transport status unavailable. ${esc(err.message)}</span>`;
+  }
 }
-async function testReconnection(){const button=$('replay-reconnect');button.disabled=true;setText('replay-status','Restarting the local broker and waiting for the authenticated subscriber to reconnect…');try{await api('/api/replay/restart-broker',{method:'POST'});await refreshReplay();notice('The local MQTT broker restarted and the subscriber reconnected. Source observations remain historical.');}catch(err){notice(`The reconnection test could not complete. ${err.message}`,true);await refreshReplay();}}
-async function replayAction(action){const btn=$(`replay-${action}`);btn.disabled=true;try{await api(`/api/replay/${action}`,{method:'POST',...(action==='start'?{body:JSON.stringify({speed:Number($('replay-speed').value),limit:Number($('replay-limit').value)})}:{})});await refreshReplay();notice('');}catch(err){notice(`The historical replay could not ${action}. ${err.message}`,true);}finally{btn.disabled=false;}}
+async function testReconnection(){
+  if($('replay-reconnect').disabled || state.replayPending) return;
+  state.replayPending=true;updateReplayControls();setText('replay-status','Restarting the MQTT broker and waiting for the authenticated subscriber to reconnect…');
+  try{await api('/api/replay/restart-broker',{method:'POST',body:JSON.stringify({})});notice('The MQTT broker restarted and the subscriber reconnected. Source observations remain historical.');}
+  catch(err){notice(`The reconnection test could not complete. ${err.message}`,true);}
+  finally{state.replayPending=false;await refreshReplay();}
+}
+async function replayAction(action){
+  if(!['start','stop'].includes(action) || $('replay-'+action).disabled || state.replayPending) return;
+  const params=replayParameters();
+  if(action==='start' && !params.valid) {notice(params.message,true);updateReplayControls();return;}
+  state.replayPending=true;updateReplayControls();
+  try{await api(`/api/replay/${action}`,{method:'POST',body:JSON.stringify(action==='start'?{speed:params.speed,limit:params.limit}:{})});notice('');}
+  catch(err){notice(`The historical replay could not ${action}. ${err.message}`,true);}
+  finally{state.replayPending=false;await refreshReplay();}
+}
 function sourceLinks(obj){const urls=new Map();function walk(v,path=''){if(typeof v==='string' && /^https?:\/\//.test(v))urls.set(v,path);else if(v && typeof v==='object')for(const [k,x] of Object.entries(v))walk(x,k);}walk(obj);return [...urls].map(([url,label])=>`<a class="chip-link" href="${esc(safeURL(url))}" target="_blank" rel="noopener">${esc(readable(label) || new URL(url).hostname)} ↗</a>`).join('');}
 async function renderEvidence(){
   const s=state.summary;
@@ -266,6 +361,6 @@ async function runGraphQuery(){
   try{const result=await api(`/api/graph/query?template=${encodeURIComponent($('graph-template').value)}`);host.innerHTML=`<p class="subtle-note">${number(result.rows?.length)} result row${result.rows?.length===1?'':'s'} · ${esc(result.engine || 'Persistent RDF graph database')}</p>${simpleTable(result.rows || [],result.columns)}<details class="json-toggle"><summary>Inspect the executed SPARQL query</summary><pre>${esc(result.sparql)}</pre></details>`;}catch(err){host.innerHTML=`<div class="notice error">The graph query could not be run. ${esc(err.message)}</div>`;}finally{button.disabled=false;}
 }
 
-function setupEvents(){document.querySelectorAll('.nav-item').forEach(btn=>btn.addEventListener('click',()=>switchView(btn.dataset.view)));document.querySelector('.brand').addEventListener('click',()=>switchView('twin'));$('room-list').addEventListener('click',e=>{const btn=e.target.closest('[data-room-guid]');if(btn)selectRoom(btn.dataset.roomGuid);});$('mapping-register').addEventListener('click',e=>{const btn=e.target.closest('[data-evidence-guid]');if(btn)inspectEvidence(btn.dataset.evidenceGuid);});$('channel-select').addEventListener('change',e=>selectChannel(e.target.value));$('apply-range').addEventListener('click',loadSeries);$('download-series').addEventListener('click',downloadSeries);$('chart-cursor').addEventListener('input',e=>updateCursor(e.target.value));$('timeseries-chart').addEventListener('pointermove',chartPointer);$('timeseries-chart').addEventListener('click',chartPointer);$('timeseries-chart').addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();updateCursor(state.cursor+(e.key==='ArrowLeft'?-1:1));}});$('model-reset').addEventListener('click',()=>resetModel());$('view-perspective').addEventListener('click',()=>resetModel());$('view-top').addEventListener('click',()=>resetModel(true));$('model-shell').addEventListener('click',()=>{state.shellVisible=!state.shellVisible;state.physicalMeshes.forEach(mesh=>mesh.visible=state.shellVisible);$('model-shell').setAttribute('aria-pressed',String(state.shellVisible));});$('room-evidence-button').addEventListener('click',()=>state.selectedRoom && inspectEvidence(roomGuid(state.selectedRoom)));$('close-evidence').addEventListener('click',()=>$('evidence-dialog').close());$('evidence-dialog').addEventListener('click',e=>{if(e.target===$('evidence-dialog')){const b=$('evidence-dialog').getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)$('evidence-dialog').close();}});$('replay-start').addEventListener('click',()=>replayAction('start'));$('replay-stop').addEventListener('click',()=>replayAction('stop'));$('replay-reconnect').addEventListener('click',testReconnection);$('theme-toggle').addEventListener('click',()=>{document.body.classList.toggle('theme-dark');localStorage.setItem('connected-building-theme',document.body.classList.contains('theme-dark')?'dark':'light');updateModelTheme();renderChart();});window.addEventListener('resize',()=>{if(state.view==='twin')renderChart();});window.addEventListener('hashchange',()=>switchView(location.hash.slice(1)));}
-async function main(){if(localStorage.getItem('connected-building-theme')==='dark')document.body.classList.add('theme-dark');setupEvents();try{const results=await Promise.allSettled([api('/api/summary'),api('/api/rooms'),api('/api/channels?include_unverified=true')]);if(results[0].status==='fulfilled')state.summary=results[0].value;if(results[1].status==='fulfilled')state.rooms=asArray(results[1].value,['rooms','spaces','items','data']);else throw results[1].reason;if(results[2].status==='fulfilled')state.channels=asArray(results[2].value,['channels','items','data']);else throw results[2].reason;renderStats();renderRooms();initialiseModel();const first=state.rooms.find(r=>monitored(r)) || state.rooms[0];if(first)await selectRoom(roomGuid(first));await switchView(location.hash.slice(1) || 'twin');if(results[0].status==='rejected')notice('The source summary could not be loaded. Room and measurement data remain available.',true);}catch(err){notice(`The building service is not available. ${err.message}`,true);$('room-list').innerHTML='<p class="empty-state">The verified room register could not be loaded.</p>';$('model-loading').innerHTML='<p>The building service is not available.<br>Please check that the local application is running.</p>';}}
+function setupEvents(){document.querySelectorAll('.nav-item').forEach(btn=>btn.addEventListener('click',()=>switchView(btn.dataset.view)));document.querySelector('.brand').addEventListener('click',()=>switchView('twin'));$('room-list').addEventListener('click',e=>{const btn=e.target.closest('[data-room-guid]');if(btn)selectRoom(btn.dataset.roomGuid);});$('mapping-register').addEventListener('click',e=>{const btn=e.target.closest('[data-evidence-guid]');if(btn)inspectEvidence(btn.dataset.evidenceGuid);});$('channel-select').addEventListener('change',e=>selectChannel(e.target.value));$('apply-range').addEventListener('click',loadSeries);$('download-series').addEventListener('click',downloadSeries);$('chart-cursor').addEventListener('input',e=>updateCursor(e.target.value));$('timeseries-chart').addEventListener('pointermove',chartPointer);$('timeseries-chart').addEventListener('click',chartPointer);$('timeseries-chart').addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();updateCursor(state.cursor+(e.key==='ArrowLeft'?-1:1));}});$('model-reset').addEventListener('click',()=>resetModel());$('view-perspective').addEventListener('click',()=>resetModel());$('view-top').addEventListener('click',()=>resetModel(true));$('model-shell').addEventListener('click',()=>{state.shellVisible=!state.shellVisible;state.physicalMeshes.forEach(mesh=>mesh.visible=state.shellVisible);$('model-shell').setAttribute('aria-pressed',String(state.shellVisible));});$('room-evidence-button').addEventListener('click',()=>state.selectedRoom && inspectEvidence(roomGuid(state.selectedRoom)));$('close-evidence').addEventListener('click',()=>$('evidence-dialog').close());$('evidence-dialog').addEventListener('click',e=>{if(e.target===$('evidence-dialog')){const b=$('evidence-dialog').getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)$('evidence-dialog').close();}});$('replay-speed').addEventListener('change',updateReplayControls);$('replay-limit').addEventListener('input',updateReplayControls);$('replay-start').addEventListener('click',()=>replayAction('start'));$('replay-stop').addEventListener('click',()=>replayAction('stop'));$('replay-reconnect').addEventListener('click',testReconnection);$('theme-toggle').addEventListener('click',()=>{document.body.classList.toggle('theme-dark');localStorage.setItem('connected-building-theme',document.body.classList.contains('theme-dark')?'dark':'light');updateModelTheme();renderChart();});window.addEventListener('resize',()=>{if(state.view==='twin')renderChart();});window.addEventListener('hashchange',()=>switchView(location.hash.slice(1)));}
+async function main(){if(localStorage.getItem('connected-building-theme')==='dark')document.body.classList.add('theme-dark');setupEvents();await initialiseSession();try{const results=await Promise.allSettled([api('/api/summary'),api('/api/rooms'),api('/api/channels?include_unverified=true')]);if(results[0].status==='fulfilled')state.summary=results[0].value;if(results[1].status==='fulfilled')state.rooms=asArray(results[1].value,['rooms','spaces','items','data']);else throw results[1].reason;if(results[2].status==='fulfilled')state.channels=asArray(results[2].value,['channels','items','data']);else throw results[2].reason;renderStats();renderRooms();initialiseModel();const first=state.rooms.find(r=>monitored(r)) || state.rooms[0];if(first)await selectRoom(roomGuid(first));await switchView(location.hash.slice(1) || 'twin');if(results[0].status==='rejected')notice('The source summary could not be loaded. Room and measurement data remain available.',true);}catch(err){notice(`The building service is not available. ${err.message}`,true);$('room-list').innerHTML='<p class="empty-state">The verified room register could not be loaded.</p>';$('model-loading').innerHTML='<p>The building service is not available.<br>Please retry after the service starts, or inspect its deployment status.</p>';}}
 main();

@@ -12,11 +12,7 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 
-import joblib
 import numpy as np
-from sklearn.linear_model import Ridge
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "data" / "source"
@@ -77,6 +73,11 @@ def metrics(actual, predicted) -> dict:
 def fit(force: bool = False) -> dict:
     if OUTPUT.exists() and not force:
         return report()
+    # Serving the verified report does not need the training runtime in memory.
+    import joblib
+    from sklearn.linear_model import Ridge
+    from sklearn.pipeline import make_pipeline
+    from sklearn.preprocessing import StandardScaler
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     audit = json.loads((SOURCE / "20261018_v1_Exact_Mapping_and_Data_Audit.json").read_text(encoding="utf-8"))
     room_guids = {r["room"]: r["ifc_guid"] for r in audit["room_mapping"]}

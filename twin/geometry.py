@@ -19,10 +19,6 @@ import tempfile
 from threading import RLock
 from typing import Any
 
-import ifcopenshell
-import ifcopenshell.geom
-import ifcopenshell.util.element
-import ifcopenshell.util.unit
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -114,6 +110,7 @@ def _spatial_metadata(entity: Any, unit_scale: float) -> dict[str, Any]:
 
 
 def _source_units(model: Any, unit_scale: float) -> dict[str, Any]:
+    import ifcopenshell.util.unit
     unit = ifcopenshell.util.unit.get_project_unit(model, "LENGTHUNIT")
     return {
         "geometry": "m",
@@ -160,6 +157,12 @@ def build_geometry(source_path: str | Path | None = None, output_path: str | Pat
     remain in source counts and the omission audit, rather than being drawn as
     solid blocks that would incorrectly fill doors and windows.
     """
+    # Serving the verified cache does not load the CAD tessellation engine.
+    import ifcopenshell
+    import ifcopenshell.geom
+    import ifcopenshell.util.element
+    import ifcopenshell.util.unit
+
     source = Path(source_path) if source_path is not None else _source_path()
     destination = Path(output_path) if output_path is not None else _cache_path()
     source_hash = _sha256(source)

@@ -1,0 +1,20 @@
+# Explicit free compute only. No paid disk or database is created.
+services:
+  - type: web
+    name: connected-building-evidence
+    runtime: docker
+    plan: free
+    region: frankfurt
+    branch: main
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: PORT
+        value: "8080"
+      - key: TWIN_PUBLIC_DEMO
+        value: "1"
+      - key: TWIN_DEPLOYMENT_ENVIRONMENT
+        value: render
+      - key: TWIN_STATE_PERSISTENCE
+        value: ephemeral
