@@ -6,6 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = Path(os.environ.get('CONNECTED_BUILDING_DATA_DIR', ROOT / 'data')).resolve()
 SOURCE_DIR = ROOT / 'data' / 'source'
 DB_PATH = Path(os.environ.get('CONNECTED_BUILDING_DB', DATA_DIR / 'connected_building.sqlite3')).resolve()
+LIVE_SENSOR_DB_PATH = Path(os.environ.get('TWIN_SENSOR_DB', DATA_DIR / '20261018_v1_live_sensor.sqlite3')).resolve()
 GRAPH_PATH = Path(os.environ.get('CONNECTED_BUILDING_GRAPH', DATA_DIR / 'semantic_graph')).resolve()
 SOURCE_IFC = SOURCE_DIR / '04_Flat.ifc'
 MANIFEST_NAME = '20261018_v1_Manifest.json'

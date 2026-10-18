@@ -1,0 +1,6 @@
+.pio/
+include/secrets.hpp
+*.bin
+*.elf
+*.map
+

@@ -307,6 +307,10 @@ class PublicRequestLimits:
         if scope['type'] != 'http':
             return await self.app(scope, receive, send)
         path = scope.get('path', '')
+        # SensorIngressLimits, installed outside this middleware, authenticates
+        # and bounds this exact POST before parsing, even outside public mode.
+        if path == '/api/live-sensor/readings' and scope.get('method') == 'POST':
+            return await self.app(scope, receive, send)
         if path.startswith('/api/') or path == '/graphql':
             sid = policy._session(Request(scope))
             client = 'session:' + sid if sid else 'client:' + str((scope.get('client') or ('unknown',))[0])

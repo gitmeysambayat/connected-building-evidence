@@ -141,10 +141,17 @@ independently verified the repair on the host. See the current
 [workflow runs](https://github.com/gitmeysambayat/connected-building-evidence/actions)
 and the external deployment receipt for revision-specific outcomes.
 
-## Interpretation
+## Monitoring streams
 
-The broker is running at the time of replay. Measurement timestamps still
-belong to the 2017 source dataset. There is no current sensor or BMS link and
-no control of a physical building. The six Ridge candidates remain rejected
-against persistence. Hosting does not establish sensor calibration, energy
-savings, improved forecasts or the owner's independent proficiency.
+Historical MQTT replay preserves each original 2017 observation timestamp
+alongside the current delivery receipt. Forecast results are recorded with
+their chronological validation and persistence comparator.
+
+The separate [sensor station](20261018_v1_Real_Sensor_Setup.md) accepts
+authenticated device reports over HTTPS when device credentials are
+configured. Public visitors can inspect station status and readings. The
+station begins with an empty record and is commissioned using actual hardware.
+The original source flat keeps its own IFC identity and historical records.
+
+Render Free runtime files are temporary. Export station observations regularly;
+retain a local copy when collecting a commissioning record.

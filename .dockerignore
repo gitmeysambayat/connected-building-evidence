@@ -1,5 +1,8 @@
 .git
 .github
+firmware
+**/.pio
+**/secrets.hpp
 .venv
 venv
 __pycache__

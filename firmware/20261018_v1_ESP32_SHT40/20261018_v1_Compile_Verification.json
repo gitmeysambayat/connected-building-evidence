@@ -1,0 +1,78 @@
+{
+  "recorded_at_utc": "2026-10-18T14:33:46.761805+00:00",
+  "verification_type": "local_compilation_and_desktop_tls_check",
+  "hardware": {
+    "board_target": "Adafruit Feather ESP32 V2 (adafruit_feather_esp32_v2)",
+    "sensor_target": "Adafruit SHT40 STEMMA QT, product 4885",
+    "physical_equipment_available": false,
+    "hardware_flashed": false,
+    "physical_sensor_measured": false,
+    "public_sensor_post_performed": false
+  },
+  "tooling": {
+    "host": "Windows x86-64",
+    "platformio_core": "6.1.18",
+    "espressif32_platform": "6.12.0",
+    "arduino_esp32_framework": "3.20017.241212+sha.dcc1105b (Arduino 2.0.17)",
+    "xtensa_toolchain": "8.4.0+2021r2-patch5",
+    "library_versions": {
+      "Adafruit SHT4x Library": "1.0.5",
+      "Adafruit BusIO": "1.17.2",
+      "Adafruit Unified Sensor": "1.1.15",
+      "ArduinoJson": "6.21.5"
+    }
+  },
+  "source_sha256": {
+    "platformio.ini": "364994faf2f685700427960b8dc11defd35db73eea7d6b9b540ade8703470681",
+    "src/main.cpp": "80447295781309735c29c543e6826d384acce7ef0a62ff98488504d8f293ebab",
+    "include/trusted_root.hpp": "f57b0cc70ae8b723f920ceee9663a67906172c40c9c2c6d3ecc1b19bfaea4757",
+    "include/secrets.example.hpp": "fa10ac9e659b59de2e9f9792d004416af556193ff12c1dfc24e4f78b82f67aeb"
+  },
+  "environments": [
+    {
+      "name": "compile_check",
+      "exit_code": 0,
+      "status": "passed",
+      "duration_seconds": 135.938,
+      "linked_static_ram_bytes": 22024,
+      "linked_flash_bytes": 305693,
+      "binary_sha256": "716f374455b59c9a528bdf579fd3eba15e3b224aeb41c8006525a7041f004c44",
+      "configuration": "public example; PROVISIONED=false",
+      "hardware_execution": false
+    },
+    {
+      "name": "compile_full_check",
+      "exit_code": 0,
+      "status": "passed",
+      "duration_seconds": 122.468,
+      "linked_static_ram_bytes": 44764,
+      "linked_flash_bytes": 700573,
+      "binary_sha256": "78da13823d9a2b828b2f7291cdb808e68e8b5a5f085398c36eb3938c27dac652",
+      "configuration": "public example; PROVISIONED=false",
+      "hardware_execution": false
+    }
+  ],
+  "commands": [
+    "python -m platformio run --project-dir firmware/20261018_v1_ESP32_SHT40 --environment compile_check",
+    "python -m platformio run --project-dir firmware/20261018_v1_ESP32_SHT40 --environment compile_full_check"
+  ],
+  "desktop_tls_check": {
+    "status": "passed",
+    "hostname": "connected-building-evidence.onrender.com",
+    "trusted_root_source": "https://pki.goog/repo/certs/gtsr4.pem",
+    "trusted_root_der_sha256": "349dfa4058c5e263123b398ae795573c4e1313c83fe68f93556cd5e8031b3c7d",
+    "peer_issuer": "Google Trust Services WE1",
+    "negotiated_protocol": "TLSv1.3",
+    "hostname_and_certificate_validation_enabled": true,
+    "on_device_tls_tested": false
+  },
+  "notes": [
+    "Compilation does not verify physical sensor acquisition, Wi-Fi behaviour, NTP synchronisation or on-device TLS.",
+    "compile_full_check compiles the real setup branch; example provisioning remains false.",
+    "Idle compile_check reports three expected unused setup-helper warnings; full setup check compiled without those warnings.",
+    "The Windows toolchain required a short temporary cache alias to avoid spaces in compiler paths.",
+    "A package mirror certificate hostname mismatch was rejected; a trusted alternate mirror completed the download. Certificate verification was not disabled.",
+    "The initial interrupted compilation attempts are not counted as passed environments. Final sequential builds both exited zero.",
+    "Linked size figures are compilation outputs, not measured runtime consumption."
+  ]
+}

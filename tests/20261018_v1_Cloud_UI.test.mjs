@@ -114,7 +114,7 @@ test('Late success and failure cannot attach a previous room series to an unmoni
 });
 
 test('Full UI keeps genuine service routes and uses a versioned module with initially disabled replay buttons',async()=>{
- const html=await readFile(new URL('static/index.html',root),'utf8');assert.match(html,/\/static\/app\.js\?v=20261018-cloud-1/);
+ const html=await readFile(new URL('static/index.html',root),'utf8');assert.match(html,/\/static\/app\.js\?v=\d{8}-[a-z0-9-]+/);
  for(const id of ['replay-start','replay-stop','replay-reconnect'])assert.match(html,new RegExp(`id="${id}" disabled`));
  assert.match(app,/\/api\/graph\/query\?template=/);assert.match(app,/\/api\/replay\/restart-broker/);assert.doesNotMatch(app,/chatgpt\.site|data-adapter\.js/);
  assert.doesNotMatch(html,/This local transport is not a cloud deployment/);

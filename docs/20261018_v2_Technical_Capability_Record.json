@@ -1,0 +1,73 @@
+{
+  "title": "Connected Building technical capability record",
+  "date": "2026-10-18",
+  "project_owner": "Meysam Bayat",
+  "capabilities": [
+    {
+      "name": "IFC and historical room measurements",
+      "status": "verified",
+      "scope": "Nine IFC spaces, six monitored rooms, 37 channels and 285,954 original records. Source hashes, room associations and one unresolved channel are preserved.",
+      "evidence": [
+        "data/source/20261018_v1_Manifest.json",
+        "data/source/20261018_v1_Exact_Mapping_and_Data_Audit.json"
+      ]
+    },
+    {
+      "name": "Relational and semantic services",
+      "status": "verified",
+      "scope": "SQLite-backed REST/GraphQL and executed fixed SPARQL over Oxigraph/RocksDB.",
+      "evidence": [
+        "twin/main.py",
+        "twin/data.py",
+        "twin/semantic.py",
+        "reports/20261018_v1_Render_Deployment_Receipt.json"
+      ]
+    },
+    {
+      "name": "Historical MQTT transport",
+      "status": "verified",
+      "scope": "Actual broker and clients, source-row receipts, duplicate handling and subscriber recovery.",
+      "evidence": [
+        "twin/transport.py",
+        "reports/20261018_v1_Render_Deployment_Receipt.json"
+      ]
+    },
+    {
+      "name": "Chronological temperature forecasting",
+      "status": "verified",
+      "scope": "Chronological training, validation and test periods; persistence selected in all six room validation gates.",
+      "evidence": [
+        "twin/analytics.py",
+        "data/derived/20261018_v1_temperature_forecast.json"
+      ]
+    },
+    {
+      "name": "Cloud-hosted application",
+      "status": "verified",
+      "scope": "Complete application deployed to Render Free. Runtime state uses temporary storage.",
+      "evidence": [
+        "render.yaml",
+        "docs/20261018_v1_Public_Cloud_Deployment.md",
+        "reports/20261018_v1_Render_Deployment_Receipt.json"
+      ]
+    },
+    {
+      "name": "Environmental sensor station",
+      "status": "software_verified_hardware_pending",
+      "scope": "Authenticated temperature/humidity ingestion, separate station records, dashboard and retained-reading export are implemented. Local checks passed: 200 Python tests and 29 JavaScript tests. Both ESP32 firmware build checks passed. Physical commissioning follows equipment acquisition and authorised location/network setup.",
+      "evidence": [
+        "twin/live_sensor.py",
+        "tests/test_20261018_v1_live_sensor.py",
+        "docs/20261018_v1_Real_Sensor_Setup.md",
+        "tests/20261018_v1_Sensor_UI.test.mjs",
+        "firmware/20261018_v1_ESP32_SHT40/20261018_v1_Compile_Verification.json"
+      ]
+    }
+  ],
+  "data_scope": "Published historical source data and new station observations have separate identities and stores. A new station is not assigned to a room in the source flat.",
+  "verification_policy": "Each execution record identifies its revision, environment, date and checks. Sensor commissioning is recorded after the actual device is installed.",
+  "licences": {
+    "application": "MIT",
+    "published_source_and_derivations": "CC BY-SA 4.0"
+  }
+}

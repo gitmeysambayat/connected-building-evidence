@@ -6,5 +6,6 @@
 /pages/evidence/** -text
 /reports/*.json -text
 /reports/*.xml -text
+/firmware/20261018_v1_ESP32_SHT40/include/trusted_root.hpp -text
 *.png binary
 *.joblib binary

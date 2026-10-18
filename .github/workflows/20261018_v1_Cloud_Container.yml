@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '22'
       - name: Verify the full application browser control logic
-        run: node --test --test-reporter=spec tests/20261018_v1_Cloud_UI.test.mjs
+        run: node --test --test-reporter=spec tests/20261018_v1_Cloud_UI.test.mjs tests/20261018_v1_Sensor_UI.test.mjs
       - name: Build actual source-derived application stores into the image
         run: docker build --build-arg BUILD_REVISION="$GITHUB_SHA" --tag connected-building-cloud:ci .
       - name: Exercise HTTP, SPARQL and real MQTT under free-host capacity limits

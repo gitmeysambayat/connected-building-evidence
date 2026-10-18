@@ -15,6 +15,7 @@ const roomGuid = (r) => r.guid || r.room_guid || r.global_id;
 const roomName = (r) => r.room_id || r.long_name || r.name || roomGuid(r);
 const channelId = (c) => c.id || c.channel_id;
 const state = {summary:{},rooms:[],channels:[],selectedRoom:null,selectedChannel:null,series:null,points:[],cursor:0,view:'twin',roomMeshes:new Map(),physicalMeshes:[],geometry:null,shellVisible:true,loadedViews:new Set(),seriesRequest:0,replayTimer:null,session:null,sessionError:null,replayStatus:null,replayPending:false,replayRequest:0};
+const sensorState = {status:null,readings:[],error:'',checkedAt:null,serverAt:0,elapsedAt:0,failures:0,loading:false,request:0,timer:null,clock:null,controller:null};
 
 async function api(path, options = {}) {
   const response = await fetch(path, {cache:'no-store', credentials:'same-origin', ...options, headers:{Accept:'application/json',...(options.body ? {'Content-Type':'application/json'} : {}),...options.headers}});
@@ -167,6 +168,142 @@ function chartPointer(event) {if(!state.chartScale || !state.points.length)retur
 function setExportURL(){const link=$('download-series');link.setAttribute('aria-disabled',String(!state.selectedChannel));if(!state.selectedChannel){link.href='#';return;}const c=state.selectedChannel,params=new URLSearchParams();if($('series-start').value)params.set('start',new Date(`${$('series-start').value}:00Z`).toISOString());if($('series-end').value)params.set('end',new Date(`${$('series-end').value}:59Z`).toISOString());link.href=`/api/series/${encodeURIComponent(channelId(c))}/export.csv?${params}`;}
 function downloadSeries(event){if(!state.selectedChannel || $('download-series').getAttribute('aria-disabled')==='true'){event.preventDefault();return;}setExportURL();}
 
+function stationTime(value) {
+  const time = Date.parse(value);
+  return Number.isFinite(time) ? new Date(time).toISOString().replace('T', ' ').replace(/\.\d{3}Z$/, '') : 'Not available';
+}
+function sensorNow() {
+  return sensorState.serverAt ? sensorState.serverAt + Math.max(0, performance.now() - sensorState.elapsedAt) : Date.now();
+}
+function stationFreshness(status, now = sensorNow()) {
+  if (!status?.latest) return 'awaiting_reading';
+  const observed = Date.parse(status.latest.observed_at);
+  const threshold = Number(status.stale_after_seconds) > 0 ? Number(status.stale_after_seconds) * 1000 : 180000;
+  return Number.isFinite(observed) && now - observed <= threshold && observed - now <= 120000 ? 'fresh' : 'stale';
+}
+function observationAge(observed, now = sensorNow()) {
+  const timestamp = Date.parse(observed);
+  if (!Number.isFinite(timestamp)) return 'Not available';
+  const age = Math.floor((now - timestamp) / 1000);
+  if (age < 0) return `Device clock ${Math.abs(age)} s ahead`;
+  if (age < 60) return `${age} s`;
+  if (age < 3600) return `${Math.floor(age / 60)} min ${age % 60} s`;
+  if (age < 86400) return `${Math.floor(age / 3600)} h ${Math.floor(age % 3600 / 60)} min`;
+  return `${Math.floor(age / 86400)} d ${Math.floor(age % 86400 / 3600)} h`;
+}
+function safeStationReadings(payload) {
+  if (!Array.isArray(payload?.readings)) throw new Error('The station history response is incomplete.');
+  return payload.readings.slice(-60).filter(row => row?.source === 'authenticated_device_report' && Number.isFinite(Date.parse(row.observed_at)) && Number.isFinite(Date.parse(row.received_at)) && typeof row.temperature_c === 'number' && Number.isFinite(row.temperature_c) && typeof row.relative_humidity_pct === 'number' && Number.isFinite(row.relative_humidity_pct)).map(row => ({receipt_id:row.receipt_id,observed_at:row.observed_at,received_at:row.received_at,temperature_c:row.temperature_c,relative_humidity_pct:row.relative_humidity_pct,source:row.source}));
+}
+function renderSensorStatus() {
+  const status = sensorState.status, latest = status?.latest, freshness = stationFreshness(status);
+  const pill = $('sensor-freshness');
+  pill.className = `pill sensor-pill ${latest ? freshness : ''}`;
+  setText('sensor-freshness', latest ? freshness === 'fresh' ? 'Recent report' : 'Stale report' : 'Awaiting reading');
+  let title = 'Awaiting first device reading';
+  let description = status?.enabled ? 'The device interface is ready. No device observation has been received.' : 'The station will display temperature and humidity after a device is connected.';
+  if (latest) {
+    title = freshness === 'fresh' ? 'Recent device report received' : 'No recent device report';
+    description = freshness === 'fresh' ? 'The latest observation is within the station’s freshness interval.' : 'The last observation is outside the freshness interval. Values below remain the last received observations.';
+    if (!status.enabled) description = 'The device interface is currently disabled. The last received observations remain below.';
+  }
+  if (sensorState.error) {
+    title = 'Status check unavailable';
+    description = latest ? 'The last received values remain below. The station could not be checked and will retry automatically.' : 'The station service could not be checked. No measurements are displayed.';
+    if (!latest) setText('sensor-freshness', 'Status unavailable');
+  }
+  setText('sensor-status-title', title);
+  setText('sensor-status-description', description);
+  setText('sensor-temperature', latest ? number(latest.temperature_c, 2) : '·');
+  setText('sensor-humidity', latest ? number(latest.relative_humidity_pct, 2) : '·');
+  setText('sensor-observed', latest ? stationTime(latest.observed_at) : 'No reading received');
+  setText('sensor-received', latest ? stationTime(latest.received_at) : 'No reading received');
+  setText('sensor-age', latest ? observationAge(latest.observed_at) : 'Not available');
+  setText('sensor-checked', sensorState.checkedAt ? stationTime(sensorState.checkedAt) : 'Not checked');
+  $('sensor-refresh').disabled = sensorState.loading;
+  $('sensor-export').setAttribute('aria-disabled', String(!status?.count));
+  $('sensor-export').href = status?.count ? '/api/live-sensor/export.csv' : '#';
+  const noticeBox = $('sensor-notice');
+  noticeBox.textContent = sensorState.error;
+  noticeBox.classList.toggle('hidden', !sensorState.error);
+  noticeBox.classList.toggle('error', Boolean(sensorState.error));
+  if (status?.retention) {
+    const retention = status.retention;
+    setText('sensor-retention', `Recent history is limited to ${number(retention.max_age_days)} days and ${number(retention.max_rows)} records. ${status.state_persistence === 'ephemeral' ? 'This free hosting instance clears station history when it restarts or redeploys. Download retained readings to keep a copy.' : 'Records are held in the station’s local database.'}`);
+  }
+}
+function sensorChart(rows, key, unit) {
+  const points = [...rows].sort((a, b) => Date.parse(a.observed_at) - Date.parse(b.observed_at));
+  if (!points.length) return '<p class="empty-state">Awaiting first device reading</p>';
+  const w = 600, h = 190, m = {l:47,r:16,t:15,b:34};
+  const values = points.map(row => row[key]), times = points.map(row => Date.parse(row.observed_at));
+  const min = Math.min(...values), max = Math.max(...values), padding = (max - min) * .15 || .5;
+  const lo = min - padding, hi = max + padding, t0 = times[0], t1 = times.at(-1);
+  const x = t => t0 === t1 ? (w + m.l - m.r) / 2 : m.l + (t - t0) / (t1 - t0) * (w - m.l - m.r);
+  const y = value => h - m.b - (value - lo) / (hi - lo) * (h - m.t - m.b);
+  let grid = '', path = '';
+  for (let i = 0; i < 4; i++) {
+    const value = lo + (hi - lo) * i / 3;
+    grid += `<line x1="${m.l}" x2="${w-m.r}" y1="${y(value)}" y2="${y(value)}" stroke="var(--line)"/><text x="${m.l-8}" y="${y(value)+4}" text-anchor="end" fill="var(--muted)" font-size="10">${number(value,1)}</text>`;
+  }
+  points.forEach((row, i) => {path += `${!i || times[i] - times[i-1] > 180000 ? 'M' : 'L'}${x(times[i]).toFixed(1)},${y(row[key]).toFixed(1)} `;});
+  const circles = points.map((row, i) => `<circle cx="${x(times[i])}" cy="${y(row[key])}" r="2.7" fill="var(--accent)"><title>${esc(stationTime(row.observed_at))} UTC: ${number(row[key],2)} ${esc(unit)}</title></circle>`).join('');
+  const labels = [0, points.length - 1].filter((value, index, all) => all.indexOf(value) === index).map((index, i, all) => `<text x="${all.length === 1 ? x(times[index]) : i ? w-m.r : m.l}" y="${h-8}" text-anchor="${all.length === 1 ? 'middle' : i ? 'end' : 'start'}" fill="var(--muted)" font-size="10">${esc(new Date(times[index]).toISOString().slice(11,19))} UTC</text>`).join('');
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${key === 'temperature_c' ? 'Station air temperature in degrees Celsius' : 'Station relative humidity in per cent'} at device observation times in UTC">${grid}<path d="${path}" fill="none" stroke="var(--accent)" stroke-width="1.8"/>${circles}${labels}</svg>`;
+}
+function renderSensorHistory() {
+  const rows = sensorState.readings;
+  $('sensor-temperature-chart').innerHTML = sensorChart(rows, 'temperature_c', '°C');
+  $('sensor-humidity-chart').innerHTML = sensorChart(rows, 'relative_humidity_pct', '% RH');
+  setText('sensor-history-caption', rows.length ? `${number(rows.length)} most recent observation${rows.length === 1 ? '' : 's'} shown. Charts use device observation time and break across gaps longer than three minutes. The table shows the most recent observation first.` : 'No station observations have been received.');
+  $('sensor-readings').innerHTML = rows.length ? `<table class="sensor-history-table"><thead><tr><th>Observed (UTC)</th><th>Received (UTC)</th><th>Temperature (°C)</th><th>Humidity (% RH)</th></tr></thead><tbody>${[...rows].reverse().map(row => `<tr><td>${esc(stationTime(row.observed_at))}</td><td>${esc(stationTime(row.received_at))}</td><td>${number(row.temperature_c,2)}</td><td>${number(row.relative_humidity_pct,2)}</td></tr>`).join('')}</tbody></table>` : '<p class="empty-state">Awaiting first device reading</p>';
+}
+function exportSensorReadings(event) {
+  if (!sensorState.status?.count) event.preventDefault();
+}
+function stopSensorPolling() {
+  clearTimeout(sensorState.timer);clearInterval(sensorState.clock);
+  sensorState.timer = null;sensorState.clock = null;
+  ++sensorState.request;
+  sensorState.controller?.abort();sensorState.controller = null;sensorState.loading = false;
+}
+async function refreshSensor() {
+  if (state.view !== 'sensor' || document.hidden || sensorState.loading) return;
+  clearTimeout(sensorState.timer);sensorState.timer = null;
+  const request = ++sensorState.request, controller = new AbortController();
+  sensorState.controller = controller;sensorState.loading = true;renderSensorStatus();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+  try {
+    const [status, history] = await Promise.all([api('/api/live-sensor/status', {signal:controller.signal}), api('/api/live-sensor/readings?limit=60', {signal:controller.signal})]);
+    if (request !== sensorState.request) return;
+    if (typeof status?.enabled !== 'boolean' || !['disabled','awaiting_reading','reporting'].includes(status.state) || !Object.hasOwn(status, 'latest')) throw new Error('The station status response is incomplete.');
+    const rows = safeStationReadings(history);
+    if (status.latest && safeStationReadings({readings:[status.latest]}).length !== 1) throw new Error('The latest station observation is incomplete.');
+    sensorState.status = status;sensorState.readings = rows;sensorState.error = '';sensorState.failures = 0;
+    sensorState.serverAt = Number.isFinite(Date.parse(status.server_time)) ? Date.parse(status.server_time) : Date.now();
+    sensorState.elapsedAt = performance.now();sensorState.checkedAt = new Date(sensorState.serverAt).toISOString();
+    renderSensorHistory();
+  } catch (error) {
+    if (request !== sensorState.request) return;
+    ++sensorState.failures;
+    sensorState.error = error.name === 'AbortError' ? 'The station status check timed out. It will retry automatically.' : 'The station status could not be retrieved. It will retry automatically.';
+  } finally {
+    clearTimeout(timeout);
+    // A failed status request must also end a still-pending history request.
+    controller.abort();
+    if (request === sensorState.request) {
+      sensorState.loading = false;sensorState.controller = null;renderSensorStatus();
+      if (state.view === 'sensor' && !document.hidden) sensorState.timer = setTimeout(refreshSensor, Math.min(300000, 60000 * 2 ** Math.min(sensorState.failures, 3)));
+    }
+  }
+}
+function startSensorPolling() {
+  if (state.view !== 'sensor' || document.hidden) return;
+  renderSensorStatus();renderSensorHistory();
+  if (!sensorState.clock) sensorState.clock = setInterval(renderSensorStatus, 1000);
+  if (!sensorState.loading && !sensorState.timer) refreshSensor();
+}
+
 let renderer,scene,camera,controls,modelGroup,grid,modelAnimation,resizeObserver;
 const pickRay=new THREE.Raycaster(),pickPoint=new THREE.Vector2();
 async function initialiseModel() {
@@ -203,8 +340,33 @@ function highlightRooms(){for(const [guid,mesh] of state.roomMeshes){const r=sta
 function resetModel(top=false){if(!camera || !state.geometry)return;const b=state.geometry.bounds,span=Math.max(b.max[0]-b.min[0],b.max[1]-b.min[1]),height=b.max[2]-b.min[2];controls.target.set(0,0,height*.3);camera.position.set(top?0:span*.95,top?-.001:-span*1.23,top?span*1.85:span*1.05);controls.update();$('view-perspective').classList.toggle('active',!top);$('view-top').classList.toggle('active',top);}
 function updateModelTheme(){if(!renderer)return;const dark=document.body.classList.contains('theme-dark');renderer.setClearColor(dark?0x28392e:0xedf1eb);grid.material.color?.set?.(dark?0x4c6650:0xc5d3bd);}
 
-const viewTitles={twin:['BIM + MEASURED ENVIRONMENT','A building you can interrogate.','Select a real IFC room. Follow its published measurements back to the source.'],mapping:['SPATIAL IDENTITY + PROVENANCE','Every connection, accounted for.','Inspect the identifiers and relationships behind the room-to-channel mapping.'],quality:['COVERAGE + DATA ASSURANCE','Useful evidence has limits.','Find gaps and inconsistent records before drawing conclusions.'],analytics:['MEASURED PATTERNS + VALIDATION','From observation to prediction.','Evaluate historical behaviour with explicit methods and honest comparisons.'],transport:['INGESTION + EVENT PROVENANCE','A working pipeline, made visible.','Historical records move through a real application data path.'],evidence:['SOURCE INTEGRITY + REPRODUCIBILITY','Nothing hidden behind the model.','Inspect the source files, permissions and limits of this demonstration.']};
-async function switchView(view){if(!viewTitles[view])view='twin';state.view=view;document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id===`view-${view}`));document.querySelectorAll('.nav-item').forEach(btn=>{const active=btn.dataset.view===view;btn.classList.toggle('active',active);if(active)btn.setAttribute('aria-current','page');else btn.removeAttribute('aria-current');});const [eyebrow,title,subtitle]=viewTitles[view];setText('page-eyebrow',eyebrow);setText('page-title',title);setText('page-subtitle',subtitle);history.replaceState(null,'',`#${view}`);if(view==='twin'){requestAnimationFrame(()=>{renderChart();if(renderer){renderer.setSize($('model-viewport').clientWidth,$('model-viewport').clientHeight);camera.aspect=$('model-viewport').clientWidth/$('model-viewport').clientHeight;camera.updateProjectionMatrix();}});}if(!state.loadedViews.has(view)){if(view==='mapping')renderMapping();if(view==='quality')await loadQuality();if(view==='analytics')await loadAnalytics();if(view==='evidence')renderEvidence();if(view==='transport')await refreshReplay();state.loadedViews.add(view);}if(view==='transport' && !state.replayTimer)state.replayTimer=setInterval(refreshReplay,2000);if(view!=='transport' && state.replayTimer){clearInterval(state.replayTimer);state.replayTimer=null;}}
+const viewTitles={twin:['BIM + MEASURED ENVIRONMENT','A building you can interrogate.','Select a real IFC room. Follow its published measurements back to the source.'],mapping:['SPATIAL IDENTITY + PROVENANCE','Every connection, accounted for.','Inspect the identifiers and relationships behind the room-to-channel mapping.'],quality:['COVERAGE + DATA ASSURANCE','Useful evidence has limits.','Find gaps and inconsistent records before drawing conclusions.'],analytics:['MEASURED PATTERNS + VALIDATION','From observation to prediction.','Evaluate historical behaviour with explicit methods and honest comparisons.'],transport:['INGESTION + EVENT PROVENANCE','A working pipeline, made visible.','Historical records move through a real application data path.'],sensor:['INDEPENDENT ENVIRONMENTAL STATION','From device to observation.','Inspect station temperature and humidity, observation times and record freshness.'],evidence:['SOURCE INTEGRITY + REPRODUCIBILITY','Nothing hidden behind the model.','Inspect the source files, permissions and limits of this demonstration.']};
+async function switchView(view) {
+  if (!viewTitles[view]) view = 'twin';
+  state.view = view;
+  document.querySelectorAll('.view').forEach(el => el.classList.toggle('active', el.id === `view-${view}`));
+  document.querySelectorAll('.nav-item').forEach(btn => {const active = btn.dataset.view === view;btn.classList.toggle('active', active);if (active) btn.setAttribute('aria-current','page');else btn.removeAttribute('aria-current');});
+  const [eyebrow,title,subtitle] = viewTitles[view];
+  setText('page-eyebrow',eyebrow);setText('page-title',title);setText('page-subtitle',subtitle);
+  const sensorSelected = view === 'sensor';
+  const buildingLabel = state.summary.building?.name || state.summary.building_name || state.summary.dataset?.building || 'Published apartment case study';
+  setText('building-label', sensorSelected ? 'Independent environmental station' : typeof buildingLabel === 'string' ? buildingLabel : 'Published building');
+  $('historical-profile')?.classList.toggle('hidden', sensorSelected);
+  if ($('data-scope')) {$('data-scope').classList.toggle('historical', !sensorSelected);$('data-scope').innerHTML = `<span class="small-dot"></span> ${sensorSelected ? 'Independent station' : 'Historical data'}`;}
+  history.replaceState(null,'',`#${view}`);
+  if (sensorSelected) startSensorPolling();else stopSensorPolling();
+  if (view === 'twin') requestAnimationFrame(() => {renderChart();if (renderer) {renderer.setSize($('model-viewport').clientWidth,$('model-viewport').clientHeight);camera.aspect=$('model-viewport').clientWidth/$('model-viewport').clientHeight;camera.updateProjectionMatrix();}});
+  if (!state.loadedViews.has(view)) {
+    if (view === 'mapping') renderMapping();
+    if (view === 'quality') await loadQuality();
+    if (view === 'analytics') await loadAnalytics();
+    if (view === 'evidence') renderEvidence();
+    if (view === 'transport') await refreshReplay();
+    state.loadedViews.add(view);
+  }
+  if (view === 'transport' && !state.replayTimer) state.replayTimer = setInterval(refreshReplay,2000);
+  if (view !== 'transport' && state.replayTimer) {clearInterval(state.replayTimer);state.replayTimer=null;}
+}
 function renderMapping(){const verified=state.channels.filter(c=>c.mapping_verified===true),unknown=state.channels.filter(c=>c.mapping_verified===false);$('mapping-overview').innerHTML=`<div class="data-grid"><section class="card data-card"><span class="eyebrow">VERIFIED CHANNELS</span><strong class="big-number">${verified.length}</strong><p>Accepted source relationships. Measured channels and controller setpoints remain distinct.</p></section><section class="card data-card"><span class="eyebrow">MEASURED ROOM COVERAGE</span><strong class="big-number">${state.rooms.filter(monitored).length} of ${state.rooms.length}</strong><p>Rooms with verified measured sensor observations in the published records.</p></section><section class="card data-card"><span class="eyebrow">UNRESOLVED CHANNELS</span><strong class="big-number">${unknown.length}</strong><p>CSV-only candidates remain separate from verified source relationships.</p></section></div>`;$('mapping-register').innerHTML=`<div class="card-heading"><h3>IFC room mapping register</h3><span class="badge">${state.rooms.length} source spaces</span></div><table><thead><tr><th>IFC room</th><th>Persistent identifier</th><th>Measured channels</th><th>Controller channels</th><th>Evidence</th></tr></thead><tbody>${state.rooms.map(r=>`<tr><td><strong>${esc(roomName(r))}</strong><br><span class="muted">${esc(r.long_name || r.name || '')}</span></td><td><code>${esc(roomGuid(r))}</code><br><span class="muted">IFC #${esc(r.ifc_step_id || r.step_id || '')}</span></td><td>${measuredChannels(r).length ? measuredChannels(r).map(c=>`<span class="tag">${esc(metricName(c.metric))}</span>`).join(' ') : '<span class="tag unknown">Unmonitored</span>'}</td><td>${channelsFor(r).filter(c=>c.source_kind==='controller_setpoint').map(c=>esc(metricName(c.metric))).join(', ') || 'None'}</td><td><button class="table-action" data-evidence-guid="${esc(roomGuid(r))}">Inspect join ↗</button></td></tr>`).join('')}</tbody></table>`;if(unknown.length)$('mapping-register').insertAdjacentHTML('beforeend',`<div class="card-heading"><h3>Excluded or external source channels</h3></div><table><thead><tr><th>Channel</th><th>Source classification</th><th>Mapping status</th></tr></thead><tbody>${unknown.map(c=>`<tr><td><code>${esc(channelId(c))}</code></td><td>${esc(readable(c.source_kind))}</td><td>${esc(readable(c.mapping_status || 'No verified IFC relationship'))}</td></tr>`).join('')}</tbody></table>`);}
 function jsonDetails(data,label='Inspect the complete API evidence'){return `<details class="json-toggle"><summary>${esc(label)}</summary><pre>${esc(JSON.stringify(data,null,2))}</pre></details>`;}
 function renderValue(value){if(value===null || value===undefined)return '<span class="muted">Not provided</span>';if(typeof value==='boolean')return value?'Yes':'No';if(typeof value==='number')return number(value,3);if(typeof value==='object')return esc(JSON.stringify(value));return esc(value);}
@@ -285,7 +447,7 @@ function renderRuntimeProfile(context = publicReplayContext()) {
   banner.classList.toggle('hidden',!publicMode);
   if(!publicMode) return;
   setText('runtime-profile-title','Full application · shared public demonstration');
-  setText('runtime-profile-description','The Python services run on the server. Measurements remain historical. Free hosting can sleep when idle; the first request may take longer. Replay history can reset when the runtime restarts. The published source records are preserved.');
+  setText('runtime-profile-description','The Python services run on the server. The published flat uses historical records; sensor-station reports are stored separately. Free hosting can sleep when idle; the first request may take longer. Replay history can reset when the runtime restarts. The published source records are preserved.');
   setText('replay-description','Send original historical records through the server’s authenticated MQTT broker at QoS 1. One visitor controls replay at a time. The source observations remain from 2017.');
   setText('pipeline-retention-title','Recorded receipts');
   setText('pipeline-retention-description','Queryable events with limited runtime retention');
@@ -361,6 +523,6 @@ async function runGraphQuery(){
   try{const result=await api(`/api/graph/query?template=${encodeURIComponent($('graph-template').value)}`);host.innerHTML=`<p class="subtle-note">${number(result.rows?.length)} result row${result.rows?.length===1?'':'s'} · ${esc(result.engine || 'Persistent RDF graph database')}</p>${simpleTable(result.rows || [],result.columns)}<details class="json-toggle"><summary>Inspect the executed SPARQL query</summary><pre>${esc(result.sparql)}</pre></details>`;}catch(err){host.innerHTML=`<div class="notice error">The graph query could not be run. ${esc(err.message)}</div>`;}finally{button.disabled=false;}
 }
 
-function setupEvents(){document.querySelectorAll('.nav-item').forEach(btn=>btn.addEventListener('click',()=>switchView(btn.dataset.view)));document.querySelector('.brand').addEventListener('click',()=>switchView('twin'));$('room-list').addEventListener('click',e=>{const btn=e.target.closest('[data-room-guid]');if(btn)selectRoom(btn.dataset.roomGuid);});$('mapping-register').addEventListener('click',e=>{const btn=e.target.closest('[data-evidence-guid]');if(btn)inspectEvidence(btn.dataset.evidenceGuid);});$('channel-select').addEventListener('change',e=>selectChannel(e.target.value));$('apply-range').addEventListener('click',loadSeries);$('download-series').addEventListener('click',downloadSeries);$('chart-cursor').addEventListener('input',e=>updateCursor(e.target.value));$('timeseries-chart').addEventListener('pointermove',chartPointer);$('timeseries-chart').addEventListener('click',chartPointer);$('timeseries-chart').addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();updateCursor(state.cursor+(e.key==='ArrowLeft'?-1:1));}});$('model-reset').addEventListener('click',()=>resetModel());$('view-perspective').addEventListener('click',()=>resetModel());$('view-top').addEventListener('click',()=>resetModel(true));$('model-shell').addEventListener('click',()=>{state.shellVisible=!state.shellVisible;state.physicalMeshes.forEach(mesh=>mesh.visible=state.shellVisible);$('model-shell').setAttribute('aria-pressed',String(state.shellVisible));});$('room-evidence-button').addEventListener('click',()=>state.selectedRoom && inspectEvidence(roomGuid(state.selectedRoom)));$('close-evidence').addEventListener('click',()=>$('evidence-dialog').close());$('evidence-dialog').addEventListener('click',e=>{if(e.target===$('evidence-dialog')){const b=$('evidence-dialog').getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)$('evidence-dialog').close();}});$('replay-speed').addEventListener('change',updateReplayControls);$('replay-limit').addEventListener('input',updateReplayControls);$('replay-start').addEventListener('click',()=>replayAction('start'));$('replay-stop').addEventListener('click',()=>replayAction('stop'));$('replay-reconnect').addEventListener('click',testReconnection);$('theme-toggle').addEventListener('click',()=>{document.body.classList.toggle('theme-dark');localStorage.setItem('connected-building-theme',document.body.classList.contains('theme-dark')?'dark':'light');updateModelTheme();renderChart();});window.addEventListener('resize',()=>{if(state.view==='twin')renderChart();});window.addEventListener('hashchange',()=>switchView(location.hash.slice(1)));}
+function setupEvents(){$('sensor-refresh').addEventListener('click',refreshSensor);$('sensor-export').addEventListener('click',exportSensorReadings);document.addEventListener('visibilitychange',()=>{if(document.hidden)stopSensorPolling();else if(state.view==='sensor')startSensorPolling();});document.querySelectorAll('.nav-item').forEach(btn=>btn.addEventListener('click',()=>switchView(btn.dataset.view)));document.querySelector('.brand').addEventListener('click',()=>switchView('twin'));$('room-list').addEventListener('click',e=>{const btn=e.target.closest('[data-room-guid]');if(btn)selectRoom(btn.dataset.roomGuid);});$('mapping-register').addEventListener('click',e=>{const btn=e.target.closest('[data-evidence-guid]');if(btn)inspectEvidence(btn.dataset.evidenceGuid);});$('channel-select').addEventListener('change',e=>selectChannel(e.target.value));$('apply-range').addEventListener('click',loadSeries);$('download-series').addEventListener('click',downloadSeries);$('chart-cursor').addEventListener('input',e=>updateCursor(e.target.value));$('timeseries-chart').addEventListener('pointermove',chartPointer);$('timeseries-chart').addEventListener('click',chartPointer);$('timeseries-chart').addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();updateCursor(state.cursor+(e.key==='ArrowLeft'?-1:1));}});$('model-reset').addEventListener('click',()=>resetModel());$('view-perspective').addEventListener('click',()=>resetModel());$('view-top').addEventListener('click',()=>resetModel(true));$('model-shell').addEventListener('click',()=>{state.shellVisible=!state.shellVisible;state.physicalMeshes.forEach(mesh=>mesh.visible=state.shellVisible);$('model-shell').setAttribute('aria-pressed',String(state.shellVisible));});$('room-evidence-button').addEventListener('click',()=>state.selectedRoom && inspectEvidence(roomGuid(state.selectedRoom)));$('close-evidence').addEventListener('click',()=>$('evidence-dialog').close());$('evidence-dialog').addEventListener('click',e=>{if(e.target===$('evidence-dialog')){const b=$('evidence-dialog').getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)$('evidence-dialog').close();}});$('replay-speed').addEventListener('change',updateReplayControls);$('replay-limit').addEventListener('input',updateReplayControls);$('replay-start').addEventListener('click',()=>replayAction('start'));$('replay-stop').addEventListener('click',()=>replayAction('stop'));$('replay-reconnect').addEventListener('click',testReconnection);$('theme-toggle').addEventListener('click',()=>{document.body.classList.toggle('theme-dark');localStorage.setItem('connected-building-theme',document.body.classList.contains('theme-dark')?'dark':'light');updateModelTheme();renderChart();});window.addEventListener('resize',()=>{if(state.view==='twin')renderChart();});window.addEventListener('hashchange',()=>switchView(location.hash.slice(1)));}
 async function main(){if(localStorage.getItem('connected-building-theme')==='dark')document.body.classList.add('theme-dark');setupEvents();await initialiseSession();try{const results=await Promise.allSettled([api('/api/summary'),api('/api/rooms'),api('/api/channels?include_unverified=true')]);if(results[0].status==='fulfilled')state.summary=results[0].value;if(results[1].status==='fulfilled')state.rooms=asArray(results[1].value,['rooms','spaces','items','data']);else throw results[1].reason;if(results[2].status==='fulfilled')state.channels=asArray(results[2].value,['channels','items','data']);else throw results[2].reason;renderStats();renderRooms();initialiseModel();const first=state.rooms.find(r=>monitored(r)) || state.rooms[0];if(first)await selectRoom(roomGuid(first));await switchView(location.hash.slice(1) || 'twin');if(results[0].status==='rejected')notice('The source summary could not be loaded. Room and measurement data remain available.',true);}catch(err){notice(`The building service is not available. ${err.message}`,true);$('room-list').innerHTML='<p class="empty-state">The verified room register could not be loaded.</p>';$('model-loading').innerHTML='<p>The building service is not available.<br>Please retry after the service starts, or inspect its deployment status.</p>';}}
 main();

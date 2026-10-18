@@ -1,4 +1,4 @@
-"""One building, one provenance chain, shared REST and GraphQL data services."""
+"""Historical building data services and a separate environmental sensor station."""
 from __future__ import annotations
 
 import asyncio
@@ -25,8 +25,10 @@ from graphql.language import OperationDefinitionNode, FragmentDefinitionNode, Fr
 from twin import analytics, data, geometry, operations, semantic, settings
 from twin.transport import HistoricalTransport
 from twin.public_demo import PublicDemo, PublicRequestLimits
+from twin.live_sensor import LiveSensor, SensorIngressLimits, parse_reading
 
 public_demo = PublicDemo.from_environment()
+live_sensor = LiveSensor.from_environment()
 transport = HistoricalTransport(delivery_retention=public_demo.delivery_retention if public_demo.enabled else None, public_mode=public_demo.enabled)
 
 
@@ -54,9 +56,10 @@ async def lifespan(app):
 
 
 app = FastAPI(title="Connected Building", version=settings.BUILD_VERSION,
-              description="Published Open Smart Home observations linked to their pinned IFC spaces. Historical data, local MQTT replay, SQL and RDF graph.",
+              description="IFC-linked historical observations, REST and GraphQL, SQL and RDF services, MQTT replay and a separate authenticated environmental sensor station.",
               lifespan=lifespan, docs_url="/api/docs", redoc_url=None)
 app.add_middleware(PublicRequestLimits, policy=lambda: public_demo)
+app.add_middleware(SensorIngressLimits, station=lambda: live_sensor)
 
 
 @app.middleware("http")
@@ -69,7 +72,7 @@ async def basic_headers(request: Request, call_next):
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["X-Frame-Options"] = "DENY"
-    if request.url.path.startswith("/api/replay"):
+    if request.url.path.startswith(("/api/replay", "/api/live-sensor")):
         response.headers["Cache-Control"] = "no-store"
     return response
 
@@ -96,6 +99,37 @@ def summary():
     return {**data.summary(), "geometry": geometry.summary(), "semantic": semantic.summary(),
             "analytics_status": analytics.report()["status"], "transport": transport.status(),
             "deployment": public_demo.deployment()}
+
+
+@app.get('/api/live-sensor/status')
+def live_sensor_status():
+    return live_sensor.status()
+
+
+@app.get('/api/live-sensor/readings')
+def live_sensor_readings(limit: int = Query(60, ge=1, le=360)):
+    return live_sensor.readings(limit)
+
+
+@app.get('/api/live-sensor/export.csv')
+def live_sensor_export():
+    result = live_sensor.readings(live_sensor.max_rows)
+    stream = StringIO(newline='')
+    fields = ['station_label', 'model_assignment', 'receipt_id', 'observed_at', 'received_at',
+              'temperature_c', 'relative_humidity_pct', 'source']
+    writer = csv.DictWriter(stream, fieldnames=fields)
+    writer.writeheader()
+    for row in result['readings']:
+        writer.writerow({'station_label': result['station_label'], 'model_assignment': 'unassigned', **row})
+    return Response(stream.getvalue(), media_type='text/csv; charset=utf-8', headers={
+        'Cache-Control': 'no-store', 'Content-Disposition': 'attachment; filename="20261018_v1_Environmental_Station_Readings.csv"'})
+
+
+@app.post('/api/live-sensor/readings')
+async def live_sensor_ingest(request: Request):
+    reading = parse_reading(await request.body())
+    result, status_code = await asyncio.to_thread(live_sensor.accept, reading)
+    return JSONResponse(result, status_code=status_code, headers={'Cache-Control': 'no-store'})
 
 
 @app.get("/api/rooms")

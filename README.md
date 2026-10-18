@@ -1,124 +1,119 @@
 # Connected Building
 
-**Developed by [Meysam Bayat](https://github.com/gitmeysambayat) with AI assistance.**
+**Developed by [Meysam Bayat](https://github.com/gitmeysambayat).**
 
-The application and its analyses are this portfolio project. The original IFC
-model and monitoring records come from the separately credited dataset below.
-
-A reproducible BIM-linked monitoring demonstrator connecting an actual IFC
-model to historical measurements from the same published flat. GitHub holds
-the source, tests and deployment configuration. The complete Python application
-runs on Render; GitHub Pages provides a separate read-only data explorer.
+A BIM-linked monitoring application combining IFC geometry, traceable
+measurements, relational and semantic databases, REST/GraphQL services and an
+interactive dashboard.
 
 **[Open the full application](https://connected-building-evidence.onrender.com/)**
+| [GitHub Pages data explorer](https://gitmeysambayat.github.io/connected-building-evidence/)
+| [Connect a sensor](docs/20261018_v1_Real_Sensor_Setup.md)
 
-[Open the read-only GitHub Pages explorer](https://gitmeysambayat.github.io/connected-building-evidence/)
+## Monitoring workflows
 
-Free hosting sleeps after inactivity. Allow about a minute for a cold start.
-Replay receipts and visitor leases use temporary runtime storage and reset on
-sleep, restart or redeployment. The pinned source building and measurements
-are rebuilt from the repository. See [Render's free-service limits](https://render.com/docs/free).
-
-The viewer is hosted on GitHub Pages. The [first successful deployment](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39110024607/attempts/2)
-was checked in a browser, and all 62 data and evidence assets matched their
-recorded hashes. Downloaded CSVs were checked against all 10,598 original Room1
-temperature records and a selected 52-record Room2 interval.
-
-The [application verification run](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39110024621)
-passed all 110 tests. The separate [viewer test report](pages/evidence/20261018_v2_Data_Adapter_Test_Report.json)
-records 13 passing tests, including room-switching and delayed-response
-regressions. See the [current workflow runs](https://github.com/gitmeysambayat/connected-building-evidence/actions)
-for later deployments and checks. The [initial verification receipt](reports/20261018_v1_GitHub_Verification.json)
-preserves the earlier attempts and their exact execution scope.
-
-## Full application hosting
-
-The service is deployed on **Render Free**. All nine external HTTPS checks of
-revision `90782821` passed on 18 October 2026. They verified the source IFC,
-SQL-backed REST and GraphQL responses, live Oxigraph/SPARQL, visitor controls
-and real internal MQTT: 20 source events were accepted, then a broker
-replacement and fresh subscriber correctly recognised 20 repeat deliveries.
-The [Render verification receipt](reports/20261018_v1_Render_Deployment_Receipt.json)
-records the exact source revision, source-row receipt checks and execution scope.
-
-<!-- render-recovery-status:start -->
-**Repaired reconnection and repeat-delivery handling passed on Render.** The
-receipt also preserves the initial revision's failed restart and the subsequent
-provider-level recovery, which reset temporary receipts from 20 to zero.
-The [deployment guide](docs/20261018_v1_Public_Cloud_Deployment.md) explains the
-recovery sequence and the remaining free-host limits.
-<!-- render-recovery-status:end -->
-
-The [Linux container verification for that revision](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39123160789)
-passed six integration checks under 512 MiB RAM and 0.1 CPU, with a 230.18 MiB
-peak and no out-of-memory events. The
-[backend verification](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39123160782)
-passed 140 Python tests. The
-[Pages workflow](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39123160724)
-and cloud-container workflow together passed 21 JavaScript checks: 13 for the
-viewer and eight for the full application interface. These are recorded
-revision-specific checks, rather than a production reliability guarantee.
-
-## Available application profiles
-
-| Profile | What actually runs |
+| Workflow | Implementation |
 |---|---|
-| **Full hosted application** | The Python service queries SQLite, executes fixed SPARQL against Oxigraph/RocksDB, serves the actual IFC model and original records, and runs bounded historical replay through an authenticated internal MQTT broker and publisher/subscriber clients. Source-derived stores and analyses are prepared during the image build. Replay controls share one short visitor lease; runtime receipts are temporary. |
-| **GitHub Pages** | The browser renders exported IFC geometry, reads the original measurement files, checks source hashes and displays preserved quality, semantic and analysis evidence. It supports room selection, date ranges and complete selected-row CSV downloads. It is read-only. |
-| **Full local application** | Python imports the original records into SQLite, extracts IFC geometry, maintains an Oxigraph/RocksDB graph, executes bounded SPARQL, serves REST and GraphQL, and runs historical replay through a real local MQTT broker and publisher/subscriber clients. |
+| Published building case study | Actual IFC spaces, original 2017 observations and publisher RDF from the same flat. Room selection, source-row inspection, complete selected-channel CSV export and reproducible analyses. |
+| Semantic integration | Oxigraph/RocksDB stores original source graphs and a separate derived identity graph. Fixed SPARQL queries inspect room alignment and channel associations. |
+| Data services | Python/FastAPI REST and typed GraphQL query the same SQLite-backed source catalogue and measurements. |
+| Historical transport | An authenticated internal MQTT broker and real publisher/subscriber clients deliver historical source events, record receipts, recognise duplicate deliveries and exercise recovery. |
+| Environmental sensor station | A dedicated authenticated HTTPS endpoint, separate station store, current-status dashboard and retained-reading export. ESP32/SHT40 firmware and setup instructions are included. Physical commissioning begins when the device is installed. |
 
-GitHub Pages serves static files. Its archived semantic-query and model results
-are labelled as snapshots. The hosted application executes the database and
-transport services; current physical sensors and building control are absent
-from all three profiles. The same implementation can also run locally.
+The new station has its own identity. Its observations are stored separately
+from the published flat and are not assigned to rooms in that source model.
 
-Use the [GitHub demonstration guide](docs/20261018_v1_GitHub_Demonstration.md)
-for a short walkthrough, and the [full backend guide](docs/20261018_v1_Local_Backend.md)
-for architecture, API examples, methods and detailed setup.
+## Sensor equipment
 
-## One building, traceable evidence
+The recommended solderless kit uses an Adafruit ESP32 Feather V2, an Adafruit
+SHT40 temperature/humidity sensor, a 200 mm STEMMA QT cable and a USB data
+cable. The [equipment and setup guide](docs/20261018_v1_Real_Sensor_Setup.md)
+contains verified product links, wiring, firmware instructions and commissioning
+checks. No device credentials are included in the repository or browser code.
 
-The source is [Open Smart Home Data](https://github.com/TechnicalBuildingSystems/OpenSmartHomeData/tree/34acb1fb7a24005ddf29f7f232081713c2f78291),
-pinned to commit `34acb1fb7a24005ddf29f7f232081713c2f78291`.
-It supplies the IFC, room alignment, RDF metadata and original measurement files
-together. The [source audit](data/source/20261018_v1_Exact_Mapping_and_Data_Audit.json)
-and [manifest](data/source/20261018_v1_Manifest.json) record:
+The sensor station starts empty. It shows observation time, server receipt time
+and freshness once configured hardware reports arrive. A stopped stream becomes
+stale. Historical replay does not populate the station.
 
-- Nine IFC spaces, six with associated monitoring records.
-- 285,954 original records across 37 channels, dated March to June 2017.
-- Thirty-six publisher-RDF-supported channel associations. The remaining
-  Toilet thermostat filename suggestion stays unverified.
-- One exact IFC identity, SHA-256
+## Source building and dataset
+
+[Open Smart Home Data](https://github.com/TechnicalBuildingSystems/OpenSmartHomeData/tree/34acb1fb7a24005ddf29f7f232081713c2f78291)
+is pinned to commit `34acb1fb7a24005ddf29f7f232081713c2f78291`. It provides the
+IFC, room alignment, RDF metadata and original measurement files together.
+The [manifest](data/source/20261018_v1_Manifest.json) and
+[source audit](data/source/20261018_v1_Exact_Mapping_and_Data_Audit.json) record:
+
+- Nine IFC spaces and six monitored rooms.
+- 285,954 original records across 37 channels, from March to June 2017.
+- Thirty-six publisher-RDF-supported channel associations and one unresolved
+  Toilet thermostat channel, retained separately.
+- Original IFC SHA-256
   `42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03`.
 
-The model contains no `IfcSensor` instances. The project maps records to source
-rooms and does not invent sensor positions. Outdoor records are copied virtual
-weather data; recorded setpoints are controller events. The
-[quality implementation](twin/data.py) and preserved evidence expose these
-qualifications rather than counting every channel as an independent sensor.
+Measured indoor channels, controller setpoints and repeated external weather
+feeds retain their source classifications. Spatial joins use the publisher's
+documented room relationships. Geometry shows the source building elements and
+spaces; the source model contains no sensor coordinates.
 
-## Dataset citation and reuse
+### Dataset citation
 
 Schneider, G. F. and Rasmussen, M. H. (2018).
-*TechnicalBuildingSystems/OpenSmartHomeData: First release of Open Smart Home Data Set*
-(v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.1244602.
+*TechnicalBuildingSystems/OpenSmartHomeData: First release of Open Smart Home
+Data Set* (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.1244602.
 
-This archive citation identifies the first release. The exact source used by
-this application is the pinned Git commit linked above, which is recorded
-separately in the source manifest. The repository also credits Peter Bonsma,
-Pieter Pauwels and Jyrki Oraskari as contributors. Measured time series are
-credited to Fraunhofer Institute for Building Physics (2018), and RDF metadata
-to the W3C Linked Building Data Community Group contributors (2018).
+The archive citation identifies the first release; the exact Git source used
+here is pinned separately above. The source also credits Peter Bonsma, Pieter
+Pauwels and Jyrki Oraskari. Measured time series are credited to Fraunhofer
+Institute for Building Physics (2018), and RDF metadata to the W3C Linked
+Building Data Community Group contributors (2018).
 
-Original source bytes and notices are retained. Geometry extraction, database
-imports, explicit room mappings and analyses are documented transformations.
-Source and derived data retain [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
-terms; newly authored application code has its separate MIT licence. See
-[NOTICE](NOTICE) for full attribution, changes and third-party notices.
+Original source bytes and notices are preserved. IFC geometry extraction,
+database imports, explicit room mappings and analyses are documented
+transformations. Source and derived data retain
+[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) terms.
 
-## Run the full application
+## Analysis and verification
 
-Use Python 3.12. On Windows, from the repository root:
+The [temperature-forecast experiment](twin/analytics.py) separates training,
+validation and test periods chronologically and purges target boundaries.
+All six room validation gates select persistence over Ridge. Candidate and
+later test errors remain in the
+[forecast report](data/derived/20261018_v1_temperature_forecast.json).
+
+The heating-command review compares each measured air temperature with a
+preceding same-room controller command at most 24 hours old. Its illustrative
+1 degree Celsius comparison band is a descriptive analysis setting. The
+reports retain the original rows, command ages and method definitions.
+
+[GitHub Actions](https://github.com/gitmeysambayat/connected-building-evidence/actions)
+runs backend, interface and Linux-container checks. The
+[Render deployment receipt](reports/20261018_v1_Render_Deployment_Receipt.json)
+records executed external HTTPS, source-integrity, REST/GraphQL, SPARQL and
+MQTT checks at their stated revision and time. The
+[technical capability record](docs/20261018_v2_Technical_Capability_Record.json)
+lists supporting implementation and execution records.
+
+Use the [demonstration guide](docs/20261018_v1_Demonstration_and_Learning.md)
+for a short walkthrough and the [backend guide](docs/20261018_v1_Local_Backend.md)
+for methods and API examples. Sensor commissioning has its own checklist in
+the [device guide](docs/20261018_v1_Real_Sensor_Setup.md).
+
+## Hosting
+
+The full Python application runs on Render Free. GitHub Pages serves a separate
+read-only explorer with preserved source files and frozen analysis exports.
+The full application executes its database, graph and transport services.
+
+Free hosting sleeps after inactivity, so the first visit can take longer.
+Runtime receipts and station observations use temporary storage and can reset
+after sleep, restart or redeployment. Export station records when collecting a
+commissioning dataset. Pinned source records are rebuilt from the repository.
+See [the deployment guide](docs/20261018_v1_Public_Cloud_Deployment.md) and
+[Render's service limits](https://render.com/docs/free).
+
+## Run locally
+
+Use Python 3.12 and the pinned requirements. On Windows, from the repository:
 
 ```powershell
 python -m venv "$env:USERPROFILE\venvs\connected-building"
@@ -128,58 +123,20 @@ $env:CONNECTED_BUILDING_PYTHON = $py
 .\20261018_v1_Start.ps1 -Port 8775
 ```
 
-Open [http://127.0.0.1:8775/](http://127.0.0.1:8775/).
-The launcher keeps mutable state outside the checkout. Stop its recorded service
-with `.\20261018_v1_Stop.ps1`. For manual Python startup, custom state paths and
-the optional full upstream RDF download, follow the
-[backend guide](docs/20261018_v1_Local_Backend.md#reproduce-from-source).
-
-To rebuild and test after installation, stop the service first:
-
-```powershell
-& $py scripts/build_data.py
-& $py scripts/build_geometry.py
-& $py scripts/build_analytics.py
-& $py scripts/20261018_v1_Verify.py
-```
-
-The [archived local test report](reports/20261018_v1_Test_Results.json) records
-its own source snapshot and execution scope. GitHub Actions, Linux-container
-and Render receipts provide separate, revision-specific evidence for their
-respective execution environments.
-
-## What the analysis supports
-
-The [forecast experiment](twin/analytics.py) uses chronological training,
-validation and test periods with purged target boundaries. **All six validation
-gates select persistence over Ridge.** The rejected candidates and later test
-results are retained in the
-[forecast report](data/derived/20261018_v1_temperature_forecast.json).
-No successful model or energy-saving result is claimed.
-
-The [heating-command review](twin/operations.py) compares measured air
-temperature with the last recorded same-room command, at most 24 hours old.
-Its illustrative 1 degree Celsius band is not an established comfort or fault
-criterion. There is no current physical sensor/BMS connection, building control,
-independent calibration, surveyed as-built validation or cross-building
-validation in this project.
-
-The project was assembled with AI assistance. Its working capabilities do not
-establish the owner's independent proficiency, qualifications or prior
-experience. The [learning exercises](docs/20261018_v1_Demonstration_and_Learning.md)
-and [role-evidence matrix](docs/20261018_v1_Role_Evidence_Matrix.json) distinguish
-artefact evidence from personal competence. The matrix now includes the dated Render checks and distinguishes artefact
-capabilities from personal proficiency. The
-[deployment guide](docs/20261018_v1_Public_Cloud_Deployment.md) records the hosting scope and limits.
+Open <http://127.0.0.1:8775/>. The launcher keeps mutable state outside the
+checkout. Use `.\20261018_v1_Stop.ps1` to stop its recorded service. Manual
+startup, source rebuilding and optional upstream RDF checks are documented in
+the [backend guide](docs/20261018_v1_Local_Backend.md#reproduce-from-source).
 
 ## Repository and licences
 
-`twin/`, `static/`, `tests/` and `scripts/` contain the complete application;
-`data/source/` preserves pinned source bytes; `pages/` contains the separate
-browser viewer. Runtime databases, broker credentials and local cloud-hosting
-metadata are excluded from version control.
+`twin/`, `static/`, `tests/` and `scripts/` contain the application. `firmware/`
+contains the device project, `data/source/` the pinned source bytes, and
+`pages/` the read-only explorer. Secrets, runtime stores and private application
+documents are excluded from version control.
 
-New code is [MIT licensed](LICENSE). Source IFC, CSV, RDF, excerpts and derived
-data retain [CC BY-SA 4.0](data/source/LICENSE.md) attribution and terms.
+Application code is [MIT licensed](LICENSE). Source IFC, CSV, RDF, excerpts and
+data-derived material retain their [source licence](data/source/LICENSE.md).
 Three.js retains its [MIT notice](static/vendor/THREE-LICENSE.txt).
-See [NOTICE](NOTICE). No institutional endorsement is implied.
+[NOTICE](NOTICE) records attribution and transformations, and
+[CITATION.cff](CITATION.cff) supplies citation metadata.

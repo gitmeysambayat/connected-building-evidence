@@ -2,8 +2,8 @@
 
 This repository has two execution profiles built around the same published
 flat. The GitHub Pages viewer is a read-only browser demonstration. The Python
-application supplies the live local services. Neither profile needs the former
-ChatGPT-hosted site.
+application runs locally and on Render with its database, graph and transport
+services. The sensor station uses the full application.
 
 The Pages address is
 [gitmeysambayat.github.io/connected-building-evidence](https://gitmeysambayat.github.io/connected-building-evidence/).
@@ -61,10 +61,9 @@ current sensor connection or operational BMS integration. The model contains
 no `IfcSensor` entities, so no sensor coordinates or hardware GUIDs are invented.
 
 The [full demonstration and learning guide](20261018_v1_Demonstration_and_Learning.md)
-provides source-row examples and personal exercises. The
-[role-evidence matrix](20261018_v1_Role_Evidence_Matrix.json) covers the original
-local artefact. Repository publication adds inspectable source and a browser
-viewer; it does not confer qualifications or independently establish mastery.
+provides source-row examples and practical exercises. The
+[technical capability record](20261018_v2_Technical_Capability_Record.json) documents
+the local and hosted workflows and the separate device-commissioning stage.
 
 ## Reproduce and inspect verification
 
@@ -118,9 +117,9 @@ viewer address. Deployment completion and browser operation need their own check
 
 ## Scope and attribution
 
-The project was assembled with AI assistance. Before presenting personal
-competence, complete the exercises and be able to trace a record, explain the
-mapping, reproduce the checks and describe a change you made yourself.
+Use the demonstration guide to trace an observation, inspect its IFC mapping,
+query the application services and reproduce the verification checks. The
+real-sensor guide covers device setup and a dated commissioning record.
 
 New code is MIT licensed. The published IFC, observations, RDF, excerpts and
 derived data retain their source attribution and CC BY-SA 4.0 terms. See

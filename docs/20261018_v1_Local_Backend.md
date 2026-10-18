@@ -245,33 +245,22 @@ integrity checks. [The local test record](../reports/20261018_v1_Test_Results.js
 records its exit code and test outcomes; read the current result before claiming
 that a check passed.
 
-`Dockerfile`, `compose.yaml` and `.github/workflows/verify.yml` were prepared
-definitions in the original local release. For the current repository, inspect
-the latest GitHub Actions run separately from the archived local report. The
-original local report does not establish hosted execution. The container configuration separates mutable state, uses one
-application worker and exposes HTTP on host loopback in Compose. **Docker
-execution and hosted CI execution have not been verified in this environment.**
-The original local report supplies no cloud deployment or publication receipt.
-The separate GitHub Pages viewer serves static files and does not execute this
-backend. See [the GitHub demonstration guide](20261018_v1_GitHub_Demonstration.md).
+## Deployment and device connection
 
-## Scope and evidence for the role
+The same Python backend runs locally and on Render. The
+[cloud deployment guide](20261018_v1_Public_Cloud_Deployment.md) and dated
+[Render receipt](../reports/20261018_v1_Render_Deployment_Receipt.json) record
+executed container and external service checks. GitHub Pages serves the
+separate source-data explorer.
 
-Read [the demonstration and learning guide](../docs/20261018_v1_Demonstration_and_Learning.md)
-and [the criterion-by-criterion evidence matrix](../docs/20261018_v1_Role_Evidence_Matrix.json).
-They distinguish working artefact capabilities from the candidate's personal
-competence, qualifications and prior experience. The project was assembled with
-AI assistance; running code does not establish that its owner can independently
-explain or maintain it.
+The [demonstration guide](20261018_v1_Demonstration_and_Learning.md) covers the
+room-to-record workflow. The [technical capability record](20261018_v2_Technical_Capability_Record.json)
+lists implementation evidence and verification stages.
 
-This is a local, historical BIM-linked monitoring and analytics demonstrator.
-Hosted execution of the Python backend, a current physical sensor connection, operational BMS
-integration, building control, independent sensor calibration, surveyed
-as-built verification, energy optimisation and cross-building generalisation
-remain outside the demonstrated scope. Revit authoring, BIM-server operations,
-Eurocode design checks and professional qualifications are not supplied by this
-build. Browser and end-to-end execution evidence must be read from the linked
-verification records, not inferred from these instructions or test definitions.
+The [real-sensor setup guide](20261018_v1_Real_Sensor_Setup.md) describes the
+separate ESP32/SHT40 station, credentials and commissioning checks. Its device
+records use their own store and station identity. The pinned source flat and
+its historical observations are preserved separately.
 
 ## Licences and attribution
 

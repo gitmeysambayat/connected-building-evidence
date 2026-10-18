@@ -7,7 +7,7 @@ authors:
     given-names: Meysam
 repository-code: "https://github.com/gitmeysambayat/connected-building-evidence"
 url: "https://connected-building-evidence.onrender.com/"
-abstract: "A portfolio application developed with AI assistance, connecting a published IFC model to historical monitoring records. The original model and observations are attributed separately in NOTICE."
+abstract: "A BIM-linked monitoring application with IFC geometry, historical measurements, REST and GraphQL services, semantic queries and a separate environmental sensor-station interface. Original source data are attributed in NOTICE."
 license: MIT
 references:
   - type: software

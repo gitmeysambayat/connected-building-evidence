@@ -131,6 +131,14 @@ def main() -> None:
         assert summary["deployment"]["state_persistence"] == "ephemeral"
         assert summary["transport"]["persistent_unique_events"] == 0
         results["checks"].append({"name": "fresh_prepared_boot_and_source_counts", "passed": True, "ready_seconds": first_start})
+        station = client.request("/api/live-sensor/status")
+        assert station["enabled"] is False and station["state"] == "disabled"
+        assert station["latest"] is None and station["count"] == 0
+        assert station["model_assignment"] == "unassigned"
+        assert client.request("/api/live-sensor/readings")["readings"] == []
+        client.request("/api/live-sensor/readings", {}, expected=503)
+        assert client.request("/api/live-sensor/status")["count"] == 0
+        results["checks"].append({"name": "sensor_station_empty_by_default_and_unconfigured_ingestion_rejected", "passed": True})
         graph = client.request("/api/graph/query?template=room_alignment")
         assert len(graph["rows"]) == 9
         assert len(client.request("/api/graph/query?template=verified_channels")["rows"]) == 36
