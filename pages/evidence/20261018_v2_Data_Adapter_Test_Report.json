@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-10-18T08:26:32.273680+00:00",
+  "generated_at_utc": "2026-10-18T08:30:39.835042+00:00",
   "profile": "Read-only GitHub Pages viewer",
   "executed": true,
   "command_from_repository_root": "node --test --test-reporter=spec pages/tests/20261018_v1_Data_Adapter.test.mjs",
@@ -35,7 +35,7 @@
     "Physical sensor connection or calibration"
   ],
   "tested_files": {
-    "index.html": "f0e2b9222e15327a3ebe0540eb541a44a6a7dbddd14a0cb6fce08b07b747120a",
+    "index.html": "172d14ea2c404539a2cf035c4f30a74b2e6d20c720ab2cfda6d02dd18aab7539",
     "static/app.js": "a875f25c66d99f3783bb6613c7311b3a2be7f4197c64f659fdb9afed5d9f0284",
     "static/data-adapter.js": "3d45b59fba6b6a58d7f7ad803fc0948c254d7530e951897e7c3fc6057bbfea55",
     "static/styles.css": "3c0011668d7f22e72320fecf04aaffc2883116c71014006aff6192a360014069",
@@ -44,5 +44,7 @@
   },
   "change": "Invalidate pending series requests on valid room changes and clear the complete measurement context when a room has no verified channels.",
   "ui_regression_method": "Actual application functions execute in an isolated Node VM, with browser rendering surfaces mocked and controlled source promises. A completed monitored selection, an unmonitored selection and a restored monitored selection are checked. Separately, both delayed success and delayed failure resolve after selecting the unmonitored room; all visible selection fields must remain unchanged.",
-  "javascript_syntax_check": "passed"
+  "javascript_syntax_check": "passed",
+  "asset_cache_version": "20261018-2",
+  "cache_change": "The index loads static/app.js?v=20261018-2 so browsers fetch the deployed room-selection fix instead of reusing the earlier module URL."
 }
