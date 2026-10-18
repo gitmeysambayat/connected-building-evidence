@@ -13,6 +13,9 @@ ARG RENDER_GIT_COMMIT
 COPY . /app/
 # Real SQL/RDF import, IFC tessellation and model fitting happen during build.
 RUN python scripts/20261018_v1_Cloud_Prepare.py --output /prepared --revision "${RENDER_GIT_COMMIT:-$BUILD_REVISION}"
+# Geometry uses an owner-only temporary file. The non-root runtime must be able
+# to read every immutable baseline file before copying it into its own state.
+RUN chmod -R a+rX /prepared
 
 FROM dependencies AS runtime
 ARG BUILD_REVISION=unrecorded
