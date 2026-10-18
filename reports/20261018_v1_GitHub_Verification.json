@@ -1,0 +1,90 @@
+{
+  "title": "Independent local and GitHub Actions verification receipt",
+  "recorded_at_utc": "2026-10-18T08:03:00Z",
+  "repository": "https://github.com/gitmeysambayat/connected-building-evidence",
+  "verified_source_commit": "27e23fe4a39ec62ba9687f5f12aef25b457a7186",
+  "commit_url": "https://github.com/gitmeysambayat/connected-building-evidence/commit/27e23fe4a39ec62ba9687f5f12aef25b457a7186",
+  "dataset": {
+    "repository": "https://github.com/TechnicalBuildingSystems/OpenSmartHomeData",
+    "commit": "34acb1fb7a24005ddf29f7f232081713c2f78291",
+    "manifest_sha256": "aea0458e67a96dbf042cb498ec0b22104a04b22e9c9e1e6fff26c9b66e0eab6c",
+    "ifc_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03"
+  },
+  "independent_local_backend": {
+    "started_at_utc": "2026-10-18T07:50:46.738006Z",
+    "finished_at_utc": "2026-10-18T07:51:36.804413Z",
+    "tests": 110,
+    "passed": 110,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pytest_duration_seconds": 48.85,
+    "exit_code": 0,
+    "backend_test_and_data_files_checked": 67,
+    "files_unchanged_during_tests": true,
+    "all_67_tested_file_hashes_match_verified_commit_blob_bytes": true,
+    "isolation": "All mutable SQL, graph, geometry, analytics and transport state was redirected outside the checkout. Transport integration tests used ephemeral free TCP ports.",
+    "environment_scope": "Existing installed Python dependency environment. This local run does not establish a fresh dependency installation.",
+    "warning": "One Starlette/anyio deprecation warning; no test failure."
+  },
+  "github_actions_backend": {
+    "workflow": ".github/workflows/verify.yml",
+    "run_id": 39109575769,
+    "run_attempt": 1,
+    "run_url": "https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39109575769",
+    "job_id": 117622599964,
+    "job_url": "https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39109575769/job/117622599964",
+    "status": "completed",
+    "conclusion": "success",
+    "runner": "GitHub-hosted windows-latest, Windows Server 2025",
+    "python": "3.12.10",
+    "verified_steps": [
+      "Checkout the exact verified source commit",
+      "Install the pinned dependency lock",
+      "Build the measured-data store",
+      "Extract IFC geometry",
+      "Fit and evaluate the chronological forecast experiment",
+      "Run the full verification suite",
+      "Upload verification reports"
+    ],
+    "test_report_generated_at_utc": "2026-10-18T07:59:12.883421Z",
+    "tests": 110,
+    "passed": 110,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "files_unchanged_during_tests": true,
+    "evidence_method": "Independently fetched GitHub workflow metadata, job steps and decoded job logs. The log contains the verification script's 110-test result, zero exit code and unchanged-file result.",
+    "artifact": {
+      "id": 12130465018,
+      "name": "local-equivalent-verification-reports",
+      "url": "https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39109575769/artifacts/12130465018",
+      "bytes": 143188,
+      "sha256": "25b9b9291e4a0f9ea5bc6e9fa6d1fb8ba7c7633f7f72022e45d252d7cd0aecd4",
+      "expires_at_utc": "2027-01-16T07:57:08Z"
+    }
+  },
+  "github_pages_attempt": {
+    "workflow": ".github/workflows/pages.yml",
+    "run_id": 39109575733,
+    "run_attempt": 1,
+    "run_url": "https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39109575733",
+    "build_job_id": 117622599978,
+    "runner": "GitHub-hosted Ubuntu 24.04",
+    "data_adapter_tests": 11,
+    "data_adapter_passed": 11,
+    "data_adapter_failures": 0,
+    "configure_pages_result": "failure",
+    "reason": "The configure-pages step returned Not Found when reading the Pages site. GitHub Pages enablement/configuration remained required at this attempt.",
+    "deploy_job_result": "skipped",
+    "live_viewer_verified": false,
+    "evidence_method": "Independently fetched the job steps and decoded logs. Eleven data-adapter tests passed before configuration failed. This does not establish browser rendering or a live Pages deployment."
+  },
+  "limits": [
+    "This receipt applies to the exact source commit above and the recorded workflow attempts. Later source revisions and reruns require their own evidence.",
+    "The receipt itself is a later documentation addition and is not part of the source commit it verifies.",
+    "No container execution, production Python hosting, current physical sensor connection or successful forecasting improvement is established by these checks.",
+    "The Pages profile is a read-only data explorer. Server APIs, MQTT, a database and live SPARQL belong to the separate full application."
+  ]
+}

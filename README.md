@@ -5,11 +5,18 @@ model to historical measurements from the same published flat. The repository
 contains the complete Python application and a read-only GitHub Pages viewer.
 Neither requires the previous ChatGPT-hosted site.
 
-**[Open the browser demonstration](https://gitmeysambayat.github.io/connected-building-evidence/)**
+**Public source published. Free Pages viewer awaiting activation.**
 
-Publication is being prepared. A repository or workflow definition alone does
-not establish that the Pages address is live; deployment and browser checks
-must confirm it. The source and local application can be inspected independently.
+GitHub's [application verification run](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39109575769)
+passed all 110 tests. The [initial Pages run](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39109575733)
+passed all 11 browser-data tests, then stopped because Pages was not enabled.
+The [verification receipt](reports/20261018_v1_GitHub_Verification.json) identifies
+the tested commit and execution scope. These results do not establish deployment.
+
+The prepared viewer address is
+[gitmeysambayat.github.io/connected-building-evidence](https://gitmeysambayat.github.io/connected-building-evidence/).
+Follow the [Pages activation step](docs/20261018_v1_GitHub_Demonstration.md#activate-github-pages)
+before using that address. The full local application is already available.
 
 ## Two ways to use the project
 
