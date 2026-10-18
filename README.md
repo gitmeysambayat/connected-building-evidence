@@ -1,5 +1,10 @@
 # Connected Building
 
+**Developed by [Meysam Bayat](https://github.com/gitmeysambayat) with AI assistance.**
+
+The application and its analyses are this portfolio project. The original IFC
+model and monitoring records come from the separately credited dataset below.
+
 A reproducible BIM-linked monitoring demonstrator connecting an actual IFC
 model to historical measurements from the same published flat. GitHub holds
 the source, tests and deployment configuration. The complete Python application
@@ -92,6 +97,25 @@ weather data; recorded setpoints are controller events. The
 [quality implementation](twin/data.py) and preserved evidence expose these
 qualifications rather than counting every channel as an independent sensor.
 
+## Dataset citation and reuse
+
+Schneider, G. F. and Rasmussen, M. H. (2018).
+*TechnicalBuildingSystems/OpenSmartHomeData: First release of Open Smart Home Data Set*
+(v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.1244602.
+
+This archive citation identifies the first release. The exact source used by
+this application is the pinned Git commit linked above, which is recorded
+separately in the source manifest. The repository also credits Peter Bonsma,
+Pieter Pauwels and Jyrki Oraskari as contributors. Measured time series are
+credited to Fraunhofer Institute for Building Physics (2018), and RDF metadata
+to the W3C Linked Building Data Community Group contributors (2018).
+
+Original source bytes and notices are retained. Geometry extraction, database
+imports, explicit room mappings and analyses are documented transformations.
+Source and derived data retain [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+terms; newly authored application code has its separate MIT licence. See
+[NOTICE](NOTICE) for full attribution, changes and third-party notices.
+
 ## Run the full application
 
 Use Python 3.12. On Windows, from the repository root:
@@ -144,9 +168,9 @@ The project was assembled with AI assistance. Its working capabilities do not
 establish the owner's independent proficiency, qualifications or prior
 experience. The [learning exercises](docs/20261018_v1_Demonstration_and_Learning.md)
 and [role-evidence matrix](docs/20261018_v1_Role_Evidence_Matrix.json) distinguish
-artefact evidence from personal competence. The matrix describes the earlier
-local profile; its cloud-status entries predate the Render deployment. Use the
-[deployment guide](docs/20261018_v1_Public_Cloud_Deployment.md) for current hosting evidence.
+artefact evidence from personal competence. The matrix now includes the dated Render checks and distinguishes artefact
+capabilities from personal proficiency. The
+[deployment guide](docs/20261018_v1_Public_Cloud_Deployment.md) records the hosting scope and limits.
 
 ## Repository and licences
 

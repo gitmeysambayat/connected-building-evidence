@@ -1,6 +1,16 @@
 {
   "title": "Role criteria and Connected Building artefact evidence",
   "date": "2026-10-18",
+  "evidence_update": {
+    "date": "2026-10-18",
+    "original_profile": "The original matrix assessed the local demonstrator. Local-only browser observations remain labelled as such.",
+    "current_profile": "The complete application was subsequently deployed from GitHub to Render and exercised through external HTTPS. The cloud, API and transport entries below now include this hosted evidence.",
+    "source_revision": "90782821c0a31e1e1a2d6d5997913939231a6d3c",
+    "external_verification_started_at_utc": "2026-10-18T11:30:59.707779+00:00",
+    "external_verification_finished_at_utc": "2026-10-18T11:31:26.637417+00:00",
+    "deployment_receipt": "reports/20261018_v1_Render_Deployment_Receipt.json",
+    "scope": "The receipt retains the initial broker-reconnection failure, provider-level recovery and ephemeral receipt reset, followed by successful verification of the repaired revision. This dated verification does not establish continuous availability, production suitability or independent personal proficiency."
+  },
   "role": "Postdoctoral Research Associate in Digital Twins, BIM and AI for Smart Buildings",
   "job_reference": "100440",
   "assessment_scope": "Coverage of this AI-assisted software artefact only. This is not an assessment that the candidate meets the criterion or possesses independent proficiency. Qualifications, prior experience and personal competence require separate evidence.",
@@ -16,7 +26,7 @@
     "partial": "The artefact supplies bounded supporting material or a subset of the capability. An explicit material part of the criterion remains outside the evidence.",
     "not_demonstrated": "The artefact provides no evidence for this criterion. This says nothing about qualifications or prior experience held by the candidate outside this project."
   },
-  "verification_policy": "Source and graph checks are backed by the executed upstream verification report and focused tests. Browser, API and transport execution must also be assessed against the final verification record. Source files or tests merely existing do not establish a successful run.",
+  "verification_policy": "Source and graph checks are backed by the executed upstream verification report and focused tests. The original local browser checks retain their own scope. Hosted API and MQTT execution are supported by the repaired-revision section of reports/20261018_v1_Render_Deployment_Receipt.json at the stated revision and time. Source files or tests merely existing do not establish a successful run, and hosted execution does not establish personal proficiency.",
   "criteria": [
     {
       "id": 1,
@@ -75,9 +85,9 @@
       "section": "Experience",
       "criterion": "Understanding of software development and data management principles.",
       "requirement": "E", "source_page": 5, "status": "demonstrated",
-      "artefact_evidence": ["twin/data.py", "twin/semantic.py", "twin/main.py", "tests/test_data.py", "tests/test_semantic.py", "tests/test_api.py"],
+      "artefact_evidence": ["twin/data.py", "twin/semantic.py", "twin/main.py", "tests/test_data.py", "tests/test_semantic.py", "tests/test_api.py", "reports/20261018_v1_Render_Deployment_Receipt.json"],
       "supported_scope": "Pinned dependencies and source hashes, constrained relational identities, read-only queries, explicit derivations, bounded APIs and tested failure cases.",
-      "remaining_evidence": "Production operations, multi-user authorisation and personal maintenance proficiency are not established by these local checks."
+      "remaining_evidence": "These prototype checks do not establish production operations or personal maintenance proficiency. Hosted signed-cookie visitor isolation is verified; named-user accounts and role-based multi-user authorisation are not demonstrated."
     },
     {
       "id": 8,
@@ -180,27 +190,27 @@
       "section": "Skills and Abilities",
       "criterion": "IoT systems and sensor integration",
       "requirement": "E", "source_page": 5, "status": "partial",
-      "artefact_evidence": ["twin/transport.py", "tests/test_transport.py", "twin/data.py"],
-      "supported_scope": "Actual local MQTT broker and client code, source-validated historical payloads, receipt timestamps, duplicate detection and recovery exercise.",
-      "remaining_evidence": "Historical replay is not a current physical sensor connection. Device installation, calibration, clock synchronisation and real BMS integration remain unperformed. Transport execution must be checked against the final run record."
+      "artefact_evidence": ["twin/transport.py", "tests/test_transport.py", "tests/test_20261018_v1_transport_recovery.py", "twin/data.py", "reports/20261018_v1_Render_Deployment_Receipt.json"],
+      "supported_scope": "Actual MQTT broker and clients operate in the local and hosted profiles. External HTTPS checks on the repaired Render revision verified 20 source-validated historical events, broker replacement and subscriber reconnection, followed by 20 duplicates on repetition. Historical observation times remain separate from current receipt timestamps.",
+      "remaining_evidence": "Historical replay is not a current physical sensor connection. Device installation, calibration, clock synchronisation and real BMS integration remain unperformed. The dated hosted recovery exercise does not establish sustained operational reliability or personal commissioning proficiency."
     },
     {
       "id": 20,
       "section": "Skills and Abilities",
       "criterion": "REST APIs and GraphQL services",
       "requirement": "E", "source_page": 5, "status": "demonstrated",
-      "artefact_evidence": ["twin/main.py", "twin/data.py", "tests/test_api.py"],
-      "supported_scope": "REST and typed GraphQL access the same constrained room/channel catalogue and measured data. Requests are bounded and invalid input has explicit error handling.",
-      "remaining_evidence": "The API is a local demonstrator, not an authenticated multi-user cloud service. Personal API-design knowledge still requires explanation and modification."
+      "artefact_evidence": ["twin/main.py", "twin/data.py", "tests/test_api.py", "reports/20261018_v1_Render_Deployment_Receipt.json"],
+      "supported_scope": "REST and typed GraphQL access the same constrained room/channel catalogue and source data in the local and hosted application. External HTTPS checks verified agreement with original CSV rows. Requests are bounded and invalid input has explicit error handling; hosted replay writes use signed-cookie visitor isolation and Origin checks.",
+      "remaining_evidence": "The hosted service remains a bounded shared demonstrator. Anonymous visitor isolation does not establish named-user account authentication, role-based authorisation or production API operation. Personal API-design knowledge still requires explanation and modification."
     },
     {
       "id": 21,
       "section": "Skills and Abilities",
       "criterion": "Cloud computing platforms,SQL and NoSQL databases",
-      "requirement": "E", "source_page": 6, "status": "partial",
-      "artefact_evidence": ["twin/data.py", "twin/semantic.py", "tests/test_data.py", "tests/test_semantic.py"],
-      "supported_scope": "SQLite relational data and an actual persistent Oxigraph/RocksDB RDF graph with executed SPARQL and reopen tests.",
-      "remaining_evidence": "Cloud deployment and managed-service operation are not demonstrated. A local server, deployment recipe or container file does not prove cloud operation."
+      "requirement": "E", "source_page": 6, "status": "demonstrated",
+      "artefact_evidence": ["twin/data.py", "twin/semantic.py", "tests/test_data.py", "tests/test_semantic.py", "reports/20261018_v1_Render_Deployment_Receipt.json", "docs/20261018_v1_Public_Cloud_Deployment.md"],
+      "supported_scope": "The complete GitHub-sourced application was deployed to Render. External HTTPS checks verified SQLite-backed source access and executed SPARQL over the disk-backed Oxigraph/RocksDB RDF/NoSQL store. Local reopen tests and hosted execution provide bounded database and cloud-platform evidence. The hosted runtime uses ephemeral storage; a provider restart was observed to reset MQTT receipts.",
+      "remaining_evidence": "This is prototype cloud deployment, not managed-database administration or evidence of durable operational storage, backup and restore, a production availability commitment or named-user access management. Independent deployment, database design and maintenance proficiency require personal demonstration."
     },
     {
       "id": 22,
@@ -241,9 +251,9 @@
   ],
   "claim_boundaries": [
     "One coherent published flat, not a fictitious combination of unrelated IFC and office data.",
-    "Historical measured observations and actual local network replay, not a live physical BMS.",
+    "Historical source observations and actual network replay in the local and hosted profiles; no current physical sensor or BMS connection.",
     "Room-level source association, not invented sensor coordinates or IfcSensor GUIDs.",
-    "SQL and a real persistent RDF/NoSQL graph, with cloud deployment still absent.",
+    "Actual SQL and disk-backed RDF/NoSQL services in a verified Render deployment. Hosted storage is ephemeral; durable managed cloud databases and production operation are not demonstrated.",
     "A genuine forecasting experiment with persistence selected in every room, not an invented successful AI result.",
     "Artefact capabilities do not establish qualifications, professional certification, personal proficiency, institutional endorsement or readiness to operate a building."
   ]

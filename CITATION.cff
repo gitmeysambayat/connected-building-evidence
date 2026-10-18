@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "Please cite this application and credit its separately licensed source dataset, documented in NOTICE."
+type: software
+title: "Connected Building: BIM-linked monitoring demonstrator"
+authors:
+  - family-names: Bayat
+    given-names: Meysam
+repository-code: "https://github.com/gitmeysambayat/connected-building-evidence"
+url: "https://connected-building-evidence.onrender.com/"
+abstract: "A portfolio application developed with AI assistance, connecting a published IFC model to historical monitoring records. The original model and observations are attributed separately in NOTICE."
+license: MIT
+references:
+  - type: software
+    authors:
+      - family-names: Schneider
+        given-names: Georg Ferdinand
+      - family-names: Rasmussen
+        given-names: Mads Holten
+    title: "TechnicalBuildingSystems/OpenSmartHomeData: First release of Open Smart Home Data Set"
+    version: v1.0.0
+    year: 2018
+    doi: 10.5281/zenodo.1244602
+    url: "https://zenodo.org/records/1244602"
+    license: CC-BY-SA-4.0

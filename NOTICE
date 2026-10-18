@@ -2,6 +2,8 @@ Connected Building: source and third-party attribution
 
 1. Newly authored application code
 
+Project owner: Meysam Bayat. Developed with AI assistance.
+
 New application code and general project documentation are distributed under
 the MIT licence in LICENSE. The project was assembled with AI assistance.
 This attribution does not claim independent human implementation or establish
@@ -12,6 +14,10 @@ the candidate's personal proficiency.
 Source repository:
 https://github.com/TechnicalBuildingSystems/OpenSmartHomeData
 Pinned commit: 34acb1fb7a24005ddf29f7f232081713c2f78291
+Archived first release: Schneider, G. F. and Rasmussen, M. H. (2018).
+TechnicalBuildingSystems/OpenSmartHomeData: First release of Open Smart Home
+Data Set (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.1244602
+The archived release citation and the exact pinned Git source are distinct.
 Licence: Creative Commons Attribution Share Alike 4.0 International
 https://creativecommons.org/licenses/by-sa/4.0/
 
