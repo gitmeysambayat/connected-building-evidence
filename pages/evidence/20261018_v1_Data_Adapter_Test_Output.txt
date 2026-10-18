@@ -1,0 +1,19 @@
+✔ Pinned published manifest verifies all 62 preserved source and export bytes (53.3475ms)
+✔ All 37 original channels and source IFC pass browser-adapter hash and row checks (618.0921ms)
+✔ Catalogue preserves nine source spaces, six monitored rooms and one excluded thermostat (0.3658ms)
+✔ Series rows preserve source values, epochs and one-based source lines (10.4275ms)
+✔ Display gap metadata describes original gaps, rather than sampled-row distances (1.2731ms)
+✔ UTC range filtering is inclusive and exact, complete CSV contains every original row (78.0349ms)
+✔ Bounds, mutations and invented identifiers are rejected (1.0939ms)
+✔ Archived SPARQL results and geometry are served with their original provenance (12.9668ms)
+✔ Web assets have no server API links, cloud ingestion controls or absolute-root assets (2.5391ms)
+✔ A modified source file is rejected before rows can be used (7.0732ms)
+✔ A modified published manifest is rejected before catalogue access (3.1712ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 916.1852

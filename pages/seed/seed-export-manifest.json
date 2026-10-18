@@ -1,0 +1,75 @@
+{
+  "generated_at_utc": "2026-10-17T23:36:43.826158+00:00",
+  "source_commit": "34acb1fb7a24005ddf29f7f232081713c2f78291",
+  "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+  "source_profile": "Verified local Connected Building API",
+  "cloud_graph_profile": "Precomputed local SPARQL evidence, not cloud query execution",
+  "files": [
+    {
+      "path": "summary.json",
+      "sha256": "6729560a57b23bdf15dd30fde2109405798b7b8ef632083e982d959ba78277c4",
+      "bytes": 26960
+    },
+    {
+      "path": "rooms.json",
+      "sha256": "e52f2c6b98cf0356301757975266cf3e61f6c5c939c4d18835c0692247804483",
+      "bytes": 3153
+    },
+    {
+      "path": "channels.json",
+      "sha256": "abaa70d5513db4d98246a8eb98ca2b3d4f6849b6db4fa99a031621583e1941c6",
+      "bytes": 77684
+    },
+    {
+      "path": "quality.json",
+      "sha256": "3306b2aa044ba00767a05ad28902124a0d6d6fc488ddbda9d000b233ddf1b2e8",
+      "bytes": 15773
+    },
+    {
+      "path": "operations.json",
+      "sha256": "16be574da0bbd8fdc66a709f7f35bd2d9ea902d66465cd24a4bb1b9ba75cd91b",
+      "bytes": 10557
+    },
+    {
+      "path": "analytics.json",
+      "sha256": "c8d9ada9ef7b9495cb34252fee9bf1f986e7ac4c5177dd1f1673936ff4dd0b98",
+      "bytes": 556649
+    },
+    {
+      "path": "geometry.json",
+      "sha256": "917ffbb75f823e6847e15bfcde1f5be5516a61b6473e16c2f5701475dd93a039",
+      "bytes": 563193
+    },
+    {
+      "path": "provenance.json",
+      "sha256": "bc025a414d73fe5a1cd98f9b14b9cdda146b1b0c286bb1ca0b002102c00cc2ae",
+      "bytes": 27435
+    },
+    {
+      "path": "graph.json",
+      "sha256": "6a93a9ae3dcf6c0037a5065470d89a7d9a12f82f138e539119b25adb5427d0da",
+      "bytes": 2780
+    },
+    {
+      "path": "graph-room_alignment.json",
+      "sha256": "3380ca075a3b51050badf7789e783687cc9498081fd8b1de2c38fc6a7852ae9d",
+      "bytes": 3872
+    },
+    {
+      "path": "graph-verified_channels.json",
+      "sha256": "aa011be4357156d23449a8682a2ab49bd0d6d4e92a51208b1e9f3d171943910e",
+      "bytes": 19331
+    },
+    {
+      "path": "graph-unverified_channels.json",
+      "sha256": "62f1b5a29f7d584caeed1eb54aeaa65100c54118f0acf992401204b06cfec41d",
+      "bytes": 1072
+    },
+    {
+      "path": "room-evidence.json",
+      "sha256": "617015dd39ee0d083c89724ae4ec36e891094aed13d37476feaf3c734ceda6b3",
+      "bytes": 167123
+    }
+  ],
+  "licence": "Public source/data-derived material retains CC BY-SA 4.0 attribution. See public/NOTICE."
+}

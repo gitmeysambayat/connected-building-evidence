@@ -1,0 +1,8 @@
+Three.js r180 (npm version 0.180.0)
+Copyright 2010-2025 Three.js Authors.
+Licence: MIT. See THREE-LICENSE.txt.
+Official source package: https://registry.npmjs.org/three/-/three-0.180.0.tgz
+Upstream repository: https://github.com/mrdoob/three.js/tree/r180
+Files: three.module.js, three.core.js, OrbitControls.js.
+Modification: OrbitControls bare module import changed to ./three.module.js so the demonstration works without a build step or external CDN.
+No other upstream modifications.

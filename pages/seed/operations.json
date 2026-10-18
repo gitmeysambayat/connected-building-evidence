@@ -1,0 +1,262 @@
+{
+  "status": "calculated",
+  "title": "Heating setpoint tracking",
+  "threshold_c": 1,
+  "maximum_command_age_seconds": 86400,
+  "rooms": [
+    {
+      "room": "Bathroom",
+      "room_guid": "05i4VutGDCsQKCrT6CQvhY",
+      "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+      "eligible_observations": 8669,
+      "total_air_observations": 10768,
+      "observation_coverage_percent": 80.51,
+      "mean_air_minus_setpoint_c": 2.4393,
+      "median_air_minus_setpoint_c": 3.06,
+      "mean_absolute_difference_c": 2.9044,
+      "fraction_more_than_1c_below": 0.08848,
+      "fraction_more_than_1c_above": 0.68462,
+      "examples": [
+        {
+          "air_timestamp": "2017-04-19T19:54:53+00:00",
+          "air_source_line": 4355,
+          "air_c": 19.53,
+          "command_timestamp": "2017-04-19T19:53:53+00:00",
+          "command_source_line": 150,
+          "setpoint_c": 28.0,
+          "command_age_seconds": 60,
+          "difference_c": -8.47
+        },
+        {
+          "air_timestamp": "2017-06-02T23:55:01+00:00",
+          "air_source_line": 10318,
+          "air_c": 26.14,
+          "command_timestamp": "2017-06-02T21:30:30+00:00",
+          "command_source_line": 329,
+          "setpoint_c": 16.0,
+          "command_age_seconds": 8671,
+          "difference_c": 10.14
+        }
+      ],
+      "air_channel_id": "Bathroom_Temperature",
+      "command_channel_id": "Bathroom_SetpointHistory",
+      "source_sha256": {
+        "Bathroom_Temperature": "e7f04276479ab6eaa092e9113f2efd1d9ae64b0f0ebd0c99e1f8c2c5ba9bf38b",
+        "Bathroom_SetpointHistory": "fce4c69cfec23efd2a8f1f85da576a9c16f496219c2eec84ee6a0a0fb3d5e08c"
+      }
+    },
+    {
+      "room": "Kitchen",
+      "room_guid": "05i4VutGDCsQKCrT6CQvhf",
+      "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+      "eligible_observations": 8992,
+      "total_air_observations": 10435,
+      "observation_coverage_percent": 86.17,
+      "mean_air_minus_setpoint_c": 0.7462,
+      "median_air_minus_setpoint_c": 1.64,
+      "mean_absolute_difference_c": 2.7863,
+      "fraction_more_than_1c_below": 0.40002,
+      "fraction_more_than_1c_above": 0.53592,
+      "examples": [
+        {
+          "air_timestamp": "2017-03-25T11:24:30+00:00",
+          "air_source_line": 820,
+          "air_c": 15.59,
+          "command_timestamp": "2017-03-25T00:00:26+00:00",
+          "command_source_line": 91,
+          "setpoint_c": 21.0,
+          "command_age_seconds": 41044,
+          "difference_c": -5.41
+        },
+        {
+          "air_timestamp": "2017-06-02T21:35:13+00:00",
+          "air_source_line": 9983,
+          "air_c": 23.94,
+          "command_timestamp": "2017-06-02T21:30:30+00:00",
+          "command_source_line": 342,
+          "setpoint_c": 16.0,
+          "command_age_seconds": 283,
+          "difference_c": 7.94
+        }
+      ],
+      "air_channel_id": "Kitchen_Temperature",
+      "command_channel_id": "Kitchen_SetpointHistory",
+      "source_sha256": {
+        "Kitchen_Temperature": "c1f13491b0c62e2e8e6975354ec5cf708060ae0582044ce3a3aac9d1dc835383",
+        "Kitchen_SetpointHistory": "c2a4721634e0b642933da10cb93e149683ae8ce0632bad62e06043b6caf82600"
+      }
+    },
+    {
+      "room": "Room1",
+      "room_guid": "05i4VutGDCsQKCrT6CQvhu",
+      "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+      "eligible_observations": 8576,
+      "total_air_observations": 10598,
+      "observation_coverage_percent": 80.92,
+      "mean_air_minus_setpoint_c": 1.7966,
+      "median_air_minus_setpoint_c": 1.69,
+      "mean_absolute_difference_c": 2.2229,
+      "fraction_more_than_1c_below": 0.10156,
+      "fraction_more_than_1c_above": 0.61497,
+      "examples": [
+        {
+          "air_timestamp": "2017-04-17T17:51:02+00:00",
+          "air_source_line": 3927,
+          "air_c": 17.01,
+          "command_timestamp": "2017-04-17T15:22:24+00:00",
+          "command_source_line": 141,
+          "setpoint_c": 20.0,
+          "command_age_seconds": 8918,
+          "difference_c": -2.99
+        },
+        {
+          "air_timestamp": "2017-06-01T14:30:09+00:00",
+          "air_source_line": 9967,
+          "air_c": 23.62,
+          "command_timestamp": "2017-06-01T07:30:29+00:00",
+          "command_source_line": 318,
+          "setpoint_c": 16.0,
+          "command_age_seconds": 25180,
+          "difference_c": 7.62
+        }
+      ],
+      "air_channel_id": "Room1_Temperature",
+      "command_channel_id": "Room1_SetpointHistory",
+      "source_sha256": {
+        "Room1_Temperature": "9d246ba2cab801543dc7a11e79555e005fe9c0b2e532caf05f978c736d38587b",
+        "Room1_SetpointHistory": "0cfc06a757fe8c20adf54036b0d03b25319fd5d07a73d765ecb3ca45645c0225"
+      }
+    },
+    {
+      "room": "Room2",
+      "room_guid": "05i4VutGDCsQKCrT6CQvhb",
+      "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+      "eligible_observations": 9287,
+      "total_air_observations": 10760,
+      "observation_coverage_percent": 86.31,
+      "mean_air_minus_setpoint_c": 0.4502,
+      "median_air_minus_setpoint_c": 0.27,
+      "mean_absolute_difference_c": 2.335,
+      "fraction_more_than_1c_below": 0.36804,
+      "fraction_more_than_1c_above": 0.43739,
+      "examples": [
+        {
+          "air_timestamp": "2017-03-25T11:09:16+00:00",
+          "air_source_line": 846,
+          "air_c": 15.91,
+          "command_timestamp": "2017-03-25T07:51:29+00:00",
+          "command_source_line": 88,
+          "setpoint_c": 21.0,
+          "command_age_seconds": 11867,
+          "difference_c": -5.09
+        },
+        {
+          "air_timestamp": "2017-05-31T14:07:10+00:00",
+          "air_source_line": 9990,
+          "air_c": 23.46,
+          "command_timestamp": "2017-05-31T07:30:12+00:00",
+          "command_source_line": 331,
+          "setpoint_c": 16.0,
+          "command_age_seconds": 23818,
+          "difference_c": 7.46
+        }
+      ],
+      "air_channel_id": "Room2_Temperature",
+      "command_channel_id": "Room2_SetpointHistory",
+      "source_sha256": {
+        "Room2_Temperature": "4c84279bffdf6affefb830fd54d2257592e8335c1514dff115e28c111eb0051e",
+        "Room2_SetpointHistory": "832f94022753b7525558dfeaa7c87bebf658db91cabc5569db662324abf92492"
+      }
+    },
+    {
+      "room": "Room3",
+      "room_guid": "05i4VutGDCsQKCrT6CQvl2",
+      "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+      "eligible_observations": 8915,
+      "total_air_observations": 10968,
+      "observation_coverage_percent": 81.28,
+      "mean_air_minus_setpoint_c": 1.1006,
+      "median_air_minus_setpoint_c": 0.79,
+      "mean_absolute_difference_c": 2.0766,
+      "fraction_more_than_1c_below": 0.1963,
+      "fraction_more_than_1c_above": 0.46326,
+      "examples": [
+        {
+          "air_timestamp": "2017-04-17T21:58:13+00:00",
+          "air_source_line": 4272,
+          "air_c": 18.27,
+          "command_timestamp": "2017-04-17T20:25:19+00:00",
+          "command_source_line": 144,
+          "setpoint_c": 27.5,
+          "command_age_seconds": 5574,
+          "difference_c": -9.23
+        },
+        {
+          "air_timestamp": "2017-05-30T17:29:12+00:00",
+          "air_source_line": 10061,
+          "air_c": 24.25,
+          "command_timestamp": "2017-05-30T07:30:33+00:00",
+          "command_source_line": 313,
+          "setpoint_c": 16.0,
+          "command_age_seconds": 35919,
+          "difference_c": 8.25
+        }
+      ],
+      "air_channel_id": "Room3_Temperature",
+      "command_channel_id": "Room3_SetpointHistory",
+      "source_sha256": {
+        "Room3_Temperature": "215daec34b439850992964d9200d2c89d7c56db0d403cccbfed843c109cacbcc",
+        "Room3_SetpointHistory": "cbee7c33e5664a6ac20b5b333612143758a6f72d18122a5233aad4fdfc13b235"
+      }
+    },
+    {
+      "room": "Toilet",
+      "room_guid": "05i4VutGDCsQKCrT6CQvhJ",
+      "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+      "eligible_observations": 7651,
+      "total_air_observations": 8950,
+      "observation_coverage_percent": 85.49,
+      "mean_air_minus_setpoint_c": 1.5334,
+      "median_air_minus_setpoint_c": 1.11,
+      "mean_absolute_difference_c": 1.7607,
+      "fraction_more_than_1c_below": 0.02875,
+      "fraction_more_than_1c_above": 0.5317,
+      "examples": [
+        {
+          "air_timestamp": "2017-03-10T07:47:02+00:00",
+          "air_source_line": 49,
+          "air_c": 14.33,
+          "command_timestamp": "2017-03-10T07:39:25+00:00",
+          "command_source_line": 8,
+          "setpoint_c": 17.0,
+          "command_age_seconds": 457,
+          "difference_c": -2.67
+        },
+        {
+          "air_timestamp": "2017-06-03T13:07:21+00:00",
+          "air_source_line": 8586,
+          "air_c": 22.68,
+          "command_timestamp": "2017-06-03T13:00:13+00:00",
+          "command_source_line": 328,
+          "setpoint_c": 16.0,
+          "command_age_seconds": 428,
+          "difference_c": 6.68
+        }
+      ],
+      "air_channel_id": "Toilet_Temperature",
+      "command_channel_id": "Toilet_SetpointHistory",
+      "source_sha256": {
+        "Toilet_Temperature": "9da40e9a1f309708c39e8c9989c82e02445aaec42f0fa29b033a2e1df288e436",
+        "Toilet_SetpointHistory": "9e77d73a4a281307f2c1e764dbe1dc4ff00fca5762cf702aec387dad2e2b83f6"
+      }
+    }
+  ],
+  "method": "As-of comparison of original room-air observations with the last recorded setpoint at or before that observation, capped at 24 hours old. Observation-weighted; no interpolation.",
+  "limitations": [
+    "A last recorded command is an assumed reference, not confirmation that a controller applied or maintained it.",
+    "The 1 °C comparison band is an illustrative application rule, not a regulatory comfort or equipment-fault limit.",
+    "Percentages weight observations, not elapsed time. Irregular sampling and gaps prevent interpreting them as percentages of occupied hours.",
+    "No occupancy, heating power or energy-consumption measurements are supplied. These differences cannot establish comfort, faults, energy savings or causation.",
+    "Thermostat temperature is measured near a radiator and is not substituted for the room-air channel."
+  ]
+}

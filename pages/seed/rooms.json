@@ -1,0 +1,101 @@
+[
+  {
+    "guid": "05i4VutGDCsQKCrT6CQvhu",
+    "room_id": "Room1",
+    "ifc_step_id": 165,
+    "name": "1",
+    "long_name": "Raum 1",
+    "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+    "mapping_status": "publisher_explicit_room_link",
+    "verified_channels": 6,
+    "candidate_channels": 0
+  },
+  {
+    "guid": "05i4VutGDCsQKCrT6CQvhb",
+    "room_id": "Room2",
+    "ifc_step_id": 215,
+    "name": "2",
+    "long_name": "Raum 2",
+    "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+    "mapping_status": "publisher_explicit_room_link",
+    "verified_channels": 6,
+    "candidate_channels": 0
+  },
+  {
+    "guid": "05i4VutGDCsQKCrT6CQvhY",
+    "room_id": "Bathroom",
+    "ifc_step_id": 247,
+    "name": "3",
+    "long_name": "Bad",
+    "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+    "mapping_status": "publisher_explicit_room_link",
+    "verified_channels": 6,
+    "candidate_channels": 0
+  },
+  {
+    "guid": "05i4VutGDCsQKCrT6CQvhl",
+    "room_id": "Staircase",
+    "ifc_step_id": 279,
+    "name": "4",
+    "long_name": "Treppenhaus",
+    "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+    "mapping_status": "publisher_explicit_room_link",
+    "verified_channels": 0,
+    "candidate_channels": 0
+  },
+  {
+    "guid": "05i4VutGDCsQKCrT6CQvhf",
+    "room_id": "Kitchen",
+    "ifc_step_id": 311,
+    "name": "5",
+    "long_name": "Küche",
+    "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+    "mapping_status": "publisher_explicit_room_link",
+    "verified_channels": 6,
+    "candidate_channels": 0
+  },
+  {
+    "guid": "05i4VutGDCsQKCrT6CQvhM",
+    "room_id": "RoomBeforeToilet",
+    "ifc_step_id": 343,
+    "name": "6",
+    "long_name": "Room",
+    "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+    "mapping_status": "publisher_explicit_room_link",
+    "verified_channels": 0,
+    "candidate_channels": 0
+  },
+  {
+    "guid": "05i4VutGDCsQKCrT6CQvhJ",
+    "room_id": "Toilet",
+    "ifc_step_id": 375,
+    "name": "7",
+    "long_name": "Room",
+    "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+    "mapping_status": "publisher_explicit_room_link",
+    "verified_channels": 5,
+    "candidate_channels": 1
+  },
+  {
+    "guid": "05i4VutGDCsQKCrT6CQvl2",
+    "room_id": "Room3",
+    "ifc_step_id": 407,
+    "name": "8",
+    "long_name": "Raum 3",
+    "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+    "mapping_status": "publisher_explicit_room_link",
+    "verified_channels": 7,
+    "candidate_channels": 0
+  },
+  {
+    "guid": "05i4VutGDCsQKCrT6CQvjm",
+    "room_id": "Lobby",
+    "ifc_step_id": 458,
+    "name": "9",
+    "long_name": "Diele",
+    "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+    "mapping_status": "publisher_explicit_room_link",
+    "verified_channels": 0,
+    "candidate_channels": 0
+  }
+]

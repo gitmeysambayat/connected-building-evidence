@@ -1,0 +1,38 @@
+name: Verify connected building
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Keep generated stores outside the checkout
+        shell: pwsh
+        run: |
+          $taskState = Join-Path $env:RUNNER_TEMP 'connected-building'
+          "CONNECTED_BUILDING_DATA_DIR=$taskState/data" >> $env:GITHUB_ENV
+          "TWIN_RUNTIME_DIR=$taskState/transport" >> $env:GITHUB_ENV
+          "TWIN_GEOMETRY_PATH=$taskState/data/20261018_v1_geometry.json" >> $env:GITHUB_ENV
+          "TWIN_ANALYTICS_PATH=$taskState/data/20261018_v1_temperature_forecast.json" >> $env:GITHUB_ENV
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: 20261018_v1_requirements_lock.txt
+      - run: python -m pip install -r 20261018_v1_requirements_lock.txt
+      - run: python scripts/build_data.py
+      - run: python scripts/build_geometry.py
+      - run: python scripts/build_analytics.py
+      - run: python scripts/20261018_v1_Verify.py
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: local-equivalent-verification-reports
+          path: reports/

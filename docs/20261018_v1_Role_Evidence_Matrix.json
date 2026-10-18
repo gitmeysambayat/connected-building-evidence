@@ -1,0 +1,250 @@
+{
+  "title": "Role criteria and Connected Building artefact evidence",
+  "date": "2026-10-18",
+  "role": "Postdoctoral Research Associate in Digital Twins, BIM and AI for Smart Buildings",
+  "job_reference": "100440",
+  "assessment_scope": "Coverage of this AI-assisted software artefact only. This is not an assessment that the candidate meets the criterion or possesses independent proficiency. Qualifications, prior experience and personal competence require separate evidence.",
+  "source_document": {
+    "title": "100440 Postdoctoral Research Associate in Digital Twins JD.pdf",
+    "sha256": "cd1aab275a518cec0f5c96976cc6ba1f085ad946d0f0523a934437385d53dddf",
+    "criterion_pages": [5, 6],
+    "role_purpose_page": 2,
+    "wording": "Criteria transcribed from the supplied person specification. The source PDF is not redistributed in this package. No private application or contact information is reproduced."
+  },
+  "status_definitions": {
+    "demonstrated": "The artefact implements a concrete, inspectable capability relevant to the criterion. This does not establish personal mastery, production suitability or every example technology.",
+    "partial": "The artefact supplies bounded supporting material or a subset of the capability. An explicit material part of the criterion remains outside the evidence.",
+    "not_demonstrated": "The artefact provides no evidence for this criterion. This says nothing about qualifications or prior experience held by the candidate outside this project."
+  },
+  "verification_policy": "Source and graph checks are backed by the executed upstream verification report and focused tests. Browser, API and transport execution must also be assessed against the final verification record. Source files or tests merely existing do not establish a successful run.",
+  "criteria": [
+    {
+      "id": 1,
+      "section": "Qualifications and Knowledge",
+      "criterion": "PhD (or near completion) in Digital Construction, Computer Science, Civil Engineering, Building Engineering, Data Science, AI, or a related discipline.",
+      "requirement": "E", "source_page": 5, "status": "not_demonstrated",
+      "artefact_evidence": [],
+      "remaining_evidence": "The candidate's actual award or near-completion status must be evidenced separately. Software does not confer a qualification."
+    },
+    {
+      "id": 2,
+      "section": "Qualifications and Knowledge",
+      "criterion": "Experience in project management, research, innovation, or externally funded programmes.",
+      "requirement": "D", "source_page": 5, "status": "partial",
+      "artefact_evidence": ["README.md", "docs/20261018_v1_Demonstration_and_Learning.md"],
+      "supported_scope": "A scoped data-integration delivery, a reproducible experiment and recorded limitations.",
+      "remaining_evidence": "Externally funded programme duties, budget responsibility and the candidate's personal delivery role are not established by this build."
+    },
+    {
+      "id": 3,
+      "section": "Qualifications and Knowledge",
+      "criterion": "Professional project management qualification (PRINCE2, APM, PMP, or equivalent).",
+      "requirement": "D", "source_page": 5, "status": "not_demonstrated",
+      "artefact_evidence": [],
+      "remaining_evidence": "A professional qualification requires its own verifiable record."
+    },
+    {
+      "id": 4,
+      "section": "Experience",
+      "criterion": "Experience in Building Information Modelling (BIM) and digital construction technologies.",
+      "requirement": "E", "source_page": 5, "status": "demonstrated",
+      "artefact_evidence": ["twin/geometry.py", "twin/data.py", "data/source/01_LinkOsh.ttl", "tests/test_geometry.py", "tests/test_data.py"],
+      "supported_scope": "Actual IFC geometry, spatial identities and source-supported links between monitored rooms and the source model.",
+      "remaining_evidence": "Revit authoring, production information delivery and BIM-server operation are outside this focused IFC demonstrator. Personal ownership requires the learning exercises."
+    },
+    {
+      "id": 5,
+      "section": "Experience",
+      "criterion": "Experience in data analytics, data integration, or digital twin development.",
+      "requirement": "E", "source_page": 5, "status": "demonstrated",
+      "artefact_evidence": ["twin/data.py", "twin/semantic.py", "twin/analytics.py", "twin/operations.py", "tests/test_operations.py", "reports/20261018_v1_Upstream_RDF_Verification.json"],
+      "supported_scope": "Measured-source preservation, exact room identity chains, semantic integration, traceable room-air versus recorded heating-command comparisons and a chronological forecasting experiment.",
+      "remaining_evidence": "This historical demonstrator does not establish a current synchronised physical twin or generalisable research result."
+    },
+    {
+      "id": 6,
+      "section": "Experience",
+      "criterion": "Knowledge of smart buildings, IoT systems, or building management technologies.",
+      "requirement": "E", "source_page": 5, "status": "partial",
+      "artefact_evidence": ["twin/transport.py", "twin/data.py", "docs/20261018_v1_Demonstration_and_Learning.md"],
+      "supported_scope": "Device and room identity, source time, units, historical observations, MQTT delivery and failure handling are inspectable.",
+      "remaining_evidence": "Physical commissioning, BMS operation and the candidate's independent knowledge require further demonstration."
+    },
+    {
+      "id": 7,
+      "section": "Experience",
+      "criterion": "Understanding of software development and data management principles.",
+      "requirement": "E", "source_page": 5, "status": "demonstrated",
+      "artefact_evidence": ["twin/data.py", "twin/semantic.py", "twin/main.py", "tests/test_data.py", "tests/test_semantic.py", "tests/test_api.py"],
+      "supported_scope": "Pinned dependencies and source hashes, constrained relational identities, read-only queries, explicit derivations, bounded APIs and tested failure cases.",
+      "remaining_evidence": "Production operations, multi-user authorisation and personal maintenance proficiency are not established by these local checks."
+    },
+    {
+      "id": 8,
+      "section": "Experience",
+      "criterion": "Strong analytical and problem-solving skills.",
+      "requirement": "E", "source_page": 5, "status": "partial",
+      "artefact_evidence": ["twin/analytics.py", "twin/operations.py", "tests/test_operations.py", "twin/data.py", "reports/20261018_v1_Upstream_RDF_Verification.json"],
+      "supported_scope": "The project records inconsistent source documentation, unknown mappings, copied weather channels, traceable descriptive heating-command comparisons and a rejected forecasting candidate.",
+      "remaining_evidence": "The candidate needs to explain a diagnosis and decision personally. AI-assisted outputs alone do not establish an individual's analytical ability."
+    },
+    {
+      "id": 9,
+      "section": "Experience",
+      "criterion": "Strong technical writing and scientific communication skills.",
+      "requirement": "E", "source_page": 5, "status": "partial",
+      "artefact_evidence": ["README.md", "docs/20261018_v1_Demonstration_and_Learning.md"],
+      "supported_scope": "An inspectable methods account, claim boundaries and a timed demonstration structure.",
+      "remaining_evidence": "The candidate's own writing and spoken communication need independent examples and rehearsal."
+    },
+    {
+      "id": 10,
+      "section": "Experience",
+      "criterion": "Knowledge of Eurocodes and structural design standards.",
+      "requirement": "E", "source_page": 5, "status": "not_demonstrated",
+      "artefact_evidence": [],
+      "remaining_evidence": "No structural design, seismic verification, Eurocode compliance or material-reuse approval is performed. Use separate verified engineering work."
+    },
+    {
+      "id": 11,
+      "section": "Experience",
+      "criterion": "Experience supporting internationally collaborative research programmes.",
+      "requirement": "D", "source_page": 5, "status": "not_demonstrated",
+      "artefact_evidence": [],
+      "remaining_evidence": "A public source dataset and an AI-assisted build do not establish responsibility in an international research programme."
+    },
+    {
+      "id": 12,
+      "section": "Skills and Abilities",
+      "criterion": "An understanding of the requirement to seek to improve equality, diversity, and inclusion in line with the University's Equality Act obligations and the public sector equality duty.",
+      "requirement": "E", "source_page": 5, "status": "partial",
+      "artefact_evidence": ["static/index.html", "static/app.js", "docs/20261018_v1_Demonstration_and_Learning.md"],
+      "supported_scope": "The interface and documentation can supply a small example of readable controls and multiple ways to inspect information.",
+      "remaining_evidence": "This is not an accessibility certification or evidence that the broad institutional criterion is fulfilled. Prepare an actual inclusive teaching or collaboration example."
+    },
+    {
+      "id": 13,
+      "section": "Skills and Abilities",
+      "criterion": "BIM platforms (e.g., Revit, IFC, BIM server)",
+      "requirement": "E", "source_page": 5, "status": "demonstrated",
+      "artefact_evidence": ["twin/geometry.py", "twin/data.py", "data/source/04_Flat.ifc", "tests/test_geometry.py"],
+      "supported_scope": "A focused IFC workflow with actual source geometry and spatial metadata, using IfcOpenShell.",
+      "remaining_evidence": "This does not claim Revit authoring proficiency or BIM-server experience. The listed platforms are examples, not an instruction to pretend every platform was used."
+    },
+    {
+      "id": 14,
+      "section": "Skills and Abilities",
+      "criterion": "Ability to work effectively within multidisciplinary and international research teams.",
+      "requirement": "E", "source_page": 5, "status": "not_demonstrated",
+      "artefact_evidence": [],
+      "remaining_evidence": "Use actual human collaboration examples with personal responsibilities. Multiple software components or AI agents are not evidence of human team performance."
+    },
+    {
+      "id": 15,
+      "section": "Skills and Abilities",
+      "criterion": "Python, C#, JavaScript, or similar programming languages",
+      "requirement": "E", "source_page": 5, "status": "demonstrated",
+      "artefact_evidence": ["twin/data.py", "twin/main.py", "twin/analytics.py", "static/app.js", "tests/test_api.py"],
+      "supported_scope": "Inspectable Python ingestion and services with browser JavaScript.",
+      "remaining_evidence": "The candidate must personally make and explain a bounded change before claiming independent implementation proficiency. C# is not used."
+    },
+    {
+      "id": 16,
+      "section": "Skills and Abilities",
+      "criterion": "Digital Twin technologies",
+      "requirement": "E", "source_page": 5, "status": "partial",
+      "artefact_evidence": ["twin/data.py", "twin/semantic.py", "twin/transport.py", "twin/main.py"],
+      "supported_scope": "Coherent asset identity, BIM-linked historical observations, integration services, replay and analytics.",
+      "remaining_evidence": "No current physical-to-digital connection, operational building control, independent calibration or pilot-building commissioning is demonstrated."
+    },
+    {
+      "id": 17,
+      "section": "Skills and Abilities",
+      "criterion": "Machine learning and AI methodologies",
+      "requirement": "E", "source_page": 5, "status": "demonstrated",
+      "artefact_evidence": ["twin/analytics.py", "data/derived/20261018_v1_temperature_forecast.json", "tests/test_analytics.py"],
+      "supported_scope": "Actual future measured temperature targets, past-only feature joins, chronological splits, boundary purging, training-only scaling, validation selection and an untouched later test report.",
+      "remaining_evidence": "All six validation gates select persistence; Ridge remains a rejected experimental candidate. There is no claim of superior AI performance, occupancy labels, energy savings or cross-building validation."
+    },
+    {
+      "id": 18,
+      "section": "Skills and Abilities",
+      "criterion": "Data visualisation and dashboards",
+      "requirement": "E", "source_page": 5, "status": "demonstrated",
+      "artefact_evidence": ["static/index.html", "static/app.js", "twin/geometry.py", "twin/data.py", "reports/20261018_v1_Browser_Verification.json"],
+      "supported_scope": "Actual browser verification identifies a WebGL2 context, nine IFC space meshes and 38 physical-element meshes. Picking the Room 2 geometry changes the selected GUID to 05i4VutGDCsQKCrT6CQvhb and selects Room2_Temperature with 10,760 source records. The record also checks historical filtering, unmonitored-room handling, controller events, external weather and forecast assessment.",
+      "remaining_evidence": "This verifies the demonstrated local interactions, not every browser, accessibility conformance or personal dashboard-development proficiency. Individual browser checks, including any unconfirmed download event, retain their own outcomes."
+    },
+    {
+      "id": 19,
+      "section": "Skills and Abilities",
+      "criterion": "IoT systems and sensor integration",
+      "requirement": "E", "source_page": 5, "status": "partial",
+      "artefact_evidence": ["twin/transport.py", "tests/test_transport.py", "twin/data.py"],
+      "supported_scope": "Actual local MQTT broker and client code, source-validated historical payloads, receipt timestamps, duplicate detection and recovery exercise.",
+      "remaining_evidence": "Historical replay is not a current physical sensor connection. Device installation, calibration, clock synchronisation and real BMS integration remain unperformed. Transport execution must be checked against the final run record."
+    },
+    {
+      "id": 20,
+      "section": "Skills and Abilities",
+      "criterion": "REST APIs and GraphQL services",
+      "requirement": "E", "source_page": 5, "status": "demonstrated",
+      "artefact_evidence": ["twin/main.py", "twin/data.py", "tests/test_api.py"],
+      "supported_scope": "REST and typed GraphQL access the same constrained room/channel catalogue and measured data. Requests are bounded and invalid input has explicit error handling.",
+      "remaining_evidence": "The API is a local demonstrator, not an authenticated multi-user cloud service. Personal API-design knowledge still requires explanation and modification."
+    },
+    {
+      "id": 21,
+      "section": "Skills and Abilities",
+      "criterion": "Cloud computing platforms,SQL and NoSQL databases",
+      "requirement": "E", "source_page": 6, "status": "partial",
+      "artefact_evidence": ["twin/data.py", "twin/semantic.py", "tests/test_data.py", "tests/test_semantic.py"],
+      "supported_scope": "SQLite relational data and an actual persistent Oxigraph/RocksDB RDF graph with executed SPARQL and reopen tests.",
+      "remaining_evidence": "Cloud deployment and managed-service operation are not demonstrated. A local server, deployment recipe or container file does not prove cloud operation."
+    },
+    {
+      "id": 22,
+      "section": "Skills and Abilities",
+      "criterion": "Strong analytical and problem-solving skills with experience in experimental design and data interpretation",
+      "requirement": "E", "source_page": 6, "status": "partial",
+      "artefact_evidence": ["twin/analytics.py", "twin/data.py", "tests/test_analytics.py", "docs/20261018_v1_Demonstration_and_Learning.md"],
+      "supported_scope": "A specified observational forecasting protocol with eligibility rules, comparators, selection limits and reported negative results.",
+      "remaining_evidence": "Software checks are not a physical experiment or sensor calibration. The candidate must explain the protocol personally and supply separate experimental responsibilities where relevant."
+    },
+    {
+      "id": 23,
+      "section": "Skills and Abilities",
+      "criterion": "Excellent project planning, monitoring, and organisational skills.",
+      "requirement": "E", "source_page": 6, "status": "partial",
+      "artefact_evidence": ["README.md", "docs/20261018_v1_Demonstration_and_Learning.md", "docs/20261018_v1_Role_Evidence_Matrix.json"],
+      "supported_scope": "Named deliverables, a reproducible workflow, an evidence matrix and a practical exercise sequence.",
+      "remaining_evidence": "The candidate's personal planning, monitoring and delivery decisions require their own account and evidence. A written plan alone does not establish execution skill."
+    },
+    {
+      "id": 24,
+      "section": "Skills and Abilities",
+      "criterion": "Effective communication skills, including technical report writing and presenting to diverse audiences",
+      "requirement": "E", "source_page": 6, "status": "partial",
+      "artefact_evidence": ["README.md", "docs/20261018_v1_Demonstration_and_Learning.md"],
+      "supported_scope": "Methods, limitations and a 15-minute evidence-led demonstration are documented.",
+      "remaining_evidence": "The candidate's own presentation and adaptation for different audiences have not been observed."
+    },
+    {
+      "id": 25,
+      "section": "Skills and Abilities",
+      "criterion": "Ability to work independently in a complex and fast-paced environment.",
+      "requirement": "E", "source_page": 6, "status": "partial",
+      "artefact_evidence": ["docs/20261018_v1_Demonstration_and_Learning.md"],
+      "supported_scope": "The learning exercises provide a route to record independent inspection, diagnosis and a bounded code change.",
+      "remaining_evidence": "An AI-assisted build does not by itself establish independent implementation or the candidate's performance under workplace conditions."
+    }
+  ],
+  "claim_boundaries": [
+    "One coherent published flat, not a fictitious combination of unrelated IFC and office data.",
+    "Historical measured observations and actual local network replay, not a live physical BMS.",
+    "Room-level source association, not invented sensor coordinates or IfcSensor GUIDs.",
+    "SQL and a real persistent RDF/NoSQL graph, with cloud deployment still absent.",
+    "A genuine forecasting experiment with persistence selected in every room, not an invented successful AI result.",
+    "Artefact capabilities do not establish qualifications, professional certification, personal proficiency, institutional endorsement or readiness to operate a building."
+  ]
+}

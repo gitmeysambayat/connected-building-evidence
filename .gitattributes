@@ -1,0 +1,10 @@
+# Preserve original source files and hash-addressed evidence byte for byte.
+* text=auto
+/data/source/** -text
+/data/derived/** -text
+/pages/seed/** -text
+/pages/evidence/** -text
+/reports/*.json -text
+/reports/*.xml -text
+*.png binary
+*.joblib binary

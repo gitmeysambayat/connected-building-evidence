@@ -1,0 +1,827 @@
+{
+  "title": "Connected building evidence demonstrator",
+  "source_title": "Open Smart Home Data Set",
+  "observations": 285954,
+  "total_readings": 285954,
+  "channels": 37,
+  "verified_channels": 36,
+  "spaces": 9,
+  "monitored_spaces": 6,
+  "channel_kinds": {
+    "controller_setpoint": 6,
+    "external_virtual_weather": 6,
+    "measured_sensor": 25
+  },
+  "first_timestamp": "2017-03-08T23:56:17Z",
+  "last_timestamp": "2017-06-06T04:06:22Z",
+  "ifc_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+  "imported_at_utc": "2026-10-17T23:26:59.664713+00:00",
+  "source_commit": "34acb1fb7a24005ddf29f7f232081713c2f78291",
+  "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+  "licence": "CC BY-SA 4.0",
+  "source_url": "https://github.com/TechnicalBuildingSystems/OpenSmartHomeData/tree/34acb1fb7a24005ddf29f7f232081713c2f78291",
+  "timestamp_basis": "Source Unix seconds converted to UTC; source RDF offsets independently cross-checked against the same epochs.",
+  "historical_measurements": true,
+  "physical_sensor_connection": false,
+  "live_bms_connection": false,
+  "mapping_scope": "Publisher room associations linked to the pinned IFC spaces; sensor coordinates and IFC device instances are unavailable.",
+  "unverified_channels": 1,
+  "geometry": {
+    "schema_version": "20261018.v1",
+    "generated_at_utc": "2026-10-17T23:27:00.981357+00:00",
+    "generator": {
+      "library": "IfcOpenShell",
+      "version": "0.8.3.post2",
+      "settings": {
+        "use-world-coords": true,
+        "convert-back-units": false,
+        "weld-vertices": true
+      },
+      "documentation_url": "https://docs.ifcopenshell.org/ifcopenshell/geometry_settings.html"
+    },
+    "source": {
+      "file": "04_Flat.ifc",
+      "ifc_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+      "bytes": 263139,
+      "schema": "IFC4",
+      "published_source_verified": true,
+      "repository_url": "https://github.com/TechnicalBuildingSystems/OpenSmartHomeData",
+      "commit": "34acb1fb7a24005ddf29f7f232081713c2f78291",
+      "file_url": "https://github.com/TechnicalBuildingSystems/OpenSmartHomeData/blob/34acb1fb7a24005ddf29f7f232081713c2f78291/04_Flat.ifc",
+      "licence": "CC BY-SA 4.0"
+    },
+    "source_ifc_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+    "units": {
+      "geometry": "m",
+      "source_length": {
+        "name": "METRE",
+        "prefix": "MILLI",
+        "ifc_class": "IfcSIUnit",
+        "unit_scale_to_m": 0.001
+      },
+      "conversion": "IfcOpenShell returns metres; no further vertex scaling is applied."
+    },
+    "coordinate_system": {
+      "reference": "IFC world coordinates after ObjectPlacement",
+      "up_axis": "Z",
+      "length_unit": "m",
+      "display_recentring_applied": false
+    },
+    "bounds": {
+      "min": [
+        -7.81086349757307,
+        -4.063591567823377,
+        -0.2
+      ],
+      "max": [
+        3.8991365024269675,
+        5.816408432176648,
+        4.0
+      ]
+    },
+    "spatial": {
+      "buildings": [
+        {
+          "guid": "19j$H2u695xh74KSmq7OMY",
+          "step_id": 119,
+          "ifc_class": "IfcBuilding",
+          "name": "",
+          "long_name": ""
+        }
+      ],
+      "storeys": [
+        {
+          "guid": "19j$H2u695xh74KSpBudja",
+          "step_id": 132,
+          "ifc_class": "IfcBuildingStorey",
+          "name": "Level 1",
+          "long_name": "Level 1",
+          "elevation_m": 0.0
+        },
+        {
+          "guid": "19j$H2u695xh74KSpBudZb",
+          "step_id": 138,
+          "ifc_class": "IfcBuildingStorey",
+          "name": "Level 2",
+          "long_name": "Level 2",
+          "elevation_m": 2.52
+        }
+      ],
+      "spaces": [
+        {
+          "guid": "05i4VutGDCsQKCrT6CQvhu",
+          "step_id": 165,
+          "ifc_class": "IfcSpace",
+          "name": "1",
+          "long_name": "Raum 1",
+          "spatial_parent": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1"
+          },
+          "storey": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1",
+            "elevation_m": 0.0
+          },
+          "building": {
+            "guid": "19j$H2u695xh74KSmq7OMY",
+            "step_id": 119,
+            "ifc_class": "IfcBuilding",
+            "name": "",
+            "long_name": ""
+          },
+          "spatial_ancestry": [
+            {
+              "guid": "19j$H2u695xh74KSpBudja",
+              "step_id": 132,
+              "ifc_class": "IfcBuildingStorey",
+              "name": "Level 1",
+              "long_name": "Level 1"
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMY",
+              "step_id": 119,
+              "ifc_class": "IfcBuilding",
+              "name": "",
+              "long_name": ""
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMX",
+              "step_id": 7675,
+              "ifc_class": "IfcSite",
+              "name": "Default",
+              "long_name": null
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMZ",
+              "step_id": 104,
+              "ifc_class": "IfcProject",
+              "name": "0001",
+              "long_name": "Project Name"
+            }
+          ]
+        },
+        {
+          "guid": "05i4VutGDCsQKCrT6CQvhb",
+          "step_id": 215,
+          "ifc_class": "IfcSpace",
+          "name": "2",
+          "long_name": "Raum 2",
+          "spatial_parent": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1"
+          },
+          "storey": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1",
+            "elevation_m": 0.0
+          },
+          "building": {
+            "guid": "19j$H2u695xh74KSmq7OMY",
+            "step_id": 119,
+            "ifc_class": "IfcBuilding",
+            "name": "",
+            "long_name": ""
+          },
+          "spatial_ancestry": [
+            {
+              "guid": "19j$H2u695xh74KSpBudja",
+              "step_id": 132,
+              "ifc_class": "IfcBuildingStorey",
+              "name": "Level 1",
+              "long_name": "Level 1"
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMY",
+              "step_id": 119,
+              "ifc_class": "IfcBuilding",
+              "name": "",
+              "long_name": ""
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMX",
+              "step_id": 7675,
+              "ifc_class": "IfcSite",
+              "name": "Default",
+              "long_name": null
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMZ",
+              "step_id": 104,
+              "ifc_class": "IfcProject",
+              "name": "0001",
+              "long_name": "Project Name"
+            }
+          ]
+        },
+        {
+          "guid": "05i4VutGDCsQKCrT6CQvhY",
+          "step_id": 247,
+          "ifc_class": "IfcSpace",
+          "name": "3",
+          "long_name": "Bad",
+          "spatial_parent": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1"
+          },
+          "storey": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1",
+            "elevation_m": 0.0
+          },
+          "building": {
+            "guid": "19j$H2u695xh74KSmq7OMY",
+            "step_id": 119,
+            "ifc_class": "IfcBuilding",
+            "name": "",
+            "long_name": ""
+          },
+          "spatial_ancestry": [
+            {
+              "guid": "19j$H2u695xh74KSpBudja",
+              "step_id": 132,
+              "ifc_class": "IfcBuildingStorey",
+              "name": "Level 1",
+              "long_name": "Level 1"
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMY",
+              "step_id": 119,
+              "ifc_class": "IfcBuilding",
+              "name": "",
+              "long_name": ""
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMX",
+              "step_id": 7675,
+              "ifc_class": "IfcSite",
+              "name": "Default",
+              "long_name": null
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMZ",
+              "step_id": 104,
+              "ifc_class": "IfcProject",
+              "name": "0001",
+              "long_name": "Project Name"
+            }
+          ]
+        },
+        {
+          "guid": "05i4VutGDCsQKCrT6CQvhl",
+          "step_id": 279,
+          "ifc_class": "IfcSpace",
+          "name": "4",
+          "long_name": "Treppenhaus",
+          "spatial_parent": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1"
+          },
+          "storey": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1",
+            "elevation_m": 0.0
+          },
+          "building": {
+            "guid": "19j$H2u695xh74KSmq7OMY",
+            "step_id": 119,
+            "ifc_class": "IfcBuilding",
+            "name": "",
+            "long_name": ""
+          },
+          "spatial_ancestry": [
+            {
+              "guid": "19j$H2u695xh74KSpBudja",
+              "step_id": 132,
+              "ifc_class": "IfcBuildingStorey",
+              "name": "Level 1",
+              "long_name": "Level 1"
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMY",
+              "step_id": 119,
+              "ifc_class": "IfcBuilding",
+              "name": "",
+              "long_name": ""
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMX",
+              "step_id": 7675,
+              "ifc_class": "IfcSite",
+              "name": "Default",
+              "long_name": null
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMZ",
+              "step_id": 104,
+              "ifc_class": "IfcProject",
+              "name": "0001",
+              "long_name": "Project Name"
+            }
+          ]
+        },
+        {
+          "guid": "05i4VutGDCsQKCrT6CQvhf",
+          "step_id": 311,
+          "ifc_class": "IfcSpace",
+          "name": "5",
+          "long_name": "Küche",
+          "spatial_parent": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1"
+          },
+          "storey": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1",
+            "elevation_m": 0.0
+          },
+          "building": {
+            "guid": "19j$H2u695xh74KSmq7OMY",
+            "step_id": 119,
+            "ifc_class": "IfcBuilding",
+            "name": "",
+            "long_name": ""
+          },
+          "spatial_ancestry": [
+            {
+              "guid": "19j$H2u695xh74KSpBudja",
+              "step_id": 132,
+              "ifc_class": "IfcBuildingStorey",
+              "name": "Level 1",
+              "long_name": "Level 1"
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMY",
+              "step_id": 119,
+              "ifc_class": "IfcBuilding",
+              "name": "",
+              "long_name": ""
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMX",
+              "step_id": 7675,
+              "ifc_class": "IfcSite",
+              "name": "Default",
+              "long_name": null
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMZ",
+              "step_id": 104,
+              "ifc_class": "IfcProject",
+              "name": "0001",
+              "long_name": "Project Name"
+            }
+          ]
+        },
+        {
+          "guid": "05i4VutGDCsQKCrT6CQvhM",
+          "step_id": 343,
+          "ifc_class": "IfcSpace",
+          "name": "6",
+          "long_name": "Room",
+          "spatial_parent": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1"
+          },
+          "storey": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1",
+            "elevation_m": 0.0
+          },
+          "building": {
+            "guid": "19j$H2u695xh74KSmq7OMY",
+            "step_id": 119,
+            "ifc_class": "IfcBuilding",
+            "name": "",
+            "long_name": ""
+          },
+          "spatial_ancestry": [
+            {
+              "guid": "19j$H2u695xh74KSpBudja",
+              "step_id": 132,
+              "ifc_class": "IfcBuildingStorey",
+              "name": "Level 1",
+              "long_name": "Level 1"
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMY",
+              "step_id": 119,
+              "ifc_class": "IfcBuilding",
+              "name": "",
+              "long_name": ""
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMX",
+              "step_id": 7675,
+              "ifc_class": "IfcSite",
+              "name": "Default",
+              "long_name": null
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMZ",
+              "step_id": 104,
+              "ifc_class": "IfcProject",
+              "name": "0001",
+              "long_name": "Project Name"
+            }
+          ]
+        },
+        {
+          "guid": "05i4VutGDCsQKCrT6CQvhJ",
+          "step_id": 375,
+          "ifc_class": "IfcSpace",
+          "name": "7",
+          "long_name": "Room",
+          "spatial_parent": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1"
+          },
+          "storey": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1",
+            "elevation_m": 0.0
+          },
+          "building": {
+            "guid": "19j$H2u695xh74KSmq7OMY",
+            "step_id": 119,
+            "ifc_class": "IfcBuilding",
+            "name": "",
+            "long_name": ""
+          },
+          "spatial_ancestry": [
+            {
+              "guid": "19j$H2u695xh74KSpBudja",
+              "step_id": 132,
+              "ifc_class": "IfcBuildingStorey",
+              "name": "Level 1",
+              "long_name": "Level 1"
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMY",
+              "step_id": 119,
+              "ifc_class": "IfcBuilding",
+              "name": "",
+              "long_name": ""
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMX",
+              "step_id": 7675,
+              "ifc_class": "IfcSite",
+              "name": "Default",
+              "long_name": null
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMZ",
+              "step_id": 104,
+              "ifc_class": "IfcProject",
+              "name": "0001",
+              "long_name": "Project Name"
+            }
+          ]
+        },
+        {
+          "guid": "05i4VutGDCsQKCrT6CQvl2",
+          "step_id": 407,
+          "ifc_class": "IfcSpace",
+          "name": "8",
+          "long_name": "Raum 3",
+          "spatial_parent": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1"
+          },
+          "storey": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1",
+            "elevation_m": 0.0
+          },
+          "building": {
+            "guid": "19j$H2u695xh74KSmq7OMY",
+            "step_id": 119,
+            "ifc_class": "IfcBuilding",
+            "name": "",
+            "long_name": ""
+          },
+          "spatial_ancestry": [
+            {
+              "guid": "19j$H2u695xh74KSpBudja",
+              "step_id": 132,
+              "ifc_class": "IfcBuildingStorey",
+              "name": "Level 1",
+              "long_name": "Level 1"
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMY",
+              "step_id": 119,
+              "ifc_class": "IfcBuilding",
+              "name": "",
+              "long_name": ""
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMX",
+              "step_id": 7675,
+              "ifc_class": "IfcSite",
+              "name": "Default",
+              "long_name": null
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMZ",
+              "step_id": 104,
+              "ifc_class": "IfcProject",
+              "name": "0001",
+              "long_name": "Project Name"
+            }
+          ]
+        },
+        {
+          "guid": "05i4VutGDCsQKCrT6CQvjm",
+          "step_id": 458,
+          "ifc_class": "IfcSpace",
+          "name": "9",
+          "long_name": "Diele",
+          "spatial_parent": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1"
+          },
+          "storey": {
+            "guid": "19j$H2u695xh74KSpBudja",
+            "step_id": 132,
+            "ifc_class": "IfcBuildingStorey",
+            "name": "Level 1",
+            "long_name": "Level 1",
+            "elevation_m": 0.0
+          },
+          "building": {
+            "guid": "19j$H2u695xh74KSmq7OMY",
+            "step_id": 119,
+            "ifc_class": "IfcBuilding",
+            "name": "",
+            "long_name": ""
+          },
+          "spatial_ancestry": [
+            {
+              "guid": "19j$H2u695xh74KSpBudja",
+              "step_id": 132,
+              "ifc_class": "IfcBuildingStorey",
+              "name": "Level 1",
+              "long_name": "Level 1"
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMY",
+              "step_id": 119,
+              "ifc_class": "IfcBuilding",
+              "name": "",
+              "long_name": ""
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMX",
+              "step_id": 7675,
+              "ifc_class": "IfcSite",
+              "name": "Default",
+              "long_name": null
+            },
+            {
+              "guid": "19j$H2u695xh74KSmq7OMZ",
+              "step_id": 104,
+              "ifc_class": "IfcProject",
+              "name": "0001",
+              "long_name": "Project Name"
+            }
+          ]
+        }
+      ]
+    },
+    "counts": {
+      "spaces_in_source": 9,
+      "elements_in_source": 54,
+      "space_meshes": 9,
+      "element_meshes": 38,
+      "meshes": 47,
+      "vertices": 2800,
+      "triangles": 5160,
+      "source_element_classes": {
+        "IfcDoor": 7,
+        "IfcFurniture": 1,
+        "IfcOpeningElement": 16,
+        "IfcSlab": 2,
+        "IfcSpaceHeater": 6,
+        "IfcWallStandardCase": 15,
+        "IfcWindow": 7
+      },
+      "mesh_classes": {
+        "IfcDoor": 7,
+        "IfcFurniture": 1,
+        "IfcSlab": 2,
+        "IfcSpace": 9,
+        "IfcSpaceHeater": 6,
+        "IfcWallStandardCase": 15,
+        "IfcWindow": 7
+      },
+      "omitted": 16,
+      "errors": 0
+    },
+    "errors": [],
+    "omitted": [
+      {
+        "guid": "05i4VutGDCsQKCrT6CQvZ6",
+        "step_id": 813,
+        "ifc_class": "IfcOpeningElement",
+        "name": "Basic Wall:Generic - 260mm:317992",
+        "long_name": null,
+        "reason": "opening_void",
+        "detail": "Void is subtracted from its host; it is not a solid physical element."
+      },
+      {
+        "guid": "1IedFN$LrDXxWafT3rdUYk",
+        "step_id": 8139,
+        "ifc_class": "IfcOpeningElement",
+        "name": "M_Fixed:1600 x 1100mm:321890:1",
+        "long_name": null,
+        "reason": "opening_void",
+        "detail": "Void is subtracted from its host; it is not a solid physical element."
+      },
+      {
+        "guid": "1IedFN$LrDXxWafT3rdUWV",
+        "step_id": 8167,
+        "ifc_class": "IfcOpeningElement",
+        "name": "M_Fixed:0700 x 1100mm:322003:1",
+        "long_name": null,
+        "reason": "opening_void",
+        "detail": "Void is subtracted from its host; it is not a solid physical element."
+      },
+      {
+        "guid": "1IedFN$LrDXxWafT3rdUl1",
+        "step_id": 8194,
+        "ifc_class": "IfcOpeningElement",
+        "name": "M_Fixed:1900 x 1100mm:322061:1",
+        "long_name": null,
+        "reason": "opening_void",
+        "detail": "Void is subtracted from its host; it is not a solid physical element."
+      },
+      {
+        "guid": "1IedFN$LrDXxWafT3rdUju",
+        "step_id": 8222,
+        "ifc_class": "IfcOpeningElement",
+        "name": "M_Fixed:1600 x 1100mm:322228:1",
+        "long_name": null,
+        "reason": "opening_void",
+        "detail": "Void is subtracted from its host; it is not a solid physical element."
+      },
+      {
+        "guid": "1IedFN$LrDXxWafT3rdUh1",
+        "step_id": 8251,
+        "ifc_class": "IfcOpeningElement",
+        "name": "M_Fixed:1600 x 1100mm:322317:1",
+        "long_name": null,
+        "reason": "opening_void",
+        "detail": "Void is subtracted from its host; it is not a solid physical element."
+      },
+      {
+        "guid": "1IedFN$LrDXxWafT3rdUfI",
+        "step_id": 8279,
+        "ifc_class": "IfcOpeningElement",
+        "name": "M_Fixed:1600 x 1100mm:322462:1",
+        "long_name": null,
+        "reason": "opening_void",
+        "detail": "Void is subtracted from its host; it is not a solid physical element."
+      },
+      {
+        "guid": "1IedFN$LrDXxWafT3rdUeK",
+        "step_id": 8306,
+        "ifc_class": "IfcOpeningElement",
+        "name": "M_Fixed:0700 x 1100mm:322520:1",
+        "long_name": null,
+        "reason": "opening_void",
+        "detail": "Void is subtracted from its host; it is not a solid physical element."
+      },
+      {
+        "guid": "05i4VutGDCsQKCrSACQvZ6",
+        "step_id": 8334,
+        "ifc_class": "IfcOpeningElement",
+        "name": "M_Single-Flush:0762 x 2032mm:320113:1",
+        "long_name": null,
+        "reason": "opening_void",
+        "detail": "Void is subtracted from its host; it is not a solid physical element."
+      },
+      {
+        "guid": "05i4VutGDCsQKCrSACQvdo",
+        "step_id": 8363,
+        "ifc_class": "IfcOpeningElement",
+        "name": "M_Single-Flush:0762 x 2032mm:320325:1",
+        "long_name": null,
+        "reason": "opening_void",
+        "detail": "Void is subtracted from its host; it is not a solid physical element."
+      },
+      {
+        "guid": "05i4VutGDCsQKCrSACQvbk",
+        "step_id": 8401,
+        "ifc_class": "IfcOpeningElement",
+        "name": "Basic Wall:Generic - 260mm:318308",
+        "long_name": null,
+        "reason": "opening_void",
+        "detail": "Void is subtracted from its host; it is not a solid physical element."
+      },
+      {
+        "guid": "05i4VutGDCsQKCrSACQvAK",
+        "step_id": 8423,
+        "ifc_class": "IfcOpeningElement",
+        "name": "M_Single-Flush:0762 x 2032mm:321571:1",
+        "long_name": null,
+        "reason": "opening_void",
+        "detail": "Void is subtracted from its host; it is not a solid physical element."
+      },
+      {
+        "guid": "05i4VutGDCsQKCrSACQvq3",
+        "step_id": 8452,
+        "ifc_class": "IfcOpeningElement",
+        "name": "M_Single-Flush:0762 x 2032mm:321460:1",
+        "long_name": null,
+        "reason": "opening_void",
+        "detail": "Void is subtracted from its host; it is not a solid physical element."
+      },
+      {
+        "guid": "05i4VutGDCsQKCrSACQv8W",
+        "step_id": 8480,
+        "ifc_class": "IfcOpeningElement",
+        "name": "M_Single-Flush:0762 x 2032mm:321687:1",
+        "long_name": null,
+        "reason": "opening_void",
+        "detail": "Void is subtracted from its host; it is not a solid physical element."
+      },
+      {
+        "guid": "05i4VutGDCsQKCrSACQvjZ",
+        "step_id": 8508,
+        "ifc_class": "IfcOpeningElement",
+        "name": "M_Single-Flush:0915 x 2134mm:319956:1",
+        "long_name": null,
+        "reason": "opening_void",
+        "detail": "Void is subtracted from its host; it is not a solid physical element."
+      },
+      {
+        "guid": "05i4VutGDCsQKCrSACQvBw",
+        "step_id": 8537,
+        "ifc_class": "IfcOpeningElement",
+        "name": "M_Single-Flush:0762 x 2032mm:321613:1",
+        "long_name": null,
+        "reason": "opening_void",
+        "detail": "Void is subtracted from its host; it is not a solid physical element."
+      }
+    ],
+    "limitations": [
+      "Space volumes are IFC geometry, not sensor installation positions.",
+      "Only represented physical elements and spaces are tessellated; IFC voids are listed in the omission audit.",
+      "The model is published reference material. Exporting its mesh does not verify the real building's present condition."
+    ]
+  },
+  "analytics_status": "fitted"
+}

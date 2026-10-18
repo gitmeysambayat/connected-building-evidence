@@ -1,0 +1,47 @@
+Connected Building: source and third-party attribution
+
+1. Newly authored application code
+
+New application code and general project documentation are distributed under
+the MIT licence in LICENSE. The project was assembled with AI assistance.
+This attribution does not claim independent human implementation or establish
+the candidate's personal proficiency.
+
+2. Open Smart Home Data Set
+
+Source repository:
+https://github.com/TechnicalBuildingSystems/OpenSmartHomeData
+Pinned commit: 34acb1fb7a24005ddf29f7f232081713c2f78291
+Licence: Creative Commons Attribution Share Alike 4.0 International
+https://creativecommons.org/licenses/by-sa/4.0/
+
+Measured time series: Copyright (c) 2018 Fraunhofer Institute for Building
+Physics, Nürnberg, Germany. Associated RDF metadata: Copyright (c) 2018 W3C
+Linked Building Data Community Group contributors. Original notices and the
+upstream README are preserved in data/source/LICENSE.md and data/source/README.md.
+
+Contributors named by the source: Mads Holten Rasmussen, Peter Bonsma, Pieter
+Pauwels, Jyrki Oraskari and Georg Ferdinand Schneider.
+
+The IFC, measured CSV files, source RDF, excerpts and data-derived material
+retain source attribution and CC BY-SA 4.0 terms. They are not relabelled MIT.
+Transformations include exact CSV import to SQLite, Unix-time conversion to
+UTC, extraction of source IFC geometry, explicit room/GlobalId alignment,
+documented setpoint-namespace normalisation, bounded source-row display
+sampling and a chronological temperature-forecasting experiment. Raw supplied
+source files are unchanged. Transformations and hashes are documented in the
+source manifest, audit and application reports.
+
+No statement in this package implies endorsement by the dataset authors,
+their institutions, the university advertising the role or any consortium.
+
+3. Three.js
+
+Locally included Three.js and OrbitControls files are distributed under their
+MIT licence. The original notice is retained at static/vendor/THREE-LICENSE.txt.
+
+4. Python dependencies
+
+Python dependencies are installed separately from the pinned requirements.
+Their own distribution licences and notices continue to apply. This package
+does not relicense them.

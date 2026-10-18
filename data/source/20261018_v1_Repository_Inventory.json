@@ -1,0 +1,693 @@
+{
+  "commit": "34acb1fb7a24005ddf29f7f232081713c2f78291",
+  "retrieved_at_utc": "2026-10-17T23:05:14.1312333Z",
+  "repository": "https://github.com/TechnicalBuildingSystems/OpenSmartHomeData",
+  "tree": [
+    {
+      "path": "00_OpenSmartHomeData.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "52bd950a5a8f957078a23a1f825812e4648748ac",
+      "size": 27654,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/52bd950a5a8f957078a23a1f825812e4648748ac"
+    },
+    {
+      "path": "01_LinkOsh.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5ac923d41cc3fd701284f2fc25c153ac29b7a57b",
+      "size": 10278,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/5ac923d41cc3fd701284f2fc25c153ac29b7a57b"
+    },
+    {
+      "path": "02_BotFromRevit.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4fdfc8e54b481ddec12975f34cd10ab18793282b",
+      "size": 17987,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/4fdfc8e54b481ddec12975f34cd10ab18793282b"
+    },
+    {
+      "path": "02_GeoFromRevit.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ac8ec94ab3fff62342abc564e29a744f8b200f07",
+      "size": 4966,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/ac8ec94ab3fff62342abc564e29a744f8b200f07"
+    },
+    {
+      "path": "02_PropsFromRevit.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "415f84647269379d71514329432bab3aa1cf220f",
+      "size": 45834,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/415f84647269379d71514329432bab3aa1cf220f"
+    },
+    {
+      "path": "03_GEOM.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "572e826563e6303ea73573931c7b5ade30a4ae4d",
+      "size": 2599846,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/572e826563e6303ea73573931c7b5ade30a4ae4d"
+    },
+    {
+      "path": "04_Flat.ifc",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2d7a8d2f96a1e37c3e8642913afd12b0679a2e39",
+      "size": 263139,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/2d7a8d2f96a1e37c3e8642913afd12b0679a2e39"
+    },
+    {
+      "path": "05_Flat.rvt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "23126c8dfb4b0b07f8c4e96e49b3a4972621ad57",
+      "size": 4153344,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/23126c8dfb4b0b07f8c4e96e49b3a4972621ad57"
+    },
+    {
+      "path": "06_ifcOWLfromIFC.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e26d5b3b2f3e39b43bcec8d54056dedc9ddd3c01",
+      "size": 2012714,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/e26d5b3b2f3e39b43bcec8d54056dedc9ddd3c01"
+    },
+    {
+      "path": "LICENSE.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3ed012d50d08908dc5c8224fe622ca29d3d31c4c",
+      "size": 753,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/3ed012d50d08908dc5c8224fe622ca29d3d31c4c"
+    },
+    {
+      "path": "Measurements",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a1212a8cd7897d8c7ca3422166e9227098d6c736",
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/trees/a1212a8cd7897d8c7ca3422166e9227098d6c736"
+    },
+    {
+      "path": "Measurements/Bathroom_Brightness.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9d399632ecf5c0523de61095d7c8e0b8c883f80c",
+      "size": 177112,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/9d399632ecf5c0523de61095d7c8e0b8c883f80c"
+    },
+    {
+      "path": "Measurements/Bathroom_Humidity.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c417456ea8e974f76770d1362a486846b9bfe70c",
+      "size": 149114,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/c417456ea8e974f76770d1362a486846b9bfe70c"
+    },
+    {
+      "path": "Measurements/Bathroom_SetpointHistory.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ee292caae5749a1f2afaefe40265e84e8bee0609",
+      "size": 4822,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/ee292caae5749a1f2afaefe40265e84e8bee0609"
+    },
+    {
+      "path": "Measurements/Bathroom_Temperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c5c5f6e0e9d02fdbd27859325d5e31b06a8ab6af",
+      "size": 180002,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/c5c5f6e0e9d02fdbd27859325d5e31b06a8ab6af"
+    },
+    {
+      "path": "Measurements/Bathroom_ThermostatTemperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "19216952f6522ec30716bfdaa8b081abad68ec56",
+      "size": 185390,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/19216952f6522ec30716bfdaa8b081abad68ec56"
+    },
+    {
+      "path": "Measurements/Bathroom_Virtual_OutdoorTemperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7b876e3a43147e45cd68e111d3d0d3d787147e1b",
+      "size": 57191,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/7b876e3a43147e45cd68e111d3d0d3d787147e1b"
+    },
+    {
+      "path": "Measurements/Kitchen_Brightness.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fa4641818010bf3f68a6c04f3f1d2fbb0ed4de15",
+      "size": 172969,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/fa4641818010bf3f68a6c04f3f1d2fbb0ed4de15"
+    },
+    {
+      "path": "Measurements/Kitchen_Humidity.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "929432d4547530f1885c174384e72134e4e8f364",
+      "size": 141456,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/929432d4547530f1885c174384e72134e4e8f364"
+    },
+    {
+      "path": "Measurements/Kitchen_SetpointHistory.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "07b7d2130bf8b8f2f4bf85fb82f092b2eea19e75",
+      "size": 4998,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/07b7d2130bf8b8f2f4bf85fb82f092b2eea19e75"
+    },
+    {
+      "path": "Measurements/Kitchen_Temperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "187614e5853999da96f0120037f036bf46a89aee",
+      "size": 175785,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/187614e5853999da96f0120037f036bf46a89aee"
+    },
+    {
+      "path": "Measurements/Kitchen_ThermostatTemperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fa87aaac3be75750346bbbe9a1fd7d4047205d74",
+      "size": 172842,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/fa87aaac3be75750346bbbe9a1fd7d4047205d74"
+    },
+    {
+      "path": "Measurements/Kitchen_Virtual_OutdoorTemperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7b876e3a43147e45cd68e111d3d0d3d787147e1b",
+      "size": 57191,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/7b876e3a43147e45cd68e111d3d0d3d787147e1b"
+    },
+    {
+      "path": "Measurements/Room1_Brightness.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "57828af733102845fd45bfb7a320223fe661dde4",
+      "size": 166262,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/57828af733102845fd45bfb7a320223fe661dde4"
+    },
+    {
+      "path": "Measurements/Room1_Humidity.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7ee91d7b65d1c361a56d4ce4648df0bff19e1c61",
+      "size": 144606,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/7ee91d7b65d1c361a56d4ce4648df0bff19e1c61"
+    },
+    {
+      "path": "Measurements/Room1_SetpointHistory.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3320f0f5eb71195cecf34ef137b82950770f7f6e",
+      "size": 4760,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/3320f0f5eb71195cecf34ef137b82950770f7f6e"
+    },
+    {
+      "path": "Measurements/Room1_Temperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "779d325580d2358e34ca12197568665b5c9d7823",
+      "size": 177989,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/779d325580d2358e34ca12197568665b5c9d7823"
+    },
+    {
+      "path": "Measurements/Room1_ThermostatTemperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a3a11a8d1c25cf14da565f9a276a19a67eb219c7",
+      "size": 186231,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/a3a11a8d1c25cf14da565f9a276a19a67eb219c7"
+    },
+    {
+      "path": "Measurements/Room1_Virtual_OutdoorTemperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7b876e3a43147e45cd68e111d3d0d3d787147e1b",
+      "size": 57191,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/7b876e3a43147e45cd68e111d3d0d3d787147e1b"
+    },
+    {
+      "path": "Measurements/Room2_Brightness.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d0d6c92e56e1222a934a482280e6490e6d253694",
+      "size": 172523,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/d0d6c92e56e1222a934a482280e6490e6d253694"
+    },
+    {
+      "path": "Measurements/Room2_Humidity.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "09944c1da81fc3f2c8ec0068acae4e87564e432f",
+      "size": 144382,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/09944c1da81fc3f2c8ec0068acae4e87564e432f"
+    },
+    {
+      "path": "Measurements/Room2_OutdoorTemperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7b876e3a43147e45cd68e111d3d0d3d787147e1b",
+      "size": 57191,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/7b876e3a43147e45cd68e111d3d0d3d787147e1b"
+    },
+    {
+      "path": "Measurements/Room2_SetpointHistory.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bf7f61c659c6c14def9db90a4f573a713f0e1375",
+      "size": 5014,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/bf7f61c659c6c14def9db90a4f573a713f0e1375"
+    },
+    {
+      "path": "Measurements/Room2_Temperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "95125ed8428bf6968ddb1db70a62054e8dbd1b57",
+      "size": 181037,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/95125ed8428bf6968ddb1db70a62054e8dbd1b57"
+    },
+    {
+      "path": "Measurements/Room2_ThermostatTemperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0d242cd8433431021e87535ede79a4f2c90a70f8",
+      "size": 185639,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/0d242cd8433431021e87535ede79a4f2c90a70f8"
+    },
+    {
+      "path": "Measurements/Room3_Brightness.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "87d08dba852ba4406cbd94ae0d763043de30299e",
+      "size": 176408,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/87d08dba852ba4406cbd94ae0d763043de30299e"
+    },
+    {
+      "path": "Measurements/Room3_Humidity.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8ea381f12208efd2296317ef185fd16a85d634ea",
+      "size": 144998,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/8ea381f12208efd2296317ef185fd16a85d634ea"
+    },
+    {
+      "path": "Measurements/Room3_SetpointHistory.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "017cedc21c359966708a94bb10dc84b87b0bd9b9",
+      "size": 4834,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/017cedc21c359966708a94bb10dc84b87b0bd9b9"
+    },
+    {
+      "path": "Measurements/Room3_Temperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f0027e06e0a042b998f9126194367c0f7e25f359",
+      "size": 184412,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/f0027e06e0a042b998f9126194367c0f7e25f359"
+    },
+    {
+      "path": "Measurements/Room3_Virtual_OutdoorTemperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7b876e3a43147e45cd68e111d3d0d3d787147e1b",
+      "size": 57191,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/7b876e3a43147e45cd68e111d3d0d3d787147e1b"
+    },
+    {
+      "path": "Measurements/Room3_left_ThermostatTemperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "37875a7a6849705726bcdbe227a3777b80428479",
+      "size": 187580,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/37875a7a6849705726bcdbe227a3777b80428479"
+    },
+    {
+      "path": "Measurements/Room3_right_ThermostatTemperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a2181cf583d1a3ab50cdda847f98fb7f90c04498",
+      "size": 183267,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/a2181cf583d1a3ab50cdda847f98fb7f90c04498"
+    },
+    {
+      "path": "Measurements/Toilet_Brightness.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "561d1cd30f7486fad5b3ca9f2dbaa335346928fc",
+      "size": 149995,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/561d1cd30f7486fad5b3ca9f2dbaa335346928fc"
+    },
+    {
+      "path": "Measurements/Toilet_Humidity.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4bb621a6519fdae50aa3481db19068b62442305a",
+      "size": 121828,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/4bb621a6519fdae50aa3481db19068b62442305a"
+    },
+    {
+      "path": "Measurements/Toilet_SetpointHistory.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cd5b0201a4f6e4056ea6058b9096a0ae5c6c873e",
+      "size": 4760,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/cd5b0201a4f6e4056ea6058b9096a0ae5c6c873e"
+    },
+    {
+      "path": "Measurements/Toilet_Temperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5517872069a5923de0100eb5676d74fae4afde03",
+      "size": 151562,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/5517872069a5923de0100eb5676d74fae4afde03"
+    },
+    {
+      "path": "Measurements/Toilet_ThermostatTemperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9965a72dd890a79759c86ac1d331d6b2cc59dc44",
+      "size": 147067,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/9965a72dd890a79759c86ac1d331d6b2cc59dc44"
+    },
+    {
+      "path": "Measurements/Toilet_Virtual_OutdoorTemperature.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7b876e3a43147e45cd68e111d3d0d3d787147e1b",
+      "size": 57191,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/7b876e3a43147e45cd68e111d3d0d3d787147e1b"
+    },
+    {
+      "path": "MeasurementsTurtle",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "07dde13d8d856e8db449e22e1d0d05c4e4237638",
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/trees/07dde13d8d856e8db449e22e1d0d05c4e4237638"
+    },
+    {
+      "path": "MeasurementsTurtle/Bathroom_Brightness.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bd34f2b746380117ad12c91b41187b4f0523ce3f",
+      "size": 4553193,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/bd34f2b746380117ad12c91b41187b4f0523ce3f"
+    },
+    {
+      "path": "MeasurementsTurtle/Bathroom_Humidity.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "01a76ac745074e986a8eaf4ec338e0fb98ee050c",
+      "size": 4343784,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/01a76ac745074e986a8eaf4ec338e0fb98ee050c"
+    },
+    {
+      "path": "MeasurementsTurtle/Bathroom_SetpointHistory.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "099f365893460771ed8f4d090f0018e575160f6d",
+      "size": 143314,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/099f365893460771ed8f4d090f0018e575160f6d"
+    },
+    {
+      "path": "MeasurementsTurtle/Bathroom_Temperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "39ab2db133d133eebd327be79ee72a02c287d1c7",
+      "size": 4443700,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/39ab2db133d133eebd327be79ee72a02c287d1c7"
+    },
+    {
+      "path": "MeasurementsTurtle/Bathroom_ThermostatTemperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4cb5696473faeb04805f48b7b8b05c7be124ed98",
+      "size": 4553717,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/4cb5696473faeb04805f48b7b8b05c7be124ed98"
+    },
+    {
+      "path": "MeasurementsTurtle/Bathroom_Virtual_OutdoorTemperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "66cd97e193b5f38c7afb2f659344972f9dfe246b",
+      "size": 1581634,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/66cd97e193b5f38c7afb2f659344972f9dfe246b"
+    },
+    {
+      "path": "MeasurementsTurtle/Kitchen_Brightness.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5d836444700d7d85d0215acb0a23e9a1aa28ebf7",
+      "size": 4361278,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/5d836444700d7d85d0215acb0a23e9a1aa28ebf7"
+    },
+    {
+      "path": "MeasurementsTurtle/Kitchen_Humidity.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "72c00af8015e6b6c09bd4935136d14abf4a2edf4",
+      "size": 4079185,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/72c00af8015e6b6c09bd4935136d14abf4a2edf4"
+    },
+    {
+      "path": "MeasurementsTurtle/Kitchen_SetpointHistory.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5878415611a52984dace886e34617a9a60c02099",
+      "size": 147569,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/5878415611a52984dace886e34617a9a60c02099"
+    },
+    {
+      "path": "MeasurementsTurtle/Kitchen_Temperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "30b43d0254f70367fd68b7f28dd348bd6b85d745",
+      "size": 4265961,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/30b43d0254f70367fd68b7f28dd348bd6b85d745"
+    },
+    {
+      "path": "MeasurementsTurtle/Kitchen_ThermostatTemperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e5e449e41da4dcb4527bfdbda450f27bffc4fb15",
+      "size": 4222287,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/e5e449e41da4dcb4527bfdbda450f27bffc4fb15"
+    },
+    {
+      "path": "MeasurementsTurtle/Kitchen_Virtual _OutdoorTemperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c00902d61ca0f1661193be75d946bfe60bc87115",
+      "size": 1566794,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/c00902d61ca0f1661193be75d946bfe60bc87115"
+    },
+    {
+      "path": "MeasurementsTurtle/Room1_Brightness.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0c0347e74fa426a436e8ebc4a21b16f5b28babc4",
+      "size": 4327943,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/0c0347e74fa426a436e8ebc4a21b16f5b28babc4"
+    },
+    {
+      "path": "MeasurementsTurtle/Room1_Humidity.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9756cfce6f287950f86a003827119c6c672b0daa",
+      "size": 4088530,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/9756cfce6f287950f86a003827119c6c672b0daa"
+    },
+    {
+      "path": "MeasurementsTurtle/Room1_SetpointHistory.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1ffd6d8b08c81a53e11781cbc7ca8139273b5cc6",
+      "size": 137583,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/1ffd6d8b08c81a53e11781cbc7ca8139273b5cc6"
+    },
+    {
+      "path": "MeasurementsTurtle/Room1_Temperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2352482b70268874fe2a0f8ed3c541aabe6d9db8",
+      "size": 4247258,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/2352482b70268874fe2a0f8ed3c541aabe6d9db8"
+    },
+    {
+      "path": "MeasurementsTurtle/Room1_ThermostatTemperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7cdcabe8297676cf0dea51b5591709bc97bde07a",
+      "size": 4453534,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/7cdcabe8297676cf0dea51b5591709bc97bde07a"
+    },
+    {
+      "path": "MeasurementsTurtle/Room1_Virtual_OutdoorTemperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "851e188fccb172c2fe992340f762c3f84425aa39",
+      "size": 1537114,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/851e188fccb172c2fe992340f762c3f84425aa39"
+    },
+    {
+      "path": "MeasurementsTurtle/Room2_Brightness.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "80e39a5094304f9e0f813fd9a4a38f388e3ba412",
+      "size": 4353790,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/80e39a5094304f9e0f813fd9a4a38f388e3ba412"
+    },
+    {
+      "path": "MeasurementsTurtle/Room2_Humidity.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2ef055720f0e4a628a20228a031a43ba2a60917a",
+      "size": 4081794,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/2ef055720f0e4a628a20228a031a43ba2a60917a"
+    },
+    {
+      "path": "MeasurementsTurtle/Room2_SetpointHistory.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a5393834a5f7f2b100309876e67277e416c1da14",
+      "size": 145118,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/a5393834a5f7f2b100309876e67277e416c1da14"
+    },
+    {
+      "path": "MeasurementsTurtle/Room2_Temperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fe42cbd923351ed680861b1e2923959e200dcc32",
+      "size": 4312827,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/fe42cbd923351ed680861b1e2923959e200dcc32"
+    },
+    {
+      "path": "MeasurementsTurtle/Room2_ThermostatTemperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "717f0733fb4320959a311a31b05d0038eeb0bc07",
+      "size": 4442139,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/717f0733fb4320959a311a31b05d0038eeb0bc07"
+    },
+    {
+      "path": "MeasurementsTurtle/Room2_Virtual_OutdoorTemperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d018fe82fc1ef86306dc75b6343af446eae3f9ea",
+      "size": 1537114,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/d018fe82fc1ef86306dc75b6343af446eae3f9ea"
+    },
+    {
+      "path": "MeasurementsTurtle/Room3_Brightness.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d5b6501f27a8eb99ddf7ea497862e0593d41c0df",
+      "size": 4356307,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/d5b6501f27a8eb99ddf7ea497862e0593d41c0df"
+    },
+    {
+      "path": "MeasurementsTurtle/Room3_Humidity.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "981536d2a7c26371d58ed93407a6000631dcffe2",
+      "size": 4098486,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/981536d2a7c26371d58ed93407a6000631dcffe2"
+    },
+    {
+      "path": "MeasurementsTurtle/Room3_SetpointHistory.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d2db0aa5beffaed38a068407dbe4cb73ea9fea39",
+      "size": 139593,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/d2db0aa5beffaed38a068407dbe4cb73ea9fea39"
+    },
+    {
+      "path": "MeasurementsTurtle/Room3_Temperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "44598e27250a57045fed99e74f50483711cb0813",
+      "size": 4396200,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/44598e27250a57045fed99e74f50483711cb0813"
+    },
+    {
+      "path": "MeasurementsTurtle/Room3_Thermostat_left_Temperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a1b3e83dd702025a3e8540368558e35a9b897a17",
+      "size": 4566022,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/a1b3e83dd702025a3e8540368558e35a9b897a17"
+    },
+    {
+      "path": "MeasurementsTurtle/Room3_Thermostat_right_Temperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bfa7a6a8f5ca710923188009d5e0e00317aa5e42",
+      "size": 4462454,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/bfa7a6a8f5ca710923188009d5e0e00317aa5e42"
+    },
+    {
+      "path": "MeasurementsTurtle/Room3_Virtual_OutdoorTemperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "70aabc387aeb6e54b06d6323d1300a0e747919a7",
+      "size": 1537114,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/70aabc387aeb6e54b06d6323d1300a0e747919a7"
+    },
+    {
+      "path": "MeasurementsTurtle/Toilet_Brightness.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0a1927b6d55ec4c9fb038df3cd3e169d2f025a78",
+      "size": 3688513,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/0a1927b6d55ec4c9fb038df3cd3e169d2f025a78"
+    },
+    {
+      "path": "MeasurementsTurtle/Toilet_Humidity.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ba82e2380856da4337153cc7010c0e8b7f2ddf6a",
+      "size": 3478255,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/ba82e2380856da4337153cc7010c0e8b7f2ddf6a"
+    },
+    {
+      "path": "MeasurementsTurtle/Toilet_SetpointHistory.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7a62417ecd80046a2e00716766712eaa60566671",
+      "size": 139213,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/7a62417ecd80046a2e00716766712eaa60566671"
+    },
+    {
+      "path": "MeasurementsTurtle/Toilet_Temperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7c49ef97d7d62d04a60b9714de87425096c2faf9",
+      "size": 3623625,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/7c49ef97d7d62d04a60b9714de87425096c2faf9"
+    },
+    {
+      "path": "MeasurementsTurtle/Toilet_Virtual_OutdoorTemperature.ttl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "38b21cb6a6fb945575f3ee95ba91762cffca2248",
+      "size": 1551954,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/38b21cb6a6fb945575f3ee95ba91762cffca2248"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9202d66babad71992818b268e280b774ceb34051",
+      "size": 4873,
+      "url": "https://api.github.com/repos/TechnicalBuildingSystems/OpenSmartHomeData/git/blobs/9202d66babad71992818b268e280b774ceb34051"
+    }
+  ]
+}

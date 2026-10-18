@@ -1,0 +1,53 @@
+# Python environments and caches
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+*.py[cod]
+
+# Generated mutable databases, graph stores, broker credentials and logs
+data/runtime/
+data/semantic_graph/
+data/*.sqlite3
+data/*.sqlite3-*
+data/upstream_rdf_cache/
+data/rdf_verification_cache/
+data/derived/*.joblib
+.mqtt_passwords
+*.log
+reports/*_temporary*
+
+# Credentials and checkout-local tool state
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.git-credentials
+.netrc
+.npmrc
+.openai/
+.sites-runtime/
+.wrangler/
+.agents/
+.codex/
+.vscode/
+.idea/
+
+# Build/dependency directories and disposable archives
+node_modules/
+.next/
+.vinext/
+dist/
+out/
+coverage/
+work/
+outputs/
+*.tsbuildinfo
+*.tgz
+*.zip
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,22 @@
+{
+  "template": "unverified_channels",
+  "sparql": "PREFIX app: <https://example.org/city-connected-building/v1/>\nSELECT ?channelId ?candidateRoomId ?mappingStatus WHERE {\n  GRAPH <https://example.org/city-connected-building/v1/graph/derived-alignment> {\n    ?channel app:channelId ?channelId ; app:mappingVerified false ;\n             app:candidateRoomId ?candidateRoomId ; app:mappingStatus ?mappingStatus .\n  }\n} ORDER BY ?channelId LIMIT 100",
+  "columns": [
+    "channelId",
+    "candidateRoomId",
+    "mappingStatus"
+  ],
+  "rows": [
+    {
+      "channelId": "Toilet_ThermostatTemperature",
+      "candidateRoomId": "Toilet",
+      "mappingStatus": "inferred_filename_unverified"
+    }
+  ],
+  "engine": "Source-verified local SPARQL snapshot; no cloud SPARQL engine",
+  "source_and_derived_assertions_separated": true,
+  "source_engine": "Oxigraph SPARQL over persistent RDF quads in RocksDB",
+  "snapshot": true,
+  "cloud_live_query_execution": false,
+  "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03"
+}

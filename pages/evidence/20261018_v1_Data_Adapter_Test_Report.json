@@ -1,0 +1,43 @@
+{
+  "generated_at_utc": "2026-10-18T07:51:19.896362+00:00",
+  "profile": "Read-only GitHub Pages viewer",
+  "executed": true,
+  "command_from_repository_root": "node --test --test-reporter=spec pages/tests/20261018_v1_Data_Adapter.test.mjs",
+  "runtime": "v22.23.3",
+  "tests": 11,
+  "passed": 11,
+  "failed": 0,
+  "skipped": 0,
+  "source_files_unchanged": true,
+  "source_assets_checked": 62,
+  "original_channel_files_checked": 37,
+  "source_observations_checked": 285954,
+  "preserved_original_export_hashes_checked": 13,
+  "ifc_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+  "verification_scope": [
+    "Actual SHA-256 and byte counts of all 62 published source/export assets",
+    "WebCrypto-backed adapter verifies all original CSV files and IFC",
+    "Pinned nine-space catalogue, 36 verified relationships and unresolved CSV-only thermostat",
+    "Original source values, epochs, source lines and maximum original gap across displayed samples",
+    "Inclusive explicit-UTC ranges and complete 10,598-row Room1 CSV with provenance",
+    "Malformed bounds, invented identifiers and mutations rejected",
+    "Modified source CSV and modified manifest rejected before data use",
+    "47 actual IFC meshes, three preserved SPARQL result sets and six negative Ridge results",
+    "Static asset and source links remain within the project directory; no backend HTTP calls"
+  ],
+  "not_established": [
+    "Deployed GitHub Pages availability",
+    "Browser WebGL rendering and interaction",
+    "Live server APIs, MQTT or SPARQL in the static viewer",
+    "New model training or improved forecasting performance",
+    "Physical sensor connection or calibration"
+  ],
+  "tested_files": {
+    "index.html": "f0e2b9222e15327a3ebe0540eb541a44a6a7dbddd14a0cb6fce08b07b747120a",
+    "static/app.js": "9fb390ead3ae221164aef31357329bf04fb5834bfd90a2bdac6b8071e58e5524",
+    "static/data-adapter.js": "3d45b59fba6b6a58d7f7ad803fc0948c254d7530e951897e7c3fc6057bbfea55",
+    "static/styles.css": "3c0011668d7f22e72320fecf04aaffc2883116c71014006aff6192a360014069",
+    "tests/20261018_v1_Data_Adapter.test.mjs": "2cc5780fbd37e1f19248015889b5e47bbce41cf633f3a9d64a3a52382a5ab245",
+    "evidence/20261018_v1_Pages_Asset_Manifest.json": "7efdb8ac8153b75d10e8977477c9fccf81784a1a9f9d23114a03aaa883d82c0d"
+  }
+}

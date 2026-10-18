@@ -1,0 +1,16 @@
+ifcopenshell==0.8.3.post2
+fastapi==0.115.12
+pydantic==2.11.5
+uvicorn==0.34.3
+strawberry-graphql==0.270.1
+graphql-core==3.2.6
+numpy==2.2.6
+scipy==1.15.3
+scikit-learn==1.6.1
+joblib==1.4.2
+httpx==0.28.1
+pytest==8.4.0
+pyoxigraph==0.5.11
+rdflib==7.6.0
+amqtt==0.12.1
+paho-mqtt==2.1.0

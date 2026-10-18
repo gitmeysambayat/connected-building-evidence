@@ -1,0 +1,12 @@
+services:
+  connected-building:
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - connected-building-state:/state
+    restart: unless-stopped
+    # One worker owns the persistent RDF store and local broker.
+    # This is a prepared local container definition, not a cloud-deployment receipt.
+volumes:
+  connected-building-state:

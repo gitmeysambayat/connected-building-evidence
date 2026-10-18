@@ -1,0 +1,72 @@
+{
+  "template": "room_alignment",
+  "sparql": "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nPREFIX app: <https://example.org/city-connected-building/v1/>\nSELECT ?room ?ifcEntity ?guid ?modelSha256 WHERE {\n  GRAPH <https://example.org/city-connected-building/v1/graph/source/01_LinkOsh.ttl> { ?room skos:related ?ifcEntity . }\n  FILTER(STRSTARTS(STR(?room), \"https://w3id.org/ibp/osh/OpenSmartHomeDataSet#\"))\n  GRAPH <https://example.org/city-connected-building/v1/graph/derived-alignment> { ?ifcEntity app:ifcGlobalId ?guid ; app:ifcSha256 ?modelSha256 . }\n} ORDER BY ?room LIMIT 100",
+  "columns": [
+    "room",
+    "ifcEntity",
+    "guid",
+    "modelSha256"
+  ],
+  "rows": [
+    {
+      "room": "https://w3id.org/ibp/osh/OpenSmartHomeDataSet#Bathroom",
+      "ifcEntity": "http://linkedbuildingdata.net/ifc/resources20180427_085111/IfcSpace_247",
+      "guid": "05i4VutGDCsQKCrT6CQvhY",
+      "modelSha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03"
+    },
+    {
+      "room": "https://w3id.org/ibp/osh/OpenSmartHomeDataSet#Kitchen",
+      "ifcEntity": "http://linkedbuildingdata.net/ifc/resources20180427_085111/IfcSpace_311",
+      "guid": "05i4VutGDCsQKCrT6CQvhf",
+      "modelSha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03"
+    },
+    {
+      "room": "https://w3id.org/ibp/osh/OpenSmartHomeDataSet#Lobby",
+      "ifcEntity": "http://linkedbuildingdata.net/ifc/resources20180427_085111/IfcSpace_458",
+      "guid": "05i4VutGDCsQKCrT6CQvjm",
+      "modelSha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03"
+    },
+    {
+      "room": "https://w3id.org/ibp/osh/OpenSmartHomeDataSet#Room1",
+      "ifcEntity": "http://linkedbuildingdata.net/ifc/resources20180427_085111/IfcSpace_165",
+      "guid": "05i4VutGDCsQKCrT6CQvhu",
+      "modelSha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03"
+    },
+    {
+      "room": "https://w3id.org/ibp/osh/OpenSmartHomeDataSet#Room2",
+      "ifcEntity": "http://linkedbuildingdata.net/ifc/resources20180427_085111/IfcSpace_215",
+      "guid": "05i4VutGDCsQKCrT6CQvhb",
+      "modelSha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03"
+    },
+    {
+      "room": "https://w3id.org/ibp/osh/OpenSmartHomeDataSet#Room3",
+      "ifcEntity": "http://linkedbuildingdata.net/ifc/resources20180427_085111/IfcSpace_407",
+      "guid": "05i4VutGDCsQKCrT6CQvl2",
+      "modelSha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03"
+    },
+    {
+      "room": "https://w3id.org/ibp/osh/OpenSmartHomeDataSet#RoomBeforeToilet",
+      "ifcEntity": "http://linkedbuildingdata.net/ifc/resources20180427_085111/IfcSpace_343",
+      "guid": "05i4VutGDCsQKCrT6CQvhM",
+      "modelSha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03"
+    },
+    {
+      "room": "https://w3id.org/ibp/osh/OpenSmartHomeDataSet#Staircase",
+      "ifcEntity": "http://linkedbuildingdata.net/ifc/resources20180427_085111/IfcSpace_279",
+      "guid": "05i4VutGDCsQKCrT6CQvhl",
+      "modelSha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03"
+    },
+    {
+      "room": "https://w3id.org/ibp/osh/OpenSmartHomeDataSet#Toilet",
+      "ifcEntity": "http://linkedbuildingdata.net/ifc/resources20180427_085111/IfcSpace_375",
+      "guid": "05i4VutGDCsQKCrT6CQvhJ",
+      "modelSha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03"
+    }
+  ],
+  "engine": "Source-verified local SPARQL snapshot; no cloud SPARQL engine",
+  "source_and_derived_assertions_separated": true,
+  "source_engine": "Oxigraph SPARQL over persistent RDF quads in RocksDB",
+  "snapshot": true,
+  "cloud_live_query_execution": false,
+  "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03"
+}

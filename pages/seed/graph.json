@@ -1,0 +1,23 @@
+{
+  "summary": {
+    "profile": "Verified local SPARQL snapshot",
+    "source_engine": "Oxigraph",
+    "source_storage": "Persistent RocksDB key-value database",
+    "source_quad_count": 1582,
+    "source_named_graphs": [
+      "https://example.org/city-connected-building/v1/graph/derived-alignment",
+      "https://example.org/city-connected-building/v1/graph/source/00_OpenSmartHomeData.ttl",
+      "https://example.org/city-connected-building/v1/graph/source/01_LinkOsh.ttl",
+      "https://example.org/city-connected-building/v1/graph/source/02_BotFromRevit.ttl",
+      "https://example.org/city-connected-building/v1/graph/source/02_PropsFromRevit.ttl"
+    ],
+    "source_commit": "34acb1fb7a24005ddf29f7f232081713c2f78291",
+    "cloud_live_sparql_engine": false,
+    "explanation": "Archived fixed SPARQL results executed and verified by the local Python/Oxigraph application. This cloud profile serves the snapshot; it does not run Oxigraph or RocksDB."
+  },
+  "templates": {
+    "room_alignment": "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nPREFIX app: <https://example.org/city-connected-building/v1/>\nSELECT ?room ?ifcEntity ?guid ?modelSha256 WHERE {\n  GRAPH <https://example.org/city-connected-building/v1/graph/source/01_LinkOsh.ttl> { ?room skos:related ?ifcEntity . }\n  FILTER(STRSTARTS(STR(?room), \"https://w3id.org/ibp/osh/OpenSmartHomeDataSet#\"))\n  GRAPH <https://example.org/city-connected-building/v1/graph/derived-alignment> { ?ifcEntity app:ifcGlobalId ?guid ; app:ifcSha256 ?modelSha256 . }\n} ORDER BY ?room LIMIT 100",
+    "verified_channels": "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nPREFIX app: <https://example.org/city-connected-building/v1/>\nSELECT ?channelId ?sourceDevice ?sourceFeature ?room ?ifcEntity ?guid ?mappingStatus WHERE {\n  GRAPH <https://example.org/city-connected-building/v1/graph/derived-alignment> {\n    ?channel app:channelId ?channelId ; app:mappingVerified true ; app:normalisedFeature ?room ;\n             app:sourceFeature ?sourceFeature ; app:mappingStatus ?mappingStatus .\n    OPTIONAL { ?channel app:sourceDevice ?sourceDevice . }\n    ?ifcEntity app:ifcGlobalId ?guid .\n  }\n  GRAPH <https://example.org/city-connected-building/v1/graph/source/01_LinkOsh.ttl> { ?room skos:related ?ifcEntity . }\n} ORDER BY ?channelId LIMIT 100",
+    "unverified_channels": "PREFIX app: <https://example.org/city-connected-building/v1/>\nSELECT ?channelId ?candidateRoomId ?mappingStatus WHERE {\n  GRAPH <https://example.org/city-connected-building/v1/graph/derived-alignment> {\n    ?channel app:channelId ?channelId ; app:mappingVerified false ;\n             app:candidateRoomId ?candidateRoomId ; app:mappingStatus ?mappingStatus .\n  }\n} ORDER BY ?channelId LIMIT 100"
+  }
+}

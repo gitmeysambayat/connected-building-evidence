@@ -1,0 +1,484 @@
+{
+  "checked_at_utc": "2026-10-17T23:29:29.932Z",
+  "final_url": "http://127.0.0.1:8765/",
+  "development_url": "http://127.0.0.1:8780/",
+  "source_model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+  "browser": "Chrome via CUA plus explicitly attributed root IAB observation",
+  "checks": [
+    {
+      "name": "initial_real_model_and_default_temperature",
+      "passed": true,
+      "evidence": {
+        "renderer": "Three.js WebGLRenderer",
+        "context": "WebGL2RenderingContext",
+        "source_model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+        "spaces": 9,
+        "monitored_rooms": 6,
+        "source_records": 285954,
+        "default_channel": "Room1_Temperature",
+        "channel_groups": [
+          "Measured sensor observations",
+          "Controller setpoints",
+          "External virtual weather"
+        ]
+      },
+      "stage": "development_8780"
+    },
+    {
+      "name": "room_selection_preserves_source_identity",
+      "passed": true,
+      "evidence": {
+        "selected_room": "Room2",
+        "channel": "Room2_Temperature",
+        "source": "Measurements/Room2_Temperature.csv"
+      },
+      "stage": "development_8780"
+    },
+    {
+      "name": "unmonitored_room_has_no_invented_readings",
+      "passed": true,
+      "evidence": {
+        "room": "Staircase",
+        "selector_disabled": true,
+        "reading": "·"
+      },
+      "stage": "development_8780"
+    },
+    {
+      "name": "controller_events_are_separate_step_history",
+      "passed": true,
+      "evidence": {
+        "channel": "Room1_SetpointHistory",
+        "label": "Controller event",
+        "svg_contains_step_commands": true
+      },
+      "stage": "development_8780"
+    },
+    {
+      "name": "external_weather_is_explicitly_virtual",
+      "passed": true,
+      "evidence": {
+        "channel": "Room1_Virtual_OutdoorTemperature",
+        "label": "External weather record",
+        "notice": "This is not a room sensor reading."
+      },
+      "stage": "development_8780"
+    },
+    {
+      "name": "historical_range_filter",
+      "passed": true,
+      "evidence": {
+        "start_utc": "2017-04-01T00:00",
+        "end_utc": "2017-04-02T00:00",
+        "shown": 141,
+        "total": 141
+      },
+      "stage": "development_8780"
+    },
+    {
+      "name": "browser_csv_download",
+      "passed": false,
+      "status": "unconfirmed",
+      "evidence": "Download control was clicked; browser download event did not return before tool timeout. API export integrity requires separate verification.",
+      "stage": "development_8780"
+    },
+    {
+      "name": "keyboard_observation_cursor",
+      "passed": true,
+      "evidence": {
+        "before": "01 Apr 2017, 23:46 UTC",
+        "after": "01 Apr 2017, 23:36 UTC"
+      },
+      "stage": "development_8780"
+    },
+    {
+      "name": "source_mapping_evidence_modal",
+      "passed": true,
+      "evidence": "Room1\n\nRaum 1\n\n05i4VutGDCsQKCrT6CQvhu\n\nThis connection is supported only at the resolution documented by the source. A room relationship does not establish a physical sensor coordinate.\n\nSource-supported room-level association. This does not establish sensor position, calibration or a current physical connection.\n\n1\nCSV row equals publisher RDF observation by row index, epoch and value\n20261018_v1_Exact_Mapping_and_Data_Audit.json\n2\nsosa:hasFeatureOfInterest; raw namespace retained per channel and explicitly normalised where needed\nhttps://w3id.org/ibp/osh/OpenSmartHomeDataSet#Room1\n3\nskos:related\nhttp://linkedbuildingdata.net/ifc/resources20180427_085111/IfcSpace_165\n4\nGlobalId extracted from pinned IFC STEP entity\n05i4VutGDCsQKCrT6CQvhu\nhas verified observations\nYes\nunverified candidates\n[]\nchannel chains\n[{\"channel_id\":\"Room1_Brightness\",\"source_csv\":\"Measurements/Room1_Brightness.csv\",\"source_rdf\":\"MeasurementsTurtle/Room1_Brightness.ttl\",\"source_csv_sha256\":\"f08151d759b57f44e5e7630c929cf933ad95476f8271ad85eda4d14bacfb9dd1\",\"source_rdf_sha256\":\"f089bdb40bfded5df59cb9f802dcc29ecd24a23598c2cd591b63faeb45b91c6a\",\"raw_feature_uri\":\"https://w3id.org/ibp/osh/OpenSmartHomeDataSet#Room1\",\"canonical_feature_uri\":\"https://w3id.org/ibp/osh/OpenSmartHomeDataSet#Room1\",\"sensor_or_actuator_uri\":\"https://w3id.org/ibp/osh/OpenSmartHomeDataSet#Room1-brigh-Sensor\",\"mapping_status\":\"publisher_rdf_explicit_room_link\",\"namespace_normalisation_applied\":false},{\"channel_id\":\"Room1_Humidity\",\"source_csv\":\"Measurements/Room1_Humidity.csv\",\"source_rdf\":\"MeasurementsTurtle/Room1_Humidity.ttl\",\"so",
+      "stage": "development_8780"
+    },
+    {
+      "name": "mapping_register_and_unresolved_channel",
+      "passed": true,
+      "evidence": {
+        "heading": "Every connection, accounted for.",
+        "roomRows": 9,
+        "text": "VERIFIED CHANNELS36Accepted source relationships. Measured channels and controller setpoints remain distinct.MEASURED ROOM COVERAGE6 of 9Rooms with verified measured sensor observations in the published records.UNMAPPED / EXTERNAL1Unverified candidates and external sources are never assigned to IFC rooms by guesswork.",
+        "unverified": true
+      },
+      "stage": "development_8780"
+    },
+    {
+      "name": "assurance_and_source_limitations",
+      "passed": true,
+      "evidence": {
+        "channelRows": 37,
+        "heading": "Useful evidence has limits.",
+        "text": "INTERPRETATION BEFORE ANALYSISSource qualificationshandling: Original source rows and values retained. No interpolation, gap filling or averaging is applied at import. Identical weather files remain traceable source channels and are identified as copies.gap rule: Steps longer than one hour are flagged for sensor and weather channels. Setpoint histories are controller events and are excluded from this cadence rule. This is a descriptive application rule, not a commissioning specification.outdoor data: One external virtual weather series is repeated under six room filenames; it is not six independent physical outdoor sensors.calibration: No device calibration or measurement accuracy is independently established by this application.sensor locations: The IFC contains no IfcSensor instances. Associations terminate at actual IfcSpace GUIDs; sensor positions and device GUIDs are not invented."
+      },
+      "stage": "development_8780"
+    },
+    {
+      "name": "forecast_assurance_rejection_and_actual_time_scatter",
+      "passed": true,
+      "evidence": {
+        "continuousPaths": 0,
+        "gate": "MODEL ASSURANCE GATEKeep the stronger baseline.The trained Ridge model did not outperform persistence in validation. The evidence supports retaining the persistence baseline for this historical experiment. This is a model assessment result, not validation for operating the building.",
+        "negativeResults": [
+          "-111.4%",
+          "-277.1%",
+          "-217.6%",
+          "-191.7%",
+          "-241.3%",
+          "-413%"
+        ],
+        "roomExamples": 6,
+        "roomRows": 6,
+        "scatterPoints": 720,
+        "title": "From observation to prediction."
+      },
+      "stage": "development_8780"
+    },
+    {
+      "name": "all_forecast_room_examples_selectable",
+      "passed": true,
+      "evidence": {
+        "points": 720,
+        "room": "Kitchen"
+      },
+      "stage": "development_8780"
+    },
+    {
+      "name": "persistent_nosql_graph_and_source_attribution",
+      "passed": true,
+      "evidence": {
+        "graph": "PERSISTENT RDF / NOSQL DATABASEQuery the semantic connection.Run a fixed, read-only SPARQL query over the original source graphs and the separate derived IFC identity graph.engineOxigraphlibrarypyoxigraphstoragePersistent RocksDB key-value databasedatabase typeRDF graph / NoSQLquery languageSPARQL 1.1quad count1,582persistentYeslocal operationYescloud deployment verifiedNoEvidence queryroom alignmentverified channelsunverified channelsRun SPARQL query9 result rows · Oxigraph SPARQL over persistent RDF quads in RocksDBroomifc Entityguidmodel Sha256https://w3id.org/ibp/osh/OpenSmartHomeDataSet#Bathroomhttp://linkedbuildingdata.net/ifc/resources20180427_085111/IfcSpace_24705i4VutGDCsQKCrT6CQvhY42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03https://w3id.org/ibp/osh/OpenSmartHomeDataSet#Kitchenhttp://linkedbuildingdata.net/ifc/resources20180427_085111/IfcSpace_31105i4VutGDCsQKCrT6CQvhf42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03https://w3id.org/ibp/osh/OpenSmartHomeDataSet#Lobbyhttp://linkedbuildingdata.net/ifc/resources20180427_085111/IfcSpace_45805i4VutGDCsQKCrT6CQvjm42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03https://w3id.org/i",
+        "heading": "Nothing hidden behind the model.",
+        "queryOptions": [
+          "room_alignment",
+          "verified_channels",
+          "unverified_channels"
+        ],
+        "rows": 9,
+        "source": "PUBLISHED DATASETOpen Smart Home Data SetThe publisher provides an apartment dataset combining IFC spaces, semantic metadata and historical sensor observations. The application checks source consistency; it does not independently establish as-built accuracy. This workbench preserves the source identifiers and file hashes.source repository ↗source release doi ↗CC BY-SA 4.0 ↗Download source IFC ↗Complete provenance ↗licenceCC BY-SA 4.0source commit34acb1fb7a24005ddf29f7f232081713c2f78291model sha25642ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03timestamp basisSource Unix seconds converted to UTC; source RDF offsets independently cross-checked against the same epochs.mapping scopePublisher room associations linked to the pinned IFC spaces; sensor coordinates and IFC device instances are unavailable."
+      },
+      "stage": "development_8780"
+    },
+    {
+      "name": "sparql_query_reports_unresolved_channel",
+      "passed": true,
+      "evidence": "1 result rows · Oxigraph SPARQL over persistent RDF quads in RocksDB\n\nCHANNEL ID\tCANDIDATE ROOM ID\tMAPPING STATUS\nToilet_ThermostatTemperature\tToilet\tinferred_filename_unverified\nInspect the executed SPARQL query",
+      "stage": "development_8780"
+    },
+    {
+      "name": "mobile_responsive_layout",
+      "passed": true,
+      "evidence": {
+        "documentWidth": 360,
+        "height": 844,
+        "mainWidth": 301,
+        "roomButtons": 9,
+        "viewport": 241,
+        "width": 390
+      },
+      "stage": "development_8780"
+    },
+    {
+      "name": "root_independent_geometric_canvas_pick",
+      "passed": true,
+      "evidence": {
+        "reported_by": "/root",
+        "browser": "IAB tab 6",
+        "action": "Plan view, clicked visible canvas position (650, 580)",
+        "before": "Room1",
+        "after": "Room2",
+        "room_guid": "05i4VutGDCsQKCrT6CQvhb",
+        "channel": "Room2_Temperature",
+        "source_csv": "Room2_Temperature.csv",
+        "records": 10760,
+        "displayed_temperature_c": 21.26,
+        "source_line": 10760,
+        "reported_utc_approx": "2026-10-17T23:25:00Z"
+      },
+      "scope": "Independent parent-agent verification, distinct from register-button selection.",
+      "stage": "development_8780"
+    },
+    {
+      "name": "final_service_real_model_and_source_alignment",
+      "passed": true,
+      "evidence": {
+        "canvas": [
+          {
+            "context": "WebGL2RenderingContext",
+            "renderer": "Three.js WebGLRenderer",
+            "source_model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+            "spaces": "9"
+          }
+        ],
+        "channel": "Room1_Temperature",
+        "export_href": "/api/series/Room1_Temperature/export.csv?start=2017-03-09T00%3A51%3A00.000Z&end=2017-06-06T04%3A03%3A59.000Z",
+        "records": "285,954",
+        "room": "Room1",
+        "source": "✓ Published measured sensor recordsChannel: Room1_TemperatureSource: Measurements/Room1_Temperature.csvInspect response ↗"
+      },
+      "stage": "final_8765"
+    },
+    {
+      "name": "final_descriptive_heating_setpoint_tracking",
+      "passed": true,
+      "evidence": {
+        "limits": " \"room\": \"Toilet\",\n      \"room_guid\": \"05i4VutGDCsQKCrT6CQvhJ\",\n      \"model_sha256\": \"42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03\",\n      \"eligible_observations\": 7651,\n      \"total_air_observations\": 8950,\n      \"observation_coverage_percent\": 85.49,\n      \"mean_air_minus_setpoint_c\": 1.5334,\n      \"median_air_minus_setpoint_c\": 1.11,\n      \"mean_absolute_difference_c\": 1.7607,\n      \"fraction_more_than_1c_below\": 0.02875,\n      \"fraction_more_than_1c_above\": 0.5317,\n      \"examples\": [\n        {\n          \"air_timestamp\": \"2017-03-10T07:47:02+00:00\",\n          \"air_source_line\": 49,\n          \"air_c\": 14.33,\n          \"command_timestamp\": \"2017-03-10T07:39:25+00:00\",\n          \"command_source_line\": 8,\n          \"setpoint_c\": 17,\n          \"command_age_seconds\": 457,\n          \"difference_c\": -2.67\n        },\n        {\n          \"air_timestamp\": \"2017-06-03T13:07:21+00:00\",\n          \"air_source_line\": 8586,\n          \"air_c\": 22.68,\n          \"command_timestamp\": \"2017-06-03T13:00:13+00:00\",\n          \"command_source_line\": 328,\n          \"setpoint_c\": 16,\n          \"command_age_seconds\": 428,\n          \"difference_c\": 6.68\n        }\n      ],\n      \"air_channel_id\": \"Toilet_Temperature\",\n      \"command_channel_id\": \"Toilet_SetpointHistory\",\n      \"source_sha256\": {\n        \"Toilet_Temperature\": \"9da40e9a1f309708c39e8c9989c82e02445aaec42f0fa29b033a2e1df288e436\",\n        \"Toilet_SetpointHistory\": \"9e77d73a4a281307f2c1e764dbe1dc4ff00fca5762cf702aec387dad2e2b83f6\"\n      }\n    }\n  ],\n  \"method\": \"As-of comparison of original room-air observations with the last recorded setpoint at or before that observation, capped at 24 hours old. Observation-weighted; no interpolation.\",\n  \"limitations\": [\n    \"A last recorded command is an assumed reference, not confirmation that a controller applied or maintained it.\",\n    \"The 1 °C comparison band is an illustrative application rule, not a regulatory comfort or equipment-fault limit.\",\n    \"Percentages weight observations, not elapsed time. Irregular sampling and gaps prevent interpreting them as percentages of occupied hours.\",\n    \"No occupancy, heating power or energy-consumption measurements are supplied. These differences cannot establish comfort, faults, energy savings or causation.\",\n    \"Thermostat temperature is measured near a radiator and is not substituted for the room-air channel.\"\n  ]\n}",
+        "rejectionVisible": true,
+        "rows": 6,
+        "table": [
+          [
+            "Room",
+            "Eligible observations",
+            "Coverage (%)",
+            "Mean air minus command (°C)",
+            "Mean absolute difference (°C)",
+            "Below command by >1 °C (%)",
+            "Above command by >1 °C (%)"
+          ],
+          [
+            "Bathroom",
+            "8,669",
+            "80.51",
+            "2.439",
+            "2.904",
+            "8.848",
+            "68.462"
+          ],
+          [
+            "Kitchen",
+            "8,992",
+            "86.17",
+            "0.746",
+            "2.786",
+            "40.002",
+            "53.592"
+          ],
+          [
+            "Room1",
+            "8,576",
+            "80.92",
+            "1.797",
+            "2.223",
+            "10.156",
+            "61.497"
+          ],
+          [
+            "Room2",
+            "9,287",
+            "86.31",
+            "0.45",
+            "2.335",
+            "36.804",
+            "43.739"
+          ],
+          [
+            "Room3",
+            "8,915",
+            "81.28",
+            "1.101",
+            "2.077",
+            "19.63",
+            "46.326"
+          ],
+          [
+            "Toilet",
+            "7,651",
+            "85.49",
+            "1.533",
+            "1.761",
+            "2.875",
+            "53.17"
+          ]
+        ]
+      },
+      "stage": "final_8765"
+    },
+    {
+      "name": "final_browser_mqtt_first_replay",
+      "passed": true,
+      "evidence": {
+        "counters": {
+          "all runs delivery count": "20",
+          "all runs unique events": "20",
+          "broker": "running",
+          "broker restarts": "0",
+          "run duplicate deliveries": "0",
+          "run newly accepted": "20",
+          "run published": "20",
+          "run rejected": "0",
+          "subscriber": "connected"
+        },
+        "receipts": [
+          [
+            "Room3_left_ThermostatTemperature",
+            "2017-03-09T00:13:51.000Z",
+            "2026-10-17T23:28:07.503092Z",
+            "16.78",
+            "°C",
+            "05i4VutGDCsQKCrT6CQvl2",
+            "e4f36b494137…"
+          ],
+          [
+            "Bathroom_ThermostatTemperature",
+            "2017-03-09T00:07:50.000Z",
+            "2026-10-17T23:28:07.441434Z",
+            "22.59",
+            "°C",
+            "05i4VutGDCsQKCrT6CQvhY",
+            "72b974e765a4…"
+          ],
+          [
+            "Room2_Temperature",
+            "2017-03-09T00:04:19.000Z",
+            "2026-10-17T23:28:07.379420Z",
+            "17.8",
+            "°C",
+            "05i4VutGDCsQKCrT6CQvhb",
+            "8e5738f57831…"
+          ]
+        ],
+        "status": "completed\nbroker\nrunning\nsubscriber\nconnected\nrun published\n20\nrun newly accepted\n20\nrun duplicate deliveries\n0\nrun rejected\n0\nall runs unique events\n20\nall runs delivery count\n20\nbroker restarts\n0\n\nMQTT 3.1.1 · QoS 1 · loopback demonstration\nAuthentication is enabled. Run counters describe the current replay; persisted totals span retained runs. This is a loopback transport demonstration."
+      },
+      "stage": "final_8765"
+    },
+    {
+      "name": "final_browser_mqtt_duplicate_idempotence",
+      "passed": true,
+      "evidence": {
+        "counters": {
+          "all runs delivery count": "40",
+          "all runs unique events": "20",
+          "broker": "running",
+          "broker restarts": "0",
+          "run duplicate deliveries": "20",
+          "run newly accepted": "0",
+          "run published": "20",
+          "run rejected": "0",
+          "subscriber": "connected"
+        },
+        "status": "completed\nbroker\nrunning\nsubscriber\nconnected\nrun published\n20\nrun newly accepted\n0\nrun duplicate deliveries\n20\nrun rejected\n0\nall runs unique events\n20\nall runs delivery count\n40\nbroker restarts\n0\n\nMQTT 3.1.1 · QoS 1 · loopback demonstration\nAuthentication is enabled. Run counters describe the current replay; persisted totals span retained runs. This is a loopback transport demonstration."
+      },
+      "stage": "final_8765"
+    },
+    {
+      "name": "final_browser_broker_restart_and_reconnection",
+      "passed": true,
+      "evidence": {
+        "counters": {
+          "all runs delivery count": "40",
+          "all runs unique events": "20",
+          "broker": "running",
+          "broker restarts": "1",
+          "run duplicate deliveries": "20",
+          "run newly accepted": "0",
+          "run published": "20",
+          "run rejected": "0",
+          "subscriber": "connected"
+        },
+        "notice": "The local MQTT broker restarted and the subscriber reconnected. Source observations remain historical."
+      },
+      "stage": "final_8765"
+    },
+    {
+      "name": "final_browser_delivery_after_broker_restart",
+      "passed": true,
+      "evidence": {
+        "counters": {
+          "all runs delivery count": "45",
+          "all runs unique events": "20",
+          "broker": "running",
+          "broker restarts": "1",
+          "run duplicate deliveries": "5",
+          "run newly accepted": "0",
+          "run published": "5",
+          "run rejected": "0",
+          "subscriber": "connected"
+        },
+        "receipt": [
+          "Room3_left_ThermostatTemperature",
+          "2017-03-09T00:13:51.000Z",
+          "2026-10-17T23:28:07.503092Z",
+          "16.78",
+          "°C",
+          "05i4VutGDCsQKCrT6CQvl2",
+          "e4f36b494137…"
+        ],
+        "receiptHeaders": [
+          "channel",
+          "observed historical utc",
+          "received utc",
+          "value",
+          "unit",
+          "ifc space guid",
+          "event id"
+        ]
+      },
+      "stage": "final_8765"
+    },
+    {
+      "name": "final_receipts_keep_historical_time_current_receive_time_and_units",
+      "passed": true,
+      "evidence": {
+        "headers": [
+          "channel",
+          "observed historical utc",
+          "received utc",
+          "value",
+          "unit",
+          "ifc space guid",
+          "event id"
+        ],
+        "row": [
+          "Room3_left_ThermostatTemperature",
+          "2017-03-09T00:13:51.000Z",
+          "2026-10-17T23:28:07.503092Z",
+          "16.78",
+          "°C",
+          "05i4VutGDCsQKCrT6CQvl2",
+          "e4f36b494137…"
+        ]
+      },
+      "stage": "final_8765"
+    },
+    {
+      "name": "final_full_csv_anchor_and_browser_download",
+      "passed": false,
+      "status": "unconfirmed_browser_download",
+      "evidence": {
+        "href": "/api/series/Room1_Temperature/export.csv?start=2017-03-09T00%3A51%3A00.000Z&end=2017-06-06T04%3A03%3A59.000Z",
+        "path": null,
+        "browser_event_error": "Timed out after 5000ms waiting for download."
+      },
+      "stage": "final_8765"
+    },
+    {
+      "name": "final_service_browser_console",
+      "passed": true,
+      "evidence": {
+        "error_count": 0,
+        "errors": []
+      },
+      "stage": "final_8765"
+    }
+  ],
+  "root_final_download_verification": {
+    "name": "final_iab_csv_file_link_download_verified",
+    "passed": true,
+    "checked_at_utc": "2026-10-17T23:31:15.127654+00:00",
+    "browser": "Codex in-app browser via CUA documented downloadMedia on the visible CSV anchor",
+    "rows": 10598,
+    "file_sha256": "4fc46bccec75f042b0655521aa3225cd8b5a6db4f67415078684d98e3fc08a2f",
+    "source_rows_exactly_preserved": true,
+    "source_ifc_guid": "05i4VutGDCsQKCrT6CQvhu",
+    "scope": "Actual downloaded CSV inspected on disk; separate from Chrome download-event timeout."
+  },
+  "screenshots": [
+    "20261018_v1_Building_Twin.png",
+    "20261018_v1_IFC_Rooms.png"
+  ]
+}

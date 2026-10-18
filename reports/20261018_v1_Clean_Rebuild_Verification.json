@@ -1,0 +1,346 @@
+{
+  "title": "Clean-directory rebuild and launcher persistence verification",
+  "generated_at_utc": "2026-10-17T23:38:25.006403+00:00",
+  "status": "passed",
+  "passed": true,
+  "source_content_manifest_sha256": "0d116a20a070cf27e8be2c9a000f41045e3342b15551e1804ad9755f61a4bd45",
+  "source_content_manifest_algorithm": "SHA-256 of UTF-8 JSON of the 106-path SHA-256 map, sorted keys and compact separators",
+  "source_file_count": 106,
+  "source_dataset_manifest_sha256": "aea0458e67a96dbf042cb498ec0b22104a04b22e9c9e1e6fff26c9b66e0eab6c",
+  "source_test_record_sha256": "32cf3e4531b4cbd069e9bf99b1f6e2027e6d760d4ecbd3732f5ad36921f4e34a",
+  "source_test_record": {
+    "file": "reports/20261018_v1_Test_Results.json",
+    "tests": 110,
+    "failures": 0,
+    "errors": 0,
+    "exit_code": 0,
+    "files_unchanged_during_tests": true
+  },
+  "source_directory": "20261018_v1_release_verification",
+  "fresh_mutable_state_directory": "20261018_v2_release_verification_state",
+  "runtime": {
+    "python": "3.12.14",
+    "system": "Windows",
+    "dependency_environment": "city-connected-building-20261018-v1",
+    "existing_dependency_environment": true,
+    "fresh_dependency_install": false,
+    "cloud_execution": false,
+    "container_execution": false
+  },
+  "steps": [
+    {
+      "name": "release_matches_frozen_110_test_snapshot",
+      "passed": true,
+      "evidence": {
+        "source_files": 106,
+        "mismatches": [],
+        "root_files_also_match": true
+      }
+    },
+    {
+      "name": "fresh_state_three_build_commands",
+      "passed": true,
+      "evidence": {
+        "state_was_absent_before_build": true,
+        "commands": [
+          {
+            "command": "python scripts/build_data.py",
+            "exit_code_observed": 0,
+            "captured_output_sha256": "aa4323fb0bb7955a471625179a6ae96a494381aeffde1041b8f7b934bfa1946e"
+          },
+          {
+            "command": "python scripts/build_geometry.py",
+            "exit_code_observed": 0,
+            "captured_output_sha256": "5b193fe39b12450a830d3db7db66ca31579bbfd8fec31f6fa660321cf3a43a25"
+          },
+          {
+            "command": "python scripts/build_analytics.py",
+            "exit_code_observed": 0,
+            "captured_output_sha256": "4d8afc4cc784231ee7c1809f27c6cd4eb31dac0191bdfd80a4ed9fcb5b01c93f"
+          }
+        ],
+        "source_directory_was_separate_from_main_project": true
+      }
+    },
+    {
+      "name": "cold_http_source_identity_and_counts",
+      "passed": true,
+      "evidence": {
+        "http_status": 200,
+        "counts": {
+          "observations": 285954,
+          "channels": 37,
+          "verified_channels": 36,
+          "spaces": 9,
+          "monitored_spaces": 6
+        },
+        "model_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+        "broker": "running",
+        "source": "Assertions executed against the cold HTTP service before it was stopped; persisted SQLite counts independently rechecked afterwards."
+      }
+    },
+    {
+      "name": "cold_executed_sparql_verified_catalogue",
+      "passed": true,
+      "evidence": {
+        "http_status": 200,
+        "rows": 36,
+        "unique_verified_channels": 36,
+        "all_returned_guids_belong_to_actual_ifc_spaces": true
+      }
+    },
+    {
+      "name": "cold_graphql_matches_real_source_rows",
+      "passed": true,
+      "evidence": {
+        "http_status": 200,
+        "room": "Room1",
+        "guid": "05i4VutGDCsQKCrT6CQvhu",
+        "verified_channels": 6,
+        "readings_compared_per_channel": 2,
+        "csv_values_epochs_source_lines_and_model_hash_match": true
+      }
+    },
+    {
+      "name": "cold_forecasts_exactly_match_frozen_results",
+      "passed": true,
+      "evidence": {
+        "json_file_and_http_encoding": "utf-8",
+        "compared_fields": [
+          "room",
+          "train_count",
+          "validation_count",
+          "test_count",
+          "model",
+          "baseline",
+          "recommended_predictor"
+        ],
+        "rooms": [
+          {
+            "room": "Bathroom",
+            "train_count": 3001,
+            "validation_count": 2134,
+            "test_count": 2300,
+            "model": {
+              "mae": 0.34221,
+              "rmse": 0.51555,
+              "bias": -0.25937,
+              "unit": "°C"
+            },
+            "baseline": {
+              "mae": 0.16186,
+              "rmse": 0.4268,
+              "bias": -0.00765,
+              "unit": "°C"
+            },
+            "recommended_predictor": "persistence"
+          },
+          {
+            "room": "Kitchen",
+            "train_count": 2881,
+            "validation_count": 2255,
+            "test_count": 1922,
+            "model": {
+              "mae": 0.40131,
+              "rmse": 0.48361,
+              "bias": -0.36756,
+              "unit": "°C"
+            },
+            "baseline": {
+              "mae": 0.10643,
+              "rmse": 0.21718,
+              "bias": -0.00242,
+              "unit": "°C"
+            },
+            "recommended_predictor": "persistence"
+          },
+          {
+            "room": "Room1",
+            "train_count": 3001,
+            "validation_count": 2116,
+            "test_count": 2297,
+            "model": {
+              "mae": 0.2727,
+              "rmse": 0.34056,
+              "bias": -0.23876,
+              "unit": "°C"
+            },
+            "baseline": {
+              "mae": 0.08587,
+              "rmse": 0.16653,
+              "bias": -0.00432,
+              "unit": "°C"
+            },
+            "recommended_predictor": "persistence"
+          },
+          {
+            "room": "Room2",
+            "train_count": 3378,
+            "validation_count": 2252,
+            "test_count": 2287,
+            "model": {
+              "mae": 0.27592,
+              "rmse": 0.35225,
+              "bias": -0.22054,
+              "unit": "°C"
+            },
+            "baseline": {
+              "mae": 0.09458,
+              "rmse": 0.2058,
+              "bias": -0.00288,
+              "unit": "°C"
+            },
+            "recommended_predictor": "persistence"
+          },
+          {
+            "room": "Room3",
+            "train_count": 2965,
+            "validation_count": 2135,
+            "test_count": 2303,
+            "model": {
+              "mae": 0.42009,
+              "rmse": 0.52362,
+              "bias": -0.37574,
+              "unit": "°C"
+            },
+            "baseline": {
+              "mae": 0.1231,
+              "rmse": 0.2162,
+              "bias": -0.00372,
+              "unit": "°C"
+            },
+            "recommended_predictor": "persistence"
+          },
+          {
+            "room": "Toilet",
+            "train_count": 2074,
+            "validation_count": 1089,
+            "test_count": 1289,
+            "model": {
+              "mae": 0.48108,
+              "rmse": 0.52893,
+              "bias": -0.47409,
+              "unit": "°C"
+            },
+            "baseline": {
+              "mae": 0.09378,
+              "rmse": 0.16734,
+              "bias": -0.00937,
+              "unit": "°C"
+            },
+            "recommended_predictor": "persistence"
+          }
+        ],
+        "http_json_matched_rebuilt_state_report": true,
+        "test_period_retuned": false
+      }
+    },
+    {
+      "name": "cold_setpoint_operations_all_six_rooms",
+      "passed": true,
+      "evidence": {
+        "http_status": 200,
+        "rooms": 6,
+        "real_air_and_command_source_examples_match": true,
+        "command_age_seconds_range": [
+          0,
+          86400
+        ],
+        "same_verified_room_and_ifc_model": true,
+        "scope": "Descriptive observation-weighted comparison, not a comfort, fault, energy-saving or causal claim."
+      }
+    },
+    {
+      "name": "cold_actual_mqtt_ten_event_delivery",
+      "passed": true,
+      "evidence": {
+        "transport": "Real loopback TCP MQTT publisher, broker and validating subscriber",
+        "broker_port": 18901,
+        "publisher_state_observed": "completed",
+        "accepted_unique_receipts": 10,
+        "accepted_deliveries": 10,
+        "observed_year": 2017,
+        "received_year": 2026,
+        "units": "°C",
+        "correct_room_guid": "05i4VutGDCsQKCrT6CQvhu",
+        "all_values_epochs_source_lines_and_hashes_match_pinned_csv": true,
+        "receipt_event_ids": [
+          "6dd855744c6048814995f5baa2eb4676f4c0b9f4f3397c897528d927d87c9b0a",
+          "fa26c513c8583e66218c20a00c1e43060aec120e824e4536bb327ec19115c8e4",
+          "08986a3434202b3f3dea2cb269e24206e4a601127fcb443e3be870d59759d5de",
+          "4980a389ee383252b3fd3377598b6e6c5bc600b01eed0c8291fe43b96fbc1b7f",
+          "0faecf6051bfe286192183fdd1a0ff435c09ac555b2252352b37f722c02d4057",
+          "4029a2be592d3938536a5823d767e7a2829ce5803bf1a72ebaac93e87e9fe4d3",
+          "ee7e67619e9fae2a8ebd9b4863ef79a4ccc326211311a8eb93fc1d7e3a448952",
+          "c7b6051785ccb451c39baaa38ebe6adf4c07816d64b0f9d6cc26473f056adf2c",
+          "ccf77e1ef29b2058c47ef519c1d93ff265340f44d523791d2e77e119319afc70",
+          "3713fd6c1e1b9868ba0622b679b746daa5ca05e2cc9d8b00dd6060cbe3de65dc"
+        ]
+      }
+    },
+    {
+      "name": "cold_service_cleanly_stopped",
+      "passed": true,
+      "evidence": {
+        "launcher_and_listener_command_parent_identity_checked": true,
+        "http_port_8779_closed": true,
+        "mqtt_port_18901_closed": true
+      }
+    },
+    {
+      "name": "prepared_launcher_stop_start_and_persistence",
+      "passed": true,
+      "evidence": {
+        "scripts_executed": [
+          "20261018_v1_Stop.ps1",
+          "20261018_v1_Start.ps1 -Port 8765 -NoBrowser"
+        ],
+        "pre_stop_identity_checks": [
+          "recorded project directory",
+          "recorded Python executable",
+          "loopback URL",
+          "launcher command and port",
+          "listener command and parent relationship"
+        ],
+        "main_http_port_closed_before_restart": true,
+        "restart_performed_once": true,
+        "old_launcher_process_id": 230420,
+        "new_launcher_process_id": 242320,
+        "new_service_listener_process_id": 243612,
+        "same_source_counts": {
+          "observations": 285954,
+          "channels": 37,
+          "verified_channels": 36,
+          "spaces": 9,
+          "monitored_spaces": 6
+        },
+        "sql_imported_at_utc": "2026-10-17T23:26:59.664713+00:00",
+        "sql_import_predates_restart": true,
+        "restart_started_at_utc": "2026-10-17T23:35:03.2370098Z",
+        "rdf_verified_channel_rows_after_restart": 36,
+        "rdf_quad_count_after_restart": 1582,
+        "persistent_unique_events_before": 20,
+        "persistent_unique_events_after": 20,
+        "persistent_delivery_count_before": 45,
+        "persistent_delivery_count_after": 45,
+        "broker_after": "running",
+        "subscriber_after": "connected",
+        "main_service_left_running": true
+      }
+    },
+    {
+      "name": "frozen_content_unchanged_after_all_checks",
+      "passed": true,
+      "evidence": {
+        "matched_root_files": 106,
+        "matched_clean_directory_files": 106,
+        "mismatches": []
+      }
+    }
+  ],
+  "verification_harness_note": "The initial instrumented verification executed and passed the build, cold HTTP, graph, forecasting, operations, MQTT and cold shutdown assertions. Start.ps1 completed its one main-service restart, but a background descendant retained the captured PowerShell output pipe. The blocked verification interpreter was stopped after its identity was checked. Independent HTTP and read-only persisted-store checks then completed the audit; the application was not restarted a second time. No application failure, code change or weakened comparison was used.",
+  "limitations": [
+    "This verifies a separate source directory and initially absent application state using the existing installed dependencies. It does not verify a fresh dependency installation, container execution, hosted CI or cloud hosting.",
+    "The MQTT observations remain historical 2017 measurements. A successful rebuild or local replay does not establish a present physical sensor or BMS connection."
+  ]
+}

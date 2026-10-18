@@ -1,0 +1,448 @@
+{
+  "channels": [
+    {
+      "id": "Bathroom_Brightness",
+      "source_kind": "measured_sensor",
+      "source_rows": 11248,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 76,
+      "median_step_seconds": 607,
+      "max_gap_seconds": 79093
+    },
+    {
+      "id": "Bathroom_Humidity",
+      "source_kind": "measured_sensor",
+      "source_rows": 10651,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 131,
+      "median_step_seconds": 608.0,
+      "max_gap_seconds": 79093
+    },
+    {
+      "id": "Bathroom_SetpointHistory",
+      "source_kind": "controller_setpoint",
+      "source_rows": 344,
+      "mapping_status": "publisher_rdf_namespace_normalised",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 0,
+      "median_step_seconds": 14419,
+      "max_gap_seconds": 743066
+    },
+    {
+      "id": "Bathroom_Temperature",
+      "source_kind": "measured_sensor",
+      "source_rows": 10768,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 148,
+      "median_step_seconds": 608,
+      "max_gap_seconds": 79093
+    },
+    {
+      "id": "Bathroom_ThermostatTemperature",
+      "source_kind": "measured_sensor",
+      "source_rows": 10947,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 118,
+      "median_step_seconds": 608.0,
+      "max_gap_seconds": 79213
+    },
+    {
+      "id": "Bathroom_Virtual_OutdoorTemperature",
+      "source_kind": "external_virtual_weather",
+      "source_rows": 3710,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 222,
+      "median_step_seconds": 1797,
+      "max_gap_seconds": 79246
+    },
+    {
+      "id": "Kitchen_Brightness",
+      "source_kind": "measured_sensor",
+      "source_rows": 10878,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 65,
+      "median_step_seconds": 607,
+      "max_gap_seconds": 79458
+    },
+    {
+      "id": "Kitchen_Humidity",
+      "source_kind": "measured_sensor",
+      "source_rows": 10104,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 133,
+      "median_step_seconds": 608,
+      "max_gap_seconds": 79458
+    },
+    {
+      "id": "Kitchen_SetpointHistory",
+      "source_kind": "controller_setpoint",
+      "source_rows": 357,
+      "mapping_status": "publisher_rdf_namespace_normalised",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 0,
+      "median_step_seconds": 16634.5,
+      "max_gap_seconds": 351608
+    },
+    {
+      "id": "Kitchen_Temperature",
+      "source_kind": "measured_sensor",
+      "source_rows": 10435,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 132,
+      "median_step_seconds": 608.0,
+      "max_gap_seconds": 79458
+    },
+    {
+      "id": "Kitchen_ThermostatTemperature",
+      "source_kind": "measured_sensor",
+      "source_rows": 10252,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 116,
+      "median_step_seconds": 608,
+      "max_gap_seconds": 79215
+    },
+    {
+      "id": "Kitchen_Virtual_OutdoorTemperature",
+      "source_kind": "external_virtual_weather",
+      "source_rows": 3710,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 222,
+      "median_step_seconds": 1797,
+      "max_gap_seconds": 79246
+    },
+    {
+      "id": "Room1_Brightness",
+      "source_kind": "measured_sensor",
+      "source_rows": 11038,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 73,
+      "median_step_seconds": 608,
+      "max_gap_seconds": 79275
+    },
+    {
+      "id": "Room1_Humidity",
+      "source_kind": "measured_sensor",
+      "source_rows": 10329,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 168,
+      "median_step_seconds": 608.0,
+      "max_gap_seconds": 79275
+    },
+    {
+      "id": "Room1_SetpointHistory",
+      "source_kind": "controller_setpoint",
+      "source_rows": 340,
+      "mapping_status": "publisher_rdf_namespace_normalised",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 0,
+      "median_step_seconds": 15247,
+      "max_gap_seconds": 743066
+    },
+    {
+      "id": "Room1_Temperature",
+      "source_kind": "measured_sensor",
+      "source_rows": 10598,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 146,
+      "median_step_seconds": 608,
+      "max_gap_seconds": 79275
+    },
+    {
+      "id": "Room1_ThermostatTemperature",
+      "source_kind": "measured_sensor",
+      "source_rows": 11025,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 128,
+      "median_step_seconds": 608.0,
+      "max_gap_seconds": 79182
+    },
+    {
+      "id": "Room1_Virtual_OutdoorTemperature",
+      "source_kind": "external_virtual_weather",
+      "source_rows": 3710,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 222,
+      "median_step_seconds": 1797,
+      "max_gap_seconds": 79246
+    },
+    {
+      "id": "Room2_Brightness",
+      "source_kind": "measured_sensor",
+      "source_rows": 11090,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 72,
+      "median_step_seconds": 608,
+      "max_gap_seconds": 79639
+    },
+    {
+      "id": "Room2_Humidity",
+      "source_kind": "measured_sensor",
+      "source_rows": 10313,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 153,
+      "median_step_seconds": 608.0,
+      "max_gap_seconds": 79639
+    },
+    {
+      "id": "Room2_OutdoorTemperature",
+      "source_kind": "external_virtual_weather",
+      "source_rows": 3710,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 222,
+      "median_step_seconds": 1797,
+      "max_gap_seconds": 79246
+    },
+    {
+      "id": "Room2_SetpointHistory",
+      "source_kind": "controller_setpoint",
+      "source_rows": 358,
+      "mapping_status": "publisher_rdf_namespace_normalised",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 0,
+      "median_step_seconds": 16216,
+      "max_gap_seconds": 350273
+    },
+    {
+      "id": "Room2_Temperature",
+      "source_kind": "measured_sensor",
+      "source_rows": 10760,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 135,
+      "median_step_seconds": 608,
+      "max_gap_seconds": 79639
+    },
+    {
+      "id": "Room2_ThermostatTemperature",
+      "source_kind": "measured_sensor",
+      "source_rows": 10997,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 104,
+      "median_step_seconds": 608.0,
+      "max_gap_seconds": 79213
+    },
+    {
+      "id": "Room3_Brightness",
+      "source_kind": "measured_sensor",
+      "source_rows": 11086,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 71,
+      "median_step_seconds": 607,
+      "max_gap_seconds": 78878
+    },
+    {
+      "id": "Room3_Humidity",
+      "source_kind": "measured_sensor",
+      "source_rows": 10357,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 123,
+      "median_step_seconds": 608.0,
+      "max_gap_seconds": 78878
+    },
+    {
+      "id": "Room3_left_ThermostatTemperature",
+      "source_kind": "measured_sensor",
+      "source_rows": 11139,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 93,
+      "median_step_seconds": 608.0,
+      "max_gap_seconds": 79215
+    },
+    {
+      "id": "Room3_right_ThermostatTemperature",
+      "source_kind": "measured_sensor",
+      "source_rows": 10887,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 92,
+      "median_step_seconds": 608.0,
+      "max_gap_seconds": 79214
+    },
+    {
+      "id": "Room3_SetpointHistory",
+      "source_kind": "controller_setpoint",
+      "source_rows": 345,
+      "mapping_status": "publisher_rdf_namespace_normalised",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 0,
+      "median_step_seconds": 15297.0,
+      "max_gap_seconds": 743066
+    },
+    {
+      "id": "Room3_Temperature",
+      "source_kind": "measured_sensor",
+      "source_rows": 10968,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 91,
+      "median_step_seconds": 607,
+      "max_gap_seconds": 78878
+    },
+    {
+      "id": "Room3_Virtual_OutdoorTemperature",
+      "source_kind": "external_virtual_weather",
+      "source_rows": 3710,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 222,
+      "median_step_seconds": 1797,
+      "max_gap_seconds": 79246
+    },
+    {
+      "id": "Toilet_Brightness",
+      "source_kind": "measured_sensor",
+      "source_rows": 9289,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 93,
+      "median_step_seconds": 608.0,
+      "max_gap_seconds": 79152
+    },
+    {
+      "id": "Toilet_Humidity",
+      "source_kind": "measured_sensor",
+      "source_rows": 8702,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 180,
+      "median_step_seconds": 608,
+      "max_gap_seconds": 79152
+    },
+    {
+      "id": "Toilet_SetpointHistory",
+      "source_kind": "controller_setpoint",
+      "source_rows": 340,
+      "mapping_status": "publisher_rdf_namespace_normalised",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 0,
+      "median_step_seconds": 14419,
+      "max_gap_seconds": 350273
+    },
+    {
+      "id": "Toilet_Temperature",
+      "source_kind": "measured_sensor",
+      "source_rows": 8950,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 162,
+      "median_step_seconds": 608,
+      "max_gap_seconds": 79152
+    },
+    {
+      "id": "Toilet_ThermostatTemperature",
+      "source_kind": "measured_sensor",
+      "source_rows": 8799,
+      "mapping_status": "inferred_filename_unverified",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 162,
+      "median_step_seconds": 608.0,
+      "max_gap_seconds": 99012
+    },
+    {
+      "id": "Toilet_Virtual_OutdoorTemperature",
+      "source_kind": "external_virtual_weather",
+      "source_rows": 3710,
+      "mapping_status": "publisher_rdf_explicit_room_link",
+      "duplicate_timestamps": 0,
+      "out_of_order_steps": 0,
+      "gaps_over_one_hour": 222,
+      "median_step_seconds": 1797,
+      "max_gap_seconds": 79246
+    }
+  ],
+  "csv_rows_retained": 285954,
+  "handling": "Original source rows and values retained. No interpolation, gap filling or averaging is applied at import. Identical weather files remain traceable source channels and are identified as copies.",
+  "gap_rule": "Steps longer than one hour are flagged for sensor and weather channels. Setpoint histories are controller events and are excluded from this cadence rule. This is a descriptive application rule, not a commissioning specification.",
+  "byte_identical_weather_files": [
+    [
+      "Bathroom_Virtual_OutdoorTemperature.csv",
+      "Kitchen_Virtual_OutdoorTemperature.csv",
+      "Room1_Virtual_OutdoorTemperature.csv",
+      "Room2_OutdoorTemperature.csv",
+      "Room3_Virtual_OutdoorTemperature.csv",
+      "Toilet_Virtual_OutdoorTemperature.csv"
+    ]
+  ],
+  "outdoor_data": "One external virtual weather series is repeated under six room filenames; it is not six independent physical outdoor sensors.",
+  "namespace_normalisation": {
+    "source": "https://www.w3id.org/ibp/OpenSmartHomeDataSet#",
+    "canonical": "https://w3id.org/ibp/osh/OpenSmartHomeDataSet#",
+    "scope": "Only the six publisher SetpointHistory files, by their documented room/actuator local names. Original URIs are retained.",
+    "source_uris_are_equal": false
+  },
+  "unverified_channel_ids": [
+    "Toilet_ThermostatTemperature"
+  ],
+  "source_documentation_discrepancies": [
+    "README names Room 2 as the two-thermostat room; CSV filenames and RDF metadata identify left and right thermostats in Room 3. The application follows the concrete CSV/RDF association and preserves this discrepancy."
+  ],
+  "calibration": "No device calibration or measurement accuracy is independently established by this application.",
+  "sensor_locations": "The IFC contains no IfcSensor instances. Associations terminate at actual IfcSpace GUIDs; sensor positions and device GUIDs are not invented.",
+  "rdf_audit": {
+    "report": "20261018_v1_Exact_Mapping_and_Data_Audit.json",
+    "full_rdf_files_in_compact_package": false,
+    "rdf_files_checked": 36,
+    "rdf_rows_crosschecked": 277155,
+    "timestamp_or_value_mismatches": 0,
+    "scope": "Independent source audit compared all source RDF observations to CSV by observation index, Unix epoch and numerical value. Compact package preserves the resulting hashes and partial excerpts; rerun the optional upstream verification script to reproduce the full check."
+  },
+  "timestamp_basis": "Source Unix seconds converted to UTC; source RDF offsets independently cross-checked against the same epochs."
+}
