@@ -1,6 +1,6 @@
 {
   "title": "Connected Building: actual Render deployment verification",
-  "recorded_at_utc": "2026-10-18T11:13:52.674543+00:00",
+  "recorded_at_utc": "2026-10-18T11:31:52.130113+00:00",
   "url": "https://connected-building-evidence.onrender.com",
   "repository": "https://github.com/gitmeysambayat/connected-building-evidence",
   "initial_source_revision": "596f10d7a9476e459259faaf5d04ad9c475b0c2f",
@@ -99,17 +99,250 @@
     "scope": "This confirms recovery by a provider-level restart and observed receipt reset. It does not establish that the original in-application broker-reconnection operation succeeded."
   },
   "repaired_revision_verification": {
-    "status": "PENDING",
-    "source_revision": null,
-    "deployment_observed": false,
-    "external_https_verification_passed": false,
-    "mqtt_duplicate_and_reconnection_cycle_passed": false,
-    "evidence": null
+    "status": "PASSED",
+    "source_revision": "90782821c0a31e1e1a2d6d5997913939231a6d3c",
+    "deployment_observed": true,
+    "provider_deployment_observation": {
+      "deployment_id": "dep-dbaar8mq1p3s73avu11g",
+      "status": "Deploy succeeded / Live",
+      "basis": "The project owner session inspected the signed-in Render dashboard and the actual startup JSON log.",
+      "startup_log": {
+        "started_at_utc": "2026-10-18T11:30:16.188997+00:00",
+        "source_revision": "90782821c0a31e1e1a2d6d5997913939231a6d3c",
+        "prepared_manifest_sha256": "6a7357230a3804fd4605a8dd9dfde151abc98a13ad0572ce18adedcff7026b3d",
+        "restored_baseline": true
+      }
+    },
+    "external_https_verification_passed": true,
+    "mqtt_duplicate_and_reconnection_cycle_passed": true,
+    "evidence": {
+      "started_at_utc": "2026-10-18T11:30:59.707779+00:00",
+      "url": "https://connected-building-evidence.onrender.com",
+      "reference_source_revision": "90782821c0a31e1e1a2d6d5997913939231a6d3c",
+      "scope": "External HTTPS service checks. Source identity is verified through pinned data and exact deployed static Git blobs. Hosting account settings and billed plan are verified separately.",
+      "mqtt_controls_authorised_for_this_run": true,
+      "checks": [
+        {
+          "name": "actual_https_health_sql_and_configured_public_profile",
+          "passed": true,
+          "observations": 285954,
+          "channels": 37,
+          "spaces": 9
+        },
+        {
+          "name": "source_manifest_content_exactly_preserved",
+          "passed": true,
+          "manifest_sha256": "aea0458e67a96dbf042cb498ec0b22104a04b22e9c9e1e6fff26c9b66e0eab6c",
+          "source_commit": "34acb1fb7a24005ddf29f7f232081713c2f78291"
+        },
+        {
+          "name": "exact_deployed_git_blob",
+          "passed": true,
+          "file": "static/index.html",
+          "bytes": 13943,
+          "sha256": "bca8767128825000e4a17f2b25afa91460aef72425170e14be44ac34157f71d7"
+        },
+        {
+          "name": "exact_deployed_git_blob",
+          "passed": true,
+          "file": "static/app.js",
+          "bytes": 62332,
+          "sha256": "a31dce049be2ea41dd73acc504e57744ff599b175b02bb7547a7a4f8db1b04d3"
+        },
+        {
+          "name": "semantic_metadata_describes_configured_ephemeral_render_profile",
+          "passed": true,
+          "environment": "render",
+          "state_persistence": "ephemeral",
+          "disk_backed": true,
+          "obsolete_verification_and_local_persistence_flags_absent": true
+        },
+        {
+          "name": "actual_ifc_bytes_geometry_and_live_oxigraph_sparql",
+          "passed": true,
+          "ifc_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+          "query_counts": {
+            "room_alignment": 9,
+            "verified_channels": 36,
+            "unverified_channels": 1
+          }
+        },
+        {
+          "name": "real_rest_graphql_and_original_csv_rows_agree",
+          "passed": true,
+          "channel": "Kitchen_Temperature",
+          "source_sha256": "c1f13491b0c62e2e8e6975354ec5cf708060ae0582044ce3a3aac9d1dc835383"
+        },
+        {
+          "name": "https_session_cookie_origin_and_independent_visitor_lease",
+          "passed": true,
+          "secure": true,
+          "httponly": true,
+          "samesite": "Lax",
+          "other_visitor_controls_rejected": true
+        },
+        {
+          "name": "real_cloud_mqtt_replay_receipts_duplicate_handling_and_reconnection",
+          "passed": true,
+          "channel": "Kitchen_Temperature",
+          "first_run": {
+            "published": 20,
+            "accepted": 20,
+            "duplicates": 0,
+            "rejected": 0
+          },
+          "repeat_run": {
+            "published": 20,
+            "accepted": 0,
+            "duplicates": 20,
+            "rejected": 0
+          },
+          "broker_restarts": 1,
+          "verified_original_source_receipts": 20,
+          "historical_observation_time_separate_from_current_receipt_time": true
+        }
+      ],
+      "success": true,
+      "mqtt_first_completed_run": {
+        "current_run": {
+          "published": 20,
+          "accepted": 20,
+          "duplicates": 0,
+          "rejected": 0
+        },
+        "persistent_unique_events": 20,
+        "last_received_at": "2026-10-18T11:31:04.586296Z"
+      },
+      "broker_restart_started_at_utc": "2026-10-18T11:31:05.921679+00:00",
+      "finished_at_utc": "2026-10-18T11:31:26.637417+00:00"
+    }
   },
   "limits": [
-    "Initial broker-reconnection failure is retained in this record and must not be overwritten by a later successful attempt.",
-    "The complete repaired application is pending verification.",
-    "Free-host availability and storage are subject to provider limits; receipt persistence across free-host restarts is not claimed.",
+    "Initial broker-reconnection failure is retained in this record alongside the later repaired-revision success.",
+    "The full external HTTP and MQTT checks passed on the stated repaired revision and time. Visual browser rendering is verified separately.",
+    "Historical 2017 data are replayed through a real internal broker; there is no current physical sensor or BMS connection.",
+    "Free-host availability and storage are subject to provider limits. A provider service restart was observed to reset temporary MQTT receipts from 20 to 0. Durable operational storage is not claimed.",
+    "Anonymous signed-cookie visitor isolation is a shared demonstrator control, not full multi-user account authentication.",
     "Session cookies, request headers, account credentials, private paths and application documents are excluded."
-  ]
+  ],
+  "repaired_revision_ci": {
+    "source_revision": "90782821c0a31e1e1a2d6d5997913939231a6d3c",
+    "backend": {
+      "run_url": "https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39123160782",
+      "job_id": 117662741110,
+      "conclusion": "success",
+      "tests": 140,
+      "failures": 0,
+      "errors": 0,
+      "exit_code": 0,
+      "source_files_unchanged": true
+    },
+    "pages": {
+      "run_url": "https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39123160724",
+      "conclusion": "success"
+    },
+    "linux_container": {
+      "run_url": "https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39123160789",
+      "job_id": 117662741124,
+      "conclusion": "success",
+      "artifact_id": 12135172446,
+      "artifact_sha256": "d3334e11185adc4658c1401f502a6a35c7b7575feb0669f347073c7030ec9da6",
+      "report": {
+        "generated_at_utc": "2026-10-18T11:26:08.417959+00:00",
+        "source_revision": "90782821c0a31e1e1a2d6d5997913939231a6d3c",
+        "scope": "Executed Linux Docker checks. This is not a Render deployment or browser rendering check.",
+        "execution_environment": "GitHub Actions",
+        "limits": {
+          "memory_bytes": 536870912,
+          "cpus": 0.1,
+          "one_uvicorn_worker": true,
+          "mqtt_disabled": false
+        },
+        "checks": [
+          {
+            "name": "fresh_prepared_boot_and_source_counts",
+            "passed": true,
+            "ready_seconds": 35.741
+          },
+          {
+            "name": "live_oxigraph_sparql_ifc_and_frozen_forecast",
+            "passed": true
+          },
+          {
+            "name": "rest_graphql_same_source_rows",
+            "passed": true
+          },
+          {
+            "name": "real_authenticated_mqtt_20_receipts_20_duplicates_and_subscriber_reconnection",
+            "passed": true,
+            "visitor_cookie_required": true,
+            "other_visitor_control_rejected": true
+          },
+          {
+            "name": "same_container_restart_preserves_writable_state",
+            "passed": true,
+            "ready_seconds": 33.439
+          },
+          {
+            "name": "replacement_container_rebuilds_baseline_and_resets_ephemeral_receipts",
+            "passed": true,
+            "ready_seconds": 33.647
+          }
+        ],
+        "containers": [
+          {
+            "phase": "after_cold_start_and_mqtt",
+            "memory_peak_bytes": 239906816,
+            "oom_killed": false,
+            "oom_events": 0,
+            "oom_kill_events": 0,
+            "configured_memory_bytes": 536870912,
+            "configured_nano_cpus": 100000000,
+            "running": true
+          },
+          {
+            "phase": "after_same_container_restart",
+            "memory_peak_bytes": 199102464,
+            "oom_killed": false,
+            "oom_events": 0,
+            "oom_kill_events": 0,
+            "configured_memory_bytes": 536870912,
+            "configured_nano_cpus": 100000000,
+            "running": true
+          },
+          {
+            "phase": "after_replacement_cold_start",
+            "memory_peak_bytes": 241360896,
+            "oom_killed": false,
+            "oom_events": 0,
+            "oom_kill_events": 0,
+            "configured_memory_bytes": 536870912,
+            "configured_nano_cpus": 100000000,
+            "running": true
+          }
+        ],
+        "success": true,
+        "image_bytes": 726507330,
+        "final_container_states": [
+          {
+            "container_number": 1,
+            "running": false,
+            "oom_killed": false,
+            "exit_code": 0,
+            "configured_memory_bytes": 536870912,
+            "configured_nano_cpus": 100000000
+          },
+          {
+            "container_number": 2,
+            "running": true,
+            "oom_killed": false,
+            "exit_code": 0,
+            "configured_memory_bytes": 536870912,
+            "configured_nano_cpus": 100000000
+          }
+        ],
+        "finished_at_utc": "2026-10-18T11:28:26.970770+00:00"
+      }
+    }
+  }
 }

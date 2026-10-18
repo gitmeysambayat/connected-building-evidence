@@ -28,29 +28,31 @@ preserves the earlier attempts and their exact execution scope.
 
 ## Full application hosting
 
-The service is deployed on **Render Free**. External HTTPS checks of the
-initial deployed revision `596f10d` verified the source IFC, SQL-backed REST
-and GraphQL responses, live Oxigraph/SPARQL queries, browser-session controls
-and a real internal MQTT run with 20 accepted historical source events.
+The service is deployed on **Render Free**. All nine external HTTPS checks of
+revision `90782821` passed on 18 October 2026. They verified the source IFC,
+SQL-backed REST and GraphQL responses, live Oxigraph/SPARQL, visitor controls
+and real internal MQTT: 20 source events were accepted, then a broker
+replacement and fresh subscriber correctly recognised 20 repeat deliveries.
 The [Render verification receipt](reports/20261018_v1_Render_Deployment_Receipt.json)
-records the exact source revision, checks and subsequent failure.
+records the exact source revision, source-row receipt checks and execution scope.
 
 <!-- render-recovery-status:start -->
-**Broker-reconnection repair is pending hosted verification.** The initial
-reconnection request stalled even though the other APIs remained responsive.
-A provider-level restart restored the broker and subscriber; its temporary
-receipt count reset from 20 to zero. A successful repaired reconnection and
-repeat-delivery cycle must be confirmed separately before they are claimed.
+**Repaired reconnection and repeat-delivery handling passed on Render.** The
+receipt also preserves the initial revision's failed restart and the subsequent
+provider-level recovery, which reset temporary receipts from 20 to zero.
+The [deployment guide](docs/20261018_v1_Public_Cloud_Deployment.md) explains the
+recovery sequence and the remaining free-host limits.
 <!-- render-recovery-status:end -->
 
-An earlier [Linux container verification](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39119255027)
-passed under 512 MiB RAM and 0.1 CPU, with a 231.72 MiB peak. Its database,
-MQTT, duplicate, reconnection and container-restart checks apply to the recorded
-container run, rather than proving the initial Render reconnection succeeded.
-An [earlier backend run](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39119255021)
-passed 134 tests. See the [current workflow runs](https://github.com/gitmeysambayat/connected-building-evidence/actions)
-and [cloud deployment guide](docs/20261018_v1_Public_Cloud_Deployment.md)
-for revision-specific evidence and operating limits.
+The [Linux container verification for that revision](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39123160789)
+passed six integration checks under 512 MiB RAM and 0.1 CPU, with a 230.18 MiB
+peak and no out-of-memory events. The
+[backend verification](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39123160782)
+passed 140 Python tests. The
+[Pages workflow](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39123160724)
+and cloud-container workflow together passed 21 JavaScript checks: 13 for the
+viewer and eight for the full application interface. These are recorded
+revision-specific checks, rather than a production reliability guarantee.
 
 ## Available application profiles
 

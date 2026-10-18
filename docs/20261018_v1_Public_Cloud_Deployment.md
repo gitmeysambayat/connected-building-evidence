@@ -10,40 +10,41 @@ and published 2017 records as the browser viewer.
 
 ## Deployment status
 
-An earlier [Linux container run](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39119255027)
-passed for source revision `5fff2ccfc8b84cfd7b29defe61809a5032d462d2`.
-Its [executed capacity report](../reports/20261018_v1_Cloud_Container_Verification.json)
-records six successful integration checks under 512 MiB RAM and 0.1 CPU.
-Peak memory was 231.72 MiB, with no out-of-memory events. Three starts took
-35.64 to 37.52 seconds. The [backend run](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39119255021)
-also passed all 134 tests.
+All nine external HTTPS checks of the repaired public revision `90782821`
+passed at 11:31:26 UTC on 18 October 2026. The
+[Render deployment receipt](../reports/20261018_v1_Render_Deployment_Receipt.json)
+records the exact hosted revision, source integrity, live queries, visitor
+controls and successful MQTT acceptance, reconnection and duplicate handling.
 
 The public service has now been created from this public GitHub repository
 using Render's Blueprint deployment flow. Its Compute settings were inspected
 as Free, $0 per month, 0.1 CPU and 512 MB RAM. No paid disk or database was
-created. The [Render deployment receipt](../reports/20261018_v1_Render_Deployment_Receipt.json)
-records the initial deployed source revision and external checks. Status was
-recorded on 18 October 2026.
+created. These plan settings were observed separately from the application
+responses; page content alone does not establish the billed plan.
 
 | Phase | Observed outcome |
 |---|---|
 | Initial public revision `596f10d` | HTTPS health and actual source counts passed. IFC bytes, 9/36/1 live semantic-query results, REST/GraphQL source-row agreement, the secure browser cookie and visitor-lease separation were verified. A real Kitchen temperature replay published and accepted 20 events, with no duplicates or rejected events. |
 | Initial broker-reconnection attempt | Failed. The HTTPS request exceeded 45 seconds. Later responses still showed a restarting broker and disconnected subscriber while other read APIs remained responsive. This attempt did not complete a repeat-delivery or reconnection cycle. |
 | Provider-level service restart | Restored the running broker and connected subscriber. Retained unique events and delivery rows changed from 20 to zero. This demonstrates temporary-state loss and service recovery; it does not establish that the in-application broker restart succeeded. |
-| Repaired revision | Pending deployment and external verification. No successful repaired MQTT duplicate/reconnection cycle is claimed yet. |
+| Repaired public revision `90782821` | Passed all nine external checks. Twenty Kitchen temperature events were accepted; an authenticated broker replacement and fresh subscriber succeeded; a repeated batch produced 20 duplicates and zero newly accepted or rejected events. All 20 retained source-event receipts matched the original CSV values, source hashes, IFC GUID and historical timestamps. |
 
 <!-- render-recovery-status:start -->
-The broker-shutdown/recovery repair and graph storage-metadata correction are
-being checked. Their presence in source or a passing local test does not
-establish successful operation on Render. The final receipt must identify the
-actual deployed commit and its external verification outcome.
+The repaired deployment was observed Live on Render at exact source revision
+`90782821c0a31e1e1a2d6d5997913939231a6d3c`. External tests confirmed the real
+broker replacement, new authenticated subscriber and duplicate cycle. Public
+graph metadata now describes the configured Render environment and temporary
+filesystem, with no self-certifying deployment-verification flag. The receipt
+preserves the earlier failure alongside this later successful attempt.
 <!-- render-recovery-status:end -->
 
 The initial receipt records source revision
 `596f10d7a9476e459259faaf5d04ad9c475b0c2f`. Its first replay completed at
 11:09:06 UTC. The failed broker state was checked again at 11:11:46 UTC; the
 provider-restarted service was checked at 11:12:57 UTC. These are dated
-observations rather than an uptime or production-reliability guarantee.
+observations. Repaired-revision checks ran from 11:30:59 to 11:31:26 UTC.
+They establish the recorded prototype operation rather than an uptime or
+production-reliability guarantee.
 
 GitHub Pages continues to serve the separate read-only viewer. GitHub stores
 the application source and provides the launch link; a container host runs the
@@ -59,10 +60,10 @@ The MQTT listener stays on container loopback. The host's assigned public URL
 supplies the accepted browser origin.
 
 The Blueprint reads the public repository. No additional GitHub App access
-grant was used to create this service. The configuration requests deployment
-after checks pass, but automatic deployment of a future push has not yet been
-observed. A deployment may instead be started through Render's service controls;
-the actual deployed revision must always be checked.
+grant was used to create this service. The owner started the initial and
+repaired deployments through Render's controls using the GitHub source.
+Automatic deployment of a future push has not been observed; later repository
+commits are not assumed to be running until the hosted revision is checked.
 
 Render documents 512 MB RAM and 0.1 CPU for this plan. Its free service sleeps
 after 15 minutes without inbound traffic and wakes on a later request. Free
@@ -110,6 +111,21 @@ chronological forecast experiment. Runtime serves those computed artefacts
 and executes database queries and MQTT transport. It does not replace them
 with HTTP snapshots.
 
+The [Linux container run for revision `90782821`](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39123160789)
+passed all six integration checks under 512 MiB RAM and 0.1 CPU. Peak memory
+was 230.18 MiB, with no out-of-memory events; three starts took 33.44 to 35.74
+seconds. Its exact capacity report and artifact identity are embedded under
+`repaired_revision_ci.linux_container` in the
+[deployment receipt](../reports/20261018_v1_Render_Deployment_Receipt.json).
+These are Linux-container measurements, not provider telemetry.
+
+The [backend verification for that revision](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39123160782)
+passed 140 Python tests. The
+[Pages workflow](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39123160724)
+passed 13 viewer JavaScript checks, and the cloud-container workflow passed
+eight interface JavaScript checks, for 21 in total. Those checks are separate
+from actual browser rendering and the external Render execution above.
+
 The cloud-container workflow builds and runs the image on Linux under a
 512 MiB memory limit and 0.1 CPU allowance. Its successful run inspected real
 HTTP responses, executed GraphQL and SPARQL, accepted 20 MQTT source events,
@@ -119,9 +135,9 @@ a same-container restart preserved receipts and a replacement container reset
 them. The report records the tested source revision and execution scope.
 
 These are bounded integration checks. The recorded Linux container and actual
-Render service are separate execution environments. The successful container
-reconnection does not override the failed initial Render attempt or prove that
-the pending repair works on the host. See the current
+Render service are separate execution environments. Successful container tests
+do not override the failed initial Render attempt; the later external checks
+independently verified the repair on the host. See the current
 [workflow runs](https://github.com/gitmeysambayat/connected-building-evidence/actions)
 and the external deployment receipt for revision-specific outcomes.
 
