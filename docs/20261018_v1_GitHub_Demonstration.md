@@ -94,18 +94,18 @@ and exported JSON are preserved byte for byte. The viewer uses local assets
 under the repository URL and does not call the former ChatGPT site. Live local
 API and transport functionality remains available in the full Python profile.
 
-## Activate GitHub Pages
+## GitHub Pages publishing
 
-The repository was published through GitHub Desktop. The initial Pages workflow
-passed its 11 data-operation tests, then stopped because Pages had not been
-enabled. GitHub Desktop publication does not complete this setting.
+The repository was published through GitHub Desktop. Pages was then enabled
+with **GitHub Actions** as its publishing source. The
+[first successful deployment](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39110024607/attempts/2)
+and subsequent HTTP and browser checks established that the viewer was live.
+The following setup steps are retained for reproducing the deployment in a fork.
 
 1. Sign in as the repository owner and open
    [Settings, Pages](https://github.com/gitmeysambayat/connected-building-evidence/settings/pages).
 2. Under **Build and deployment**, set **Source** to **GitHub Actions**.
-3. Open the [initial Pages run](https://github.com/gitmeysambayat/connected-building-evidence/actions/runs/39109575733)
-   and rerun its failed jobs, or run **Publish verified data explorer** from
-   the repository's Actions tab.
+3. Run **Publish verified data explorer** from the repository's Actions tab.
 4. Check that deployment succeeds, then open
    [the published viewer](https://gitmeysambayat.github.io/connected-building-evidence/).
    Select a room and use **Sources & evidence**, **Verify all 37 source channels**
@@ -113,7 +113,8 @@ enabled. GitHub Desktop publication does not complete this setting.
 
 These steps follow GitHub's
 [publishing-source instructions](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
-Until deployment and browser checks succeed, the address is a prepared target.
+For a fork, substitute its owner and repository in the workflow links and
+viewer address. Deployment completion and browser operation need their own checks.
 
 ## Scope and attribution
 

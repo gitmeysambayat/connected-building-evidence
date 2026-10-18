@@ -53,7 +53,9 @@ function renderRooms() {
 async function selectRoom(guid, {scroll = false} = {}) {
   const room = state.rooms.find(r => roomGuid(r)===guid);
   if(!room) return;
+  ++state.seriesRequest;
   state.selectedRoom=room;
+  notice('');
   renderRooms(); highlightRooms();
   setText('selected-room-title',roomName(room));
   setText('selected-room-subtitle',`${room.long_name || room.name || 'IFC space'} · ${guid}`);
@@ -64,13 +66,25 @@ async function selectRoom(guid, {scroll = false} = {}) {
   $('channel-select').innerHTML = options.length ? groups.map(([label,kind]) => {const items=options.filter(c=>(c.source_kind || 'measured_sensor')===kind);return items.length?`<optgroup label="${label}">${items.map(c=>`<option value="${esc(channelId(c))}">${esc(metricName(c.metric))} (${esc(unitName(c.unit))})</option>`).join('')}</optgroup>`:'';}).join('') : '<option>No verified measured channels</option>';
   $('channel-select').disabled = !options.length;
   $('apply-range').disabled = !options.length;
+  $('series-start').disabled = !options.length;
+  $('series-end').disabled = !options.length;
   $('download-series').disabled = !options.length;
   const info = $('unmonitored-message');
   info.classList.toggle('hidden', measured.length>0);
   info.textContent = options.length ? 'This room has controller data. Controller setpoints are not measured environmental observations.' : 'This IFC room has no verified measured sensor series in the published dataset. The room remains visible without invented readings or assumed sensor locations.';
   if(options.length) await selectChannel(channelId(measured.find(c=>String(c.metric).toLowerCase()==='temperature') || measured[0] || options[0]));
-  else {state.selectedChannel=null;setExportURL();state.series=null;state.points=[];renderChart();setText('chart-channel','No verified monitored channel');setText('series-provenance','Room geometry comes from the source IFC. No sensor-to-room connection is claimed.');}
-  if(scroll) $('selected-room-title').scrollIntoView({behavior:'smooth',block:'center'});
+  else {
+    state.selectedChannel=null;state.series=null;state.points=[];state.cursor=0;state.chartScale=null;
+    $('series-start').value='';$('series-end').value='';
+    setExportURL();renderChart();
+    setText('chart-channel','No verified monitored channel');
+    setText('chart-resolution','No verified observations');$('chart-resolution').title='';
+    setText('reading-label','No observation selected');
+    setText('reading-timezone','Not applicable');$('reading-timezone').title='No verified channel is associated with this room.';
+    setText('plot-method','No verified measured series is associated with this IFC space. No observations are plotted.');
+    setText('series-provenance','Room geometry comes from the source IFC. No sensor-to-room connection is claimed.');
+  }
+  if(scroll && state.selectedRoom===room) $('selected-room-title').scrollIntoView({behavior:'smooth',block:'center'});
 }
 async function selectChannel(id) {
   state.selectedChannel=state.channels.find(c => channelId(c)===id);

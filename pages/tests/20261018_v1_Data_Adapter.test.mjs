@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile,stat} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
+import {runInNewContext} from 'node:vm';
 const pages=new URL('../',import.meta.url);
 const requested=[];
 globalThis.fetch=async(input,options)=>{
@@ -87,4 +88,69 @@ test('A modified published manifest is rejected before catalogue access',async()
   return response;
  };
  try{await assert.rejects(isolated.catalogue(),/SHA-256 does not match/);}finally{globalThis.fetch=originalFetch;}
+});
+
+
+/** Execute the actual UI functions with only browser rendering surfaces mocked.
+ * Controlled source promises reproduce user selection while a file is loading.
+ */
+async function roomSelectionHarness(request){
+ const elements=new Map();
+ const element=id=>{
+  if(!elements.has(id)){
+   const classes=new Set(),attributes=new Map();let html='',text='';
+   elements.set(id,{value:'',disabled:false,title:'',href:'',clientWidth:900,clientHeight:227,
+    get textContent(){return text;},set textContent(value){text=String(value);html=text;},
+    get innerHTML(){return html;},set innerHTML(value){html=String(value);text=html.replace(/<[^>]*>/g,'');},
+    classList:{toggle(name,on){const include=on===undefined?!classes.has(name):on;include?classes.add(name):classes.delete(name);},contains(name){return classes.has(name);}},
+    setAttribute(name,value){attributes.set(name,String(value));},getAttribute(name){return attributes.get(name)??null;},removeAttribute(name){attributes.delete(name);},scrollIntoView(){},
+   });
+  }
+  return elements.get(id);
+ };
+ const context={dataset:request,sourceURL:adapter.sourceURL,exportCSV:adapter.exportCSV,verifyAllSources:adapter.verifyAllSources,verificationStatus:adapter.verificationStatus,
+  THREE:{Raycaster:class{},Vector2:class{}},OrbitControls:class{},URL,URLSearchParams,
+  document:{getElementById:element,body:element('body')},location:{href:'https://example.test/connected-building-evidence/'},
+  getComputedStyle:()=>({getPropertyValue:()=>'#56785a'}),console,
+ };
+ const app=(await readFile(new URL('static/app.js',pages),'utf8')).replace(/^import .*\r?\n/gm,'').replace(/\nmain\(\);\s*$/,'\n');
+ runInNewContext(`${app}\nglobalThis.ui={state,selectRoom};`,context);
+ const catalogue=await adapter.catalogue();context.ui.state.rooms=catalogue.rooms;context.ui.state.channels=catalogue.channels;
+ return {...context.ui,element};
+}
+const clearedSelectionIds=['selected-room-title','selected-room-subtitle','chart-channel','chart-resolution','series-start','series-end','reading-label','reading-value','reading-unit','reading-time','reading-timezone','reading-count','reading-min','reading-max','cursor-timestamp','plot-method','series-provenance','timeseries-chart','global-notice'];
+function visibleSelection(harness){return JSON.stringify(clearedSelectionIds.map(id=>{const el=harness.element(id);return {id,text:el.textContent,html:el.innerHTML,value:el.value,disabled:el.disabled,title:el.title};}));}
+function assertUnmonitoredSelection(harness){
+ const {element,state}=harness;
+ assert.equal(state.selectedRoom.room_id,'Staircase');assert.equal(state.selectedChannel,null);assert.equal(state.series,null);assert.equal(state.points.length,0);
+ assert.equal(element('chart-resolution').textContent,'No verified observations');assert.equal(element('chart-resolution').title,'');
+ assert.equal(element('series-start').value,'');assert.equal(element('series-end').value,'');assert.equal(element('series-start').disabled,true);assert.equal(element('series-end').disabled,true);
+ assert.equal(element('reading-label').textContent,'No observation selected');assert.equal(element('reading-timezone').textContent,'Not applicable');assert.equal(element('reading-unit').textContent,'');assert.equal(element('reading-count').textContent,'0');
+ assert.equal(element('reading-value').textContent,'·');assert.equal(element('reading-min').textContent,'·');assert.equal(element('reading-max').textContent,'·');
+ assert.equal(element('chart-cursor').disabled,true);assert.equal(element('download-series').getAttribute('aria-disabled'),'true');assert.equal(element('download-series').href,'#');
+ assert.match(element('plot-method').textContent,/No observations are plotted/);assert.doesNotMatch(element('chart-resolution').textContent,/1,600|10,598/);
+}
+test('Selecting an unmonitored IFC space clears prior measurement context and restores normal monitored selection',async()=>{
+ const payload=await adapter.series('Room1_Temperature',new URLSearchParams({limit:'1600'}));
+ const harness=await roomSelectionHarness(async()=>payload);
+ const first=harness.state.rooms.find(room=>room.room_id==='Room1'),unmonitored=harness.state.rooms.find(room=>room.room_id==='Staircase');
+ await harness.selectRoom(first.guid);assert.equal(harness.state.points.length,1600);assert.match(harness.element('chart-resolution').textContent,/10,598/);assert.ok(harness.element('series-start').value);assert.equal(harness.element('reading-timezone').textContent,'UTC, from source epochs');
+ await harness.selectRoom(unmonitored.guid);assertUnmonitoredSelection(harness);
+ await harness.selectRoom(first.guid);assert.equal(harness.state.selectedChannel.id,'Room1_Temperature');assert.equal(harness.state.points.length,1600);assert.match(harness.element('chart-resolution').textContent,/10,598/);assert.equal(harness.element('series-start').disabled,false);assert.equal(harness.element('series-end').disabled,false);assert.ok(harness.element('series-start').value);assert.equal(harness.element('reading-timezone').textContent,'UTC, from source epochs');
+});
+test('Late measurement success or failure cannot overwrite a subsequently selected unmonitored room',async()=>{
+ const payload=await adapter.series('Room1_Temperature',new URLSearchParams({limit:'1600'}));
+ for(const lateResult of ['success','failure']){
+  let finish,fail;
+  const pending=new Promise((resolve,reject)=>{finish=resolve;fail=reject;});
+  const harness=await roomSelectionHarness(()=>pending);
+  const first=harness.state.rooms.find(room=>room.room_id==='Room1'),unmonitored=harness.state.rooms.find(room=>room.room_id==='Staircase');
+  const previousSelection=harness.selectRoom(first.guid);
+  assert.match(harness.element('chart-resolution').textContent,/Loading selected channel/);
+  await harness.selectRoom(unmonitored.guid);assertUnmonitoredSelection(harness);
+  const before=visibleSelection(harness);
+  if(lateResult==='success')finish(payload);else fail(new Error('Controlled delayed source failure'));
+  await previousSelection;
+  assertUnmonitoredSelection(harness);assert.equal(visibleSelection(harness),before,`Late ${lateResult} must not write into the unmonitored selection`);
+ }
 });

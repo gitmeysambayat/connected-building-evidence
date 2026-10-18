@@ -1,0 +1,48 @@
+{
+  "generated_at_utc": "2026-10-18T08:26:32.273680+00:00",
+  "profile": "Read-only GitHub Pages viewer",
+  "executed": true,
+  "command_from_repository_root": "node --test --test-reporter=spec pages/tests/20261018_v1_Data_Adapter.test.mjs",
+  "runtime": "v22.23.3",
+  "tests": 13,
+  "passed": 13,
+  "failed": 0,
+  "skipped": 0,
+  "source_files_unchanged": true,
+  "source_assets_checked": 62,
+  "original_channel_files_checked": 37,
+  "source_observations_checked": 285954,
+  "preserved_original_export_hashes_checked": 13,
+  "ifc_sha256": "42ffba5ac38db6def62df2c1ea000dce1d2139dc0100e16e1ede8ee0562fef03",
+  "verification_scope": [
+    "Actual SHA-256 and byte counts of all 62 published source/export assets",
+    "WebCrypto-backed adapter verifies all original CSV files and IFC",
+    "Pinned nine-space catalogue, 36 verified relationships and unresolved CSV-only thermostat",
+    "Original source values, epochs, source lines and maximum original gap across displayed samples",
+    "Inclusive explicit-UTC ranges and complete 10,598-row Room1 CSV with provenance",
+    "Malformed bounds, invented identifiers and mutations rejected",
+    "Modified source CSV and modified manifest rejected before data use",
+    "47 actual IFC meshes, three preserved SPARQL result sets and six negative Ridge results",
+    "Static asset and source links remain within the project directory; no backend HTTP calls",
+    "Actual Room1 to Staircase to Room1 selection clears and restores measurement context",
+    "Pending source success and failure cannot overwrite a subsequently selected unmonitored IFC space"
+  ],
+  "not_established": [
+    "Deployed GitHub Pages availability",
+    "Browser WebGL rendering and interaction",
+    "Live server APIs, MQTT or SPARQL in the static viewer",
+    "New model training or improved forecasting performance",
+    "Physical sensor connection or calibration"
+  ],
+  "tested_files": {
+    "index.html": "f0e2b9222e15327a3ebe0540eb541a44a6a7dbddd14a0cb6fce08b07b747120a",
+    "static/app.js": "a875f25c66d99f3783bb6613c7311b3a2be7f4197c64f659fdb9afed5d9f0284",
+    "static/data-adapter.js": "3d45b59fba6b6a58d7f7ad803fc0948c254d7530e951897e7c3fc6057bbfea55",
+    "static/styles.css": "3c0011668d7f22e72320fecf04aaffc2883116c71014006aff6192a360014069",
+    "tests/20261018_v1_Data_Adapter.test.mjs": "9599923e37db01a433aa1a42c0d7a2c0ac2dbfb9ad1eff32fbb2e32d2d143959",
+    "evidence/20261018_v1_Pages_Asset_Manifest.json": "7efdb8ac8153b75d10e8977477c9fccf81784a1a9f9d23114a03aaa883d82c0d"
+  },
+  "change": "Invalidate pending series requests on valid room changes and clear the complete measurement context when a room has no verified channels.",
+  "ui_regression_method": "Actual application functions execute in an isolated Node VM, with browser rendering surfaces mocked and controlled source promises. A completed monitored selection, an unmonitored selection and a restored monitored selection are checked. Separately, both delayed success and delayed failure resolve after selecting the unmonitored room; all visible selection fields must remain unchanged.",
+  "javascript_syntax_check": "passed"
+}
